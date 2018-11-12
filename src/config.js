@@ -1,3 +1,5 @@
-export const Config = {
-  apiUrl: 'http://localhost:5000'
+const Config = {
+  apiUrl: 'http://localhost:5000/api'
 };
+
+export default Config;

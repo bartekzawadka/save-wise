@@ -7,10 +7,26 @@ import {withStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import './Home.css';
 import {Link} from "react-router-dom";
+import Zoom from "@material-ui/core/Zoom/Zoom";
 
 const styles = theme => ({
     landingPageTitle: {
         color: grey['500']
+    },
+    fab: {
+        position: 'absolute',
+        bottom: theme.spacing.unit * 4,
+        right: theme.spacing.unit * 4,
+    },
+    zoom: {
+      transitionDelay: `${theme.transitions.duration.leavingScreen}ms`
+    },
+    newPlanButton: {
+        marginTop: '24px'
+    },
+    transitionDuration: {
+        enter: theme.transitions.duration.enteringScreen,
+        exit: theme.transitions.duration.leavingScreen,
     }
 });
 
@@ -34,23 +50,40 @@ class Home extends Component {
 
         if (!this.state.budgetPlans || this.state.budgetPlans.length === 0) {
             content =
-                <Grid container direction="column" alignItems="center" spacing="24" justify="center" className="landing-pane">
-                    <Grid item>
-                        <Typography variant="h3" className={classes.landingPageTitle}>
-                            Nie masz jeszcze żadnego planu budżetowego!
-                        </Typography>
+                <div>
+                    <Grid container direction="column" alignItems="center" justify="center" className="landing-pane">
+                        <Grid item>
+                            <Typography variant="h3" className={classes.landingPageTitle}>
+                                Nie masz jeszcze żadnego planu budżetowego!
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="outlined" color="primary" className={classes.newPlanButton}
+                                    component={Link} to='/budgets/new'>
+                                <AddIcon/>
+                                Utwóż nowy
+                            </Button>
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <Button variant="outlined" color="primary" component={Link} to='/budgets/new'>
-                            <AddIcon />
-                            Utwóż nowy
+                    <Zoom
+                        key='secondary'
+                        in='true'
+                        timeout={classes.transitionDuration}
+                        style={{
+                            transitionDelay: `${classes.transitionDuration.exit}ms`,
+                        }}
+                        unmountOnExit
+                    >
+                        <Button variant="extendedFab" className={classes.fab} color='secondary'>
+                            <AddIcon/>
+                            Dodaj wydatek
                         </Button>
-                    </Grid>
-                </Grid>;
+                    </Zoom>
+                </div>;
         }
 
         return (
-            <div >
+            <div>
                 {content}
             </div>
         );

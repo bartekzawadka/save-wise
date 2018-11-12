@@ -23,15 +23,12 @@ import {
 } from 'react-router-dom';
 import Home from './home/Home';
 import BudgetsList from './budgets/BudgetsList';
-import NewBudgetPlan from "./budgets/NewBudgetPlan";
+import NewBudgetPlan from "./budgets/new/NewBudgetPlan";
 
 function getTheme(type) {
     return createMuiTheme({
         palette: {
             type: type,
-            background: {
-                default: '#eee',
-            },
             primary: {
                 main: '#006699'
             },
@@ -147,12 +144,12 @@ class App extends Component {
                                     </Typography>
                                 </Button>
                                 <div className={classes.grow}/>
-                                <Button variant="outlined" className={classes.menuButton} color="secondary">
-                                    <AddIcon/>
-                                    <Typography color="inherit">
-                                        Dodaj wydatek
-                                    </Typography>
-                                </Button>
+                                {/*<Button variant="outlined" className={classes.menuButton} color='inherit'>*/}
+                                    {/*<AddIcon/>*/}
+                                    {/*<Typography color="inherit">*/}
+                                        {/*Dodaj wydatek*/}
+                                    {/*</Typography>*/}
+                                {/*</Button>*/}
                                 <div className={classes.search}>
                                     <div className={classes.searchIcon}>
                                         <SearchIcon/>

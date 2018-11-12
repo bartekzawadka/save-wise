@@ -1,7 +1,10 @@
-import Config from 'config';
+import Config from './config';
 
-export const ApiCalls = {
-    getPlansGetUrl: () => Config.apiUrl + '/plans',
-    getPlansGetByIdUrl: (id) => Config.apiUrl + '/plans/' + id,
-    getNewPlanIncomeCategoriesGetUrl: () => Config.apiUrl+'/plans/new'
+const ApiCalls = {
+    getPlansGetUrl: () => Config.apiUrl + '/plan',
+    getPlansGetByIdUrl: (id) => Config.apiUrl + '/plan/' + id,
+    getNewPlanIncomeCategoriesGetUrl: () => Config.apiUrl+'/plan/new',
+    getIncomeCategoriesPostMultipleUrl: () => Config.apiUrl+"/category/income/multiple"
 };
+
+export default ApiCalls;
