@@ -1,9 +1,9 @@
 import Config from './config';
 
 const ApiCalls = {
-    getPlansGetUrl: () => Config.apiUrl + '/plan',
+    getPlanUrl: () => Config.apiUrl + '/plan',
     getPlansGetByIdUrl: (id) => Config.apiUrl + '/plan/' + id,
-    getNewPlanIncomeCategoriesGetUrl: () => Config.apiUrl+'/plan/new',
+    getNewPlanGetUrl: () => Config.apiUrl+'/plan/new',
     getIncomeCategoriesPostMultipleUrl: () => Config.apiUrl+"/category/income/multiple"
 };
 
