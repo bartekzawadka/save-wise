@@ -289,9 +289,7 @@ class NewBudgetPlan extends Component {
 
         let incomes = this.state.plan.incomeCategories.map(item => {
             return {
-                category: {
-                    name: item.name
-                },
+                category: item.name,
                 amount: item.value
             }
         });
@@ -304,10 +302,7 @@ class NewBudgetPlan extends Component {
                         expenses.push({
                             amount: this.state.plan.expenseCategories[k].types[t].value,
                             type: this.state.plan.expenseCategories[k].types[t].name,
-                            category: {
-                                name: this.state.plan.expenseCategories[k].name,
-                                types: this.state.plan.expenseCategories[k].types
-                            }
+                            category: this.state.plan.expenseCategories[k].name
                         });
                     }
                 }
