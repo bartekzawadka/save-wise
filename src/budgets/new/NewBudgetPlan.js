@@ -33,7 +33,6 @@ import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import Chip from "@material-ui/core/Chip/Chip";
-import {Redirect} from "react-router-dom";
 
 const styles = theme => ({
     root: {
@@ -295,10 +294,10 @@ class NewBudgetPlan extends Component {
         });
 
         let expenses = [];
-        for(let k in this.state.plan.expenseCategories){
-            if(this.state.plan.expenseCategories.hasOwnProperty(k)){
-                for(let t in this.state.plan.expenseCategories[k].types){
-                    if(this.state.plan.expenseCategories[k].types.hasOwnProperty(t)){
+        for (let k in this.state.plan.expenseCategories) {
+            if (this.state.plan.expenseCategories.hasOwnProperty(k)) {
+                for (let t in this.state.plan.expenseCategories[k].types) {
+                    if (this.state.plan.expenseCategories[k].types.hasOwnProperty(t)) {
                         expenses.push({
                             amount: this.state.plan.expenseCategories[k].types[t].value,
                             type: this.state.plan.expenseCategories[k].types[t].name,
@@ -316,12 +315,9 @@ class NewBudgetPlan extends Component {
             plannedExpenses: expenses
         };
 
-
-        axios.post(ApiCalls.getPlanUrl(), saveData).then(()=>{
-            return <Redirect to='/' />
-        }).catch((e) => {
-            console.log(e);
-        })
+        axios.post(ApiCalls.getPlanUrl(), saveData).then(() => {
+            this.props.history.push('/');
+        }).catch(e => console.log(e));
     }
 
     addIncomeCategory() {
@@ -388,8 +384,6 @@ class NewBudgetPlan extends Component {
                 return this.getExpenseCategories(classes);
             case 3:
                 return this.getSummary(classes);
-            case 4:
-                return this.savePlan();
             default:
                 return 'Unknown step';
         }
@@ -609,63 +603,67 @@ class NewBudgetPlan extends Component {
                         <TableCell numeric>Kwota</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableRow key="summary-incomes-sum">
-                    <TableCell scope="row">
-                        Suma przychodów
-                    </TableCell>
-                    <TableCell numeric>
-                        <CurrencyFormat className={classes.tableSummarySumInput}
-                                        value={this.state.plan.incomesSum}
-                                        displayType='text'
-                                        thousandSeparator=' '
-                                        fixedDecimalScale={true}
-                                        decimalScale={2}
-                                        suffix=" zł"
-                                        decimalSeparator=','/>
-                    </TableCell>
-                </TableRow>
-                <TableRow key="summary-expenses-sum">
-                    <TableCell scope="row">
-                        Suma wydatków
-                    </TableCell>
-                    <TableCell numeric>
-                        <CurrencyFormat className={classes.tableSummarySumInput}
-                                        value={this.state.plan.expensesSum}
-                                        displayType='text'
-                                        thousandSeparator=' '
-                                        fixedDecimalScale={true}
-                                        decimalScale={2}
-                                        suffix=" zł"
-                                        decimalSeparator=','/>
-                    </TableCell>
-                </TableRow>
-                <TableRow key="summary-difference-sum">
-                    <TableCell scope="row">
-                        <b>Różnica</b>
-                    </TableCell>
-                    <TableCell numeric>
-                        <CurrencyFormat className={this.state.plan.expensesLeft === 0.0? classes.expensesLeftSummaryInputOk: classes.expensesLeftSummaryInputWrong}
-                                        value={this.state.plan.expensesLeft}
-                                        displayType='text'
-                                        thousandSeparator=' '
-                                        fixedDecimalScale={true}
-                                        decimalScale={2}
-                                        suffix=" zł"
-                                        decimalSeparator=','/>
-                    </TableCell>
-                </TableRow>
+                <TableBody>
+                    <TableRow key="summary-incomes-sum">
+                        <TableCell scope="row">
+                            Suma przychodów
+                        </TableCell>
+                        <TableCell numeric>
+                            <CurrencyFormat className={classes.tableSummarySumInput}
+                                            value={this.state.plan.incomesSum}
+                                            displayType='text'
+                                            thousandSeparator=' '
+                                            fixedDecimalScale={true}
+                                            decimalScale={2}
+                                            suffix=" zł"
+                                            decimalSeparator=','/>
+                        </TableCell>
+                    </TableRow>
+                    <TableRow key="summary-expenses-sum">
+                        <TableCell scope="row">
+                            Suma wydatków
+                        </TableCell>
+                        <TableCell numeric>
+                            <CurrencyFormat className={classes.tableSummarySumInput}
+                                            value={this.state.plan.expensesSum}
+                                            displayType='text'
+                                            thousandSeparator=' '
+                                            fixedDecimalScale={true}
+                                            decimalScale={2}
+                                            suffix=" zł"
+                                            decimalSeparator=','/>
+                        </TableCell>
+                    </TableRow>
+                    <TableRow key="summary-difference-sum">
+                        <TableCell scope="row">
+                            <b>Różnica</b>
+                        </TableCell>
+                        <TableCell numeric>
+                            <CurrencyFormat
+                                className={this.state.plan.expensesLeft === 0.0 ? classes.expensesLeftSummaryInputOk : classes.expensesLeftSummaryInputWrong}
+                                value={this.state.plan.expensesLeft}
+                                displayType='text'
+                                thousandSeparator=' '
+                                fixedDecimalScale={true}
+                                decimalScale={2}
+                                suffix=" zł"
+                                decimalSeparator=','/>
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
             </Table>
 
             <div className={classes.summaryTitleContainer}>
-                <Chip label={this.state.plan.expensesLeft === 0.0 ? "Bilans planu prawidłowy!" : "Całkowita kwota kosztów nie pokrywa planowanych wydatków!"}
-                      className={classes.chip}
-                      variant="outlined"
-                      color={this.state.plan.expensesLeft === 0.0 ? "primary" : "secondary"}
-                      classes={{
-                          outlinedPrimary: classes.summaryTitleOk,
-                          outlinedSecondary: classes.summaryTitleWrong
-                      }}
-                      icon={this.state.plan.expensesLeft === 0.0 ? <CheckCircleOutlineIcon/> : <ErrorOutlineIcon/>} />
+                <Chip
+                    label={this.state.plan.expensesLeft === 0.0 ? "Bilans planu prawidłowy!" : "Całkowita kwota kosztów nie pokrywa planowanych wydatków!"}
+                    className={classes.chip}
+                    variant="outlined"
+                    color={this.state.plan.expensesLeft === 0.0 ? "primary" : "secondary"}
+                    classes={{
+                        outlinedPrimary: classes.summaryTitleOk,
+                        outlinedSecondary: classes.summaryTitleWrong
+                    }}
+                    icon={this.state.plan.expensesLeft === 0.0 ? <CheckCircleOutlineIcon/> : <ErrorOutlineIcon/>}/>
             </div>
         </div>
     }
@@ -797,6 +795,12 @@ class NewBudgetPlan extends Component {
 
     handleNext = () => {
         const {activeStep} = this.state;
+
+        if (activeStep === getSteps().length - 1) {
+            this.savePlan();
+            return;
+        }
+
         this.setState({
             activeStep: activeStep + 1
         });
@@ -836,33 +840,33 @@ class NewBudgetPlan extends Component {
                         })}
                     </Stepper>
                     <div>
-                            <div>
-                                <Typography className={classes.instructions}>
-                                    <div className={classes.container}>
-                                        {this.getStepContent(this.state.activeStep, classes)}
-                                    </div>
-                                </Typography>
-                                <div>
-                                    <Button
-                                        disabled={this.state.activeStep === 0}
-                                        onClick={this.handleBack}
-                                        className={classes.button}>
-                                        <KeyboardArrowLeftIcon/>
-                                        Wstecz
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={this.handleNext}
-                                        className={classes.buttonNext}
-                                        disabled={this.getNextDisabled()}
-                                    >
-                                        {this.state.activeStep === steps.length - 1 ? <CheckIcon/> :
-                                            <KeyboardArrowRightIcon/>}
-                                        {this.state.activeStep === steps.length - 1 ? 'Zapisz' : 'Dalej'}
-                                    </Button>
-                                </div>
+                        <div>
+                            <div className={classes.container}>
+                                {/*<Typography className={classes.instructions}>*/}
+                                {this.getStepContent(this.state.activeStep, classes)}
+                                {/*</Typography>*/}
                             </div>
+                            <div>
+                                <Button
+                                    disabled={this.state.activeStep === 0}
+                                    onClick={this.handleBack}
+                                    className={classes.button}>
+                                    <KeyboardArrowLeftIcon/>
+                                    Wstecz
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={this.handleNext}
+                                    className={classes.buttonNext}
+                                    disabled={this.getNextDisabled()}
+                                >
+                                    {this.state.activeStep === steps.length - 1 ? <CheckIcon/> :
+                                        <KeyboardArrowRightIcon/>}
+                                    {this.state.activeStep === steps.length - 1 ? 'Zapisz' : 'Dalej'}
+                                </Button>
+                            </div>
+                        </div>
                     </div>
                 </Paper>
             </div>

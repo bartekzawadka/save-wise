@@ -8,7 +8,6 @@ import CreditCardIcon from '@material-ui/icons/CreditCard';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import AddIcon from '@material-ui/icons/Add';
 import './App.css';
 import {createMuiTheme, withStyles} from '@material-ui/core/styles';
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
@@ -24,6 +23,8 @@ import {
 import Home from './home/Home';
 import BudgetsList from './budgets/BudgetsList';
 import NewBudgetPlan from "./budgets/new/NewBudgetPlan";
+import {loadProgressBar} from "axios-progress-bar";
+import 'axios-progress-bar/dist/nprogress.css'
 
 function getTheme(type) {
     return createMuiTheme({
@@ -113,6 +114,7 @@ const styles = theme => ({
 class App extends Component {
     constructor(props) {
         super(props);
+        loadProgressBar();
     }
 
     render() {
@@ -144,12 +146,6 @@ class App extends Component {
                                     </Typography>
                                 </Button>
                                 <div className={classes.grow}/>
-                                {/*<Button variant="outlined" className={classes.menuButton} color='inherit'>*/}
-                                    {/*<AddIcon/>*/}
-                                    {/*<Typography color="inherit">*/}
-                                        {/*Dodaj wydatek*/}
-                                    {/*</Typography>*/}
-                                {/*</Button>*/}
                                 <div className={classes.search}>
                                     <div className={classes.searchIcon}>
                                         <SearchIcon/>

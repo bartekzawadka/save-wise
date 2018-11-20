@@ -8,6 +8,9 @@ import AddIcon from '@material-ui/icons/Add';
 import './Home.css';
 import {Link} from "react-router-dom";
 import Zoom from "@material-ui/core/Zoom/Zoom";
+import axios from 'axios';
+import ApiCalls from '../ApiCalls';
+import PlanSummary from '../budgets/components/PlanSummary';
 
 const styles = theme => ({
     landingPageTitle: {
@@ -19,7 +22,7 @@ const styles = theme => ({
         right: theme.spacing.unit * 4,
     },
     zoom: {
-      transitionDelay: `${theme.transitions.duration.leavingScreen}ms`
+        transitionDelay: `${theme.transitions.duration.leavingScreen}ms`
     },
     newPlanButton: {
         marginTop: '24px'
@@ -40,7 +43,12 @@ class Home extends Component {
     }
 
     componentDidMount() {
+        axios.get(ApiCalls.getCurrentPlanUrl()).then(data => {
+            this.setState({
+                budgetPlans: [data.data]
+            });
 
+        }).catch(e => console.log(e));
     }
 
     render() {
@@ -65,21 +73,29 @@ class Home extends Component {
                             </Button>
                         </Grid>
                     </Grid>
-                    <Zoom
-                        key='secondary'
-                        in='true'
-                        timeout={classes.transitionDuration}
-                        style={{
-                            transitionDelay: `${classes.transitionDuration.exit}ms`,
-                        }}
-                        unmountOnExit
-                    >
-                        <Button variant="extendedFab" className={classes.fab} color='secondary'>
-                            <AddIcon/>
-                            Dodaj wydatek
-                        </Button>
-                    </Zoom>
                 </div>;
+        } else {
+            content =
+            this.state.budgetPlans.map(item => {
+                return <div>
+                    <PlanSummary plan={item}/>
+                </div>
+            });
+            //
+            // content +=
+            // <Zoom
+            //     key='secondary'
+            //     in='true'
+            //     timeout={classes.transitionDuration}
+            //     style={{
+            //         transitionDelay: `${classes.transitionDuration.exit}ms`,
+            //     }}
+            //     unmountOnExit>
+            //     <Button variant="extendedFab" className={classes.fab} color='secondary'>
+            //         <AddIcon/>
+            //         Dodaj wydatek
+            //     </Button>
+            // </Zoom>;
         }
 
         return (
