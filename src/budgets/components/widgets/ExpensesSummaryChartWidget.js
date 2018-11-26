@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Bar} from "react-chartjs-2";
 import Widget from "./Widget";
 
-class ExpensesSummaryChart extends Component {
+class ExpensesSummaryChartWidget extends Component {
     getData() {
         return {
             labels: ["Przychody", "Wydatki"],
@@ -35,4 +35,4 @@ class ExpensesSummaryChart extends Component {
     }
 }
 
-export default ExpensesSummaryChart;
+export default ExpensesSummaryChartWidget;

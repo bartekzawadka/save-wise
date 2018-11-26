@@ -76,11 +76,24 @@ class Home extends Component {
                 </div>;
         } else {
             content =
-            this.state.budgetPlans.map(item => {
-                return <div>
-                    <PlanSummary plan={item}/>
-                </div>
-            });
+                this.state.budgetPlans.map(item => {
+                    return <div>
+                        <PlanSummary plan={item}/>
+                        {/*<Zoom*/}
+                            {/*key='secondary'*/}
+                            {/*in='true'*/}
+                            {/*timeout={classes.transitionDuration}*/}
+                            {/*style={{*/}
+                                {/*transitionDelay: `${classes.transitionDuration.exit}ms`,*/}
+                            {/*}}*/}
+                            {/*unmountOnExit>*/}
+                            {/*<Button variant="extendedFab" className={classes.fab} color='secondary'>*/}
+                                {/*<AddIcon/>*/}
+                                {/*Dodaj wydatek*/}
+                            {/*</Button>*/}
+                        {/*</Zoom>;*/}
+                    </div>
+                });
             //
             // content +=
             // <Zoom

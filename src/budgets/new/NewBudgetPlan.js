@@ -33,6 +33,7 @@ import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import Chip from "@material-ui/core/Chip/Chip";
+import PlanPeriod from "./PlanPeriod";
 
 const styles = theme => ({
     root: {
@@ -389,9 +390,10 @@ class NewBudgetPlan extends Component {
         }
     }
 
-    handleModelChange = name => event => {
+    handlePeriodChange = () => data => {
         let state = this.state;
-        state.plan[name] = event.target.value;
+        state.plan.from = data.from;
+        state.plan.to = data.to;
 
         this.setState(state);
     };
@@ -494,26 +496,10 @@ class NewBudgetPlan extends Component {
     };
 
     getPeriod(classes) {
-        return <div className={classes.datePickersContainer}>
-            <TextField
-                label='Od'
-                type='date'
-                value={this.state.plan.from}
-                onChange={this.handleModelChange('from')}
-                className={classes.datePicker}
-                InputLabelProps={{
-                    shrink: true,
-                }}/>
-            <TextField
-                label='Do'
-                type='date'
-                value={this.state.plan.to}
-                onChange={this.handleModelChange('to')}
-                className={classes.datePicker}
-                InputLabelProps={{
-                    shrink: true
-                }}/>
-        </div>
+        return <PlanPeriod
+            classes={classes}
+            onDatesChanged={this.handlePeriodChange()}
+            from={this.state.plan.from} to={this.state.plan.to}/>
     }
 
     getNextDisabled() {

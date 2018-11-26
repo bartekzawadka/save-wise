@@ -24,7 +24,9 @@ import Home from './home/Home';
 import BudgetsList from './budgets/BudgetsList';
 import NewBudgetPlan from "./budgets/new/NewBudgetPlan";
 import {loadProgressBar} from "axios-progress-bar";
-import 'axios-progress-bar/dist/nprogress.css'
+import 'axios-progress-bar/dist/nprogress.css';
+import moment from 'moment';
+import 'moment/locale/pl';
 
 function getTheme(type) {
     return createMuiTheme({
@@ -119,6 +121,7 @@ class App extends Component {
 
     render() {
         const {classes} = this.props;
+        moment.locale('pl');
 
         return (
             <Router>
