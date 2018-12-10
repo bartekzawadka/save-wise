@@ -2,22 +2,22 @@ import React, {Component} from 'react';
 import CurrencyFormat from "react-currency-format";
 import PropTypes from 'prop-types';
 
-class CurrencyText extends Component {
+class CurrencyInput extends Component {
     render() {
         return <CurrencyFormat value={this.props.value}
-                               displayType='text'
+                               displayType='input'
+                               onChange={this.props.onChange}
                                thousandSeparator=' '
                                decimalScale={2}
                                fixedDecimalScale={true}
                                suffix=" zł"
-                               decimalSeparator=','
-                               className={this.props.className}/>
+                               decimalSeparator=','/>
     }
 }
 
-CurrencyText.propTypes = {
-    className: PropTypes.string,
-    value: PropTypes.object.isRequired
+CurrencyInput.propTypes = {
+    value: PropTypes.object.isRequired,
+    onChange: PropTypes.func
 };
 
-export default CurrencyText;
+export default CurrencyInput;
