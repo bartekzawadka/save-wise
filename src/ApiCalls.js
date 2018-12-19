@@ -3,6 +3,7 @@ import Config from './config';
 const ApiCalls = {
     getPlanUrl: () => Config.apiUrl + '/plan',
     getCategoryUrl: () => Config.apiUrl+ '/category',
+    getUserUrl: () => Config.apiUrl+'/user',
     getCurrentPlanUrl: () => Config.apiUrl + '/plan/current',
     getPlansGetByIdUrl: (id) => Config.apiUrl + '/plan/' + id,
     getNewPlanGetUrl: () => Config.apiUrl+'/plan/new',

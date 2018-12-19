@@ -1,6 +1,7 @@
 import Config from '../config';
 import {authHeader} from '../common/AuthHeader';
 import axios from 'axios';
+import ApiCalls from "../ApiCalls";
 
 export const userService = {
     isAuthenticated,
@@ -16,7 +17,7 @@ function isAuthenticated() {
     return !!(user && user.token);
 }
 
-function getUserInfo(){
+function getUserInfo() {
     return localStorage.getItem('user');
 }
 
@@ -28,7 +29,7 @@ function login(username, password) {
         }
     };
 
-    return axios.post(Config.apiUrl + '/user/authenticate', requestOptions.body)
+    return axios.post(ApiCalls.getUserUrl() + '/authenticate', requestOptions.body)
         .catch(response => {
             return Promise.reject(response.response);
         })
@@ -42,24 +43,23 @@ function login(username, password) {
 }
 
 function register(user) {
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(user)
-    };
-
-    return fetch(`${Config.apiUrl}/user/register`, requestOptions).then(handleResponse);
+    return axios.post(ApiCalls.getUserUrl() + '/register', user, {
+        headers: {'Content-Type': 'application/json'}
+    }).catch(response => {
+        return Promise.reject(response.response);
+    })
 }
 
 function changePassword(user) {
-    const requestOptions = {
-        method: 'PUT',
-        headers: {...authHeader(), 'Content-Type': 'application/json'},
-        body: JSON.stringify(user)
-    };
+    let headers = authHeader();
+    headers['Content-Type'] = 'application/json';
 
-    return axios.put(Config.apiUrl + '/user/changePassword', requestOptions)
-        .then(handleResponse);
+    return axios.put(ApiCalls.getUserUrl() + '/changePassword',
+        JSON.stringify(user), {
+            headers: headers
+        }).catch(response => {
+        return Promise.reject(response.response);
+    });
 }
 
 function logout() {

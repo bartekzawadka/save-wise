@@ -26,8 +26,11 @@ const styles = theme => ({
     field: {
         minWidth: 400
     },
+    loginButtonContainer: {
+        marginTop: '10px',
+    },
     loginButton: {
-        marginTop: '10px'
+        width: 200
     },
     chip: {
         margin: theme.spacing.unit,
@@ -53,14 +56,8 @@ class Login extends Component {
     }
 
     submit = () => {
-        if (this.state.usernameInvalid || this.state.passwordInvalid) {
-            return;
-        }
-
         userService.login(this.state.username, this.state.password)
             .then(() => {
-                console.log('OK!');
-                console.log(this.props);
                 this.setState({
                     loginSucceeded: true
                 });
@@ -68,9 +65,7 @@ class Login extends Component {
                 this.setState({
                     loginErrorMessage: e.data.error,
                     username: '',
-                    usernameInvalid: true,
                     password: '',
-                    passwordInvalid: true,
                 });
             });
     };
@@ -78,7 +73,6 @@ class Login extends Component {
     onFieldChange = (fieldName) => event => {
         let state = this.state;
         state[fieldName] = event.target.value;
-        state[fieldName + 'Invalid'] = !event.target.value;
 
         state.loginButtonDisabled = !state['username'] || !state['password'];
 
@@ -101,7 +95,7 @@ class Login extends Component {
     render() {
         const {classes} = this.props;
 
-        if(this.state.loginSucceeded){
+        if (this.state.loginSucceeded) {
             return <Redirect to='/'/>
         }
 
@@ -129,9 +123,10 @@ class Login extends Component {
                                        margin="normal"
                                        className={classes.field}/>
                         </div>
-                        <div align="right" className={classes.loginButton}>
-                            <Button variant="contained"
-                                    color="secondary"
+                        <div align="center" className={classes.loginButtonContainer}>
+                            <Button variant="outlined"
+                                    color="primary"
+                                    className={classes.loginButton}
                                     onClick={this.submit}
                                     disabled={this.state.loginButtonDisabled}>
                                 Zaloguj

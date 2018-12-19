@@ -27,9 +27,11 @@ import {loadProgressBar} from "axios-progress-bar";
 import 'axios-progress-bar/dist/nprogress.css';
 import moment from 'moment';
 import 'moment/locale/pl';
-import Login from "./pages/login/Login";
+import Login from "./pages/user/Login";
 import {userService} from "./services/UserService";
 import UserMenu from "./UserMenu";
+import ChangePassword from "./pages/user/ChangePassword";
+import Register from "./pages/user/Register";
 
 // import PrivateRoute from "./common/PrivateRoute";
 
@@ -166,6 +168,8 @@ class App extends Component {
 
                     <PrivateRoute exact path="/" component={Home}/>
                     <Route exact path="/login" component={Login}/>
+                    <Route exact path="/register" component={Register}/>
+                    <PrivateRoute exact path="/changePassword" component={ChangePassword}/>
                     <PrivateRoute exact path="/budgets/list" component={BudgetsList}/>
                     <PrivateRoute exact path='/budgets/new' component={NewBudgetPlan}/>
                 </MuiThemeProvider>
