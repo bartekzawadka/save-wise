@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Typography from "@material-ui/core/es/Typography/Typography";
-import CurrencyText from "../../../common/CurrencyText";
+import CurrencyText from "../../../../common/CurrencyText";
 import Table from "@material-ui/core/es/Table/Table";
 import TableHead from "@material-ui/core/es/TableHead/TableHead";
 import TableCell from "@material-ui/core/es/TableCell/TableCell";

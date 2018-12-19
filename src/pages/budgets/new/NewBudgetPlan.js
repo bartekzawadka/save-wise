@@ -10,15 +10,16 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import CheckIcon from '@material-ui/icons/Check';
-import '../../helpers/date';
+import '../../../helpers/date';
 import axios from 'axios';
-import ApiCalls from '../../ApiCalls';
+import ApiCalls from '../../../ApiCalls';
 import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
 import PlanPeriod from "./components/PlanPeriod";
 import AmountsList from "./components/AmountsList";
 import ExpenseCategories from "./components/ExpenseCategories";
-import CurrencyText from "../../common/CurrencyText";
+import CurrencyText from "../../../common/CurrencyText";
 import Summary from "./components/Summary";
+import PlanService from "../../../services/PlanService";
 
 const styles = theme => ({
     root: {
@@ -109,7 +110,9 @@ class NewBudgetPlan extends Component {
                 expensesLeftProgress: 0,
                 expensesSum: 0
             }
-        }
+        };
+
+        this.planService = new PlanService();
     }
 
     async componentDidMount() {
@@ -117,7 +120,7 @@ class NewBudgetPlan extends Component {
     }
 
     async getData() {
-        let result = await axios.get(ApiCalls.getNewPlanGetUrl());
+        let result = await this.planService.getNewPlan();
         let state = this.state;
 
         let data = result.data.incomeCategories;
@@ -183,7 +186,7 @@ class NewBudgetPlan extends Component {
             plannedExpenses: expenses
         };
 
-        axios.post(ApiCalls.getPlanUrl(), saveData).then(() => {
+        this.planService.addNewPlan(saveData).then(() => {
             this.props.history.push('/');
         }).catch(e => console.log(e));
     }
@@ -270,7 +273,7 @@ class NewBudgetPlan extends Component {
     }
 
     getSummary() {
-        return <Summary plan={this.state.plan} />
+        return <Summary plan={this.state.plan}/>
     }
 
     handleOnExpenseCategoriesChange = () => (expenseCategories) => {
