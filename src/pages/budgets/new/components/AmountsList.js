@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import CurrencyField from "./CurrencyField";
 import {withStyles} from "@material-ui/core";
-import CurrencyText from "../../../common/CurrencyText";
+import CurrencyText from "../../../../common/CurrencyText";
 
 const styles = () => ({
     table: {

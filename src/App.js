@@ -18,15 +18,22 @@ import {CssBaseline} from '@material-ui/core';
 import {
     BrowserRouter as Router,
     Route,
-    Link
+    Link, withRouter, Redirect
 } from 'react-router-dom';
-import Home from './home/Home';
-import BudgetsList from './budgets/BudgetsList';
-import NewBudgetPlan from "./budgets/new/NewBudgetPlan";
+import Home from './pages/home/Home';
+import BudgetsList from './pages/budgets/BudgetsList';
+import NewBudgetPlan from "./pages/budgets/new/NewBudgetPlan";
 import {loadProgressBar} from "axios-progress-bar";
 import 'axios-progress-bar/dist/nprogress.css';
 import moment from 'moment';
 import 'moment/locale/pl';
+import Login from "./pages/user/Login";
+import {userService} from "./services/UserService";
+import UserMenu from "./UserMenu";
+import ChangePassword from "./pages/user/ChangePassword";
+import Register from "./pages/user/Register";
+
+// import PrivateRoute from "./common/PrivateRoute";
 
 function getTheme(type) {
     return createMuiTheme({
@@ -58,9 +65,6 @@ const styles = theme => ({
     menuButtonIcon: {
         marginRight: 10,
         marginTop: 8
-    },
-    loginButton: {
-        marginLeft: 5
     },
     title: {
         display: 'none',
@@ -113,6 +117,14 @@ const styles = theme => ({
     },
 });
 
+const PrivateRoute = ({component: Component, ...rest}) => (
+    <Route {...rest} render={(props) => (
+        userService.isAuthenticated() === true
+            ? <Component {...props} />
+            : <Redirect to='/login' />
+    )}/>
+);
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -126,7 +138,7 @@ class App extends Component {
         return (
             <Router>
                 <MuiThemeProvider theme={theme}>
-                    <CssBaseline />
+                    <CssBaseline/>
                     <div className={classes.root}>
                         <AppBar position="static">
                             <Toolbar>
@@ -136,46 +148,34 @@ class App extends Component {
                                     savesmart
                                 </Typography>
                                 <div className={classes.grow}/>
-                                <Button className={classes.menuButton} color="inherit" component={Link} to="/budgets">
+                                <Button className={this.props.classes.menuButton} color="inherit" component={Link} to="/budgets">
                                     <TimelineIcon/>
                                     <Typography color="inherit">
                                         Budżety
                                     </Typography>
                                 </Button>
-                                <Button className={classes.menuButton} color="inherit">
+                                <Button className={this.props.classes.menuButton} color="inherit">
                                     <AttachMoneyIcon/>
                                     <Typography color="inherit">
                                         Wydatki
                                     </Typography>
                                 </Button>
-                                <div className={classes.grow}/>
-                                <div className={classes.search}>
-                                    <div className={classes.searchIcon}>
-                                        <SearchIcon/>
-                                    </div>
-                                    <InputBase
-                                        placeholder="Szukaj…"
-                                        classes={{
-                                            root: classes.inputRoot,
-                                            input: classes.inputInput,
-                                        }}
-                                    />
-                                </div>
-                                <IconButton className={classes.loginButton} color="inherit" aria-label="Log in"
-                                            disabled>
-                                    <AccountCircleIcon/>
-                                </IconButton>
+                                <div className={this.props.classes.grow}/>
+                                <UserMenu />
                             </Toolbar>
                         </AppBar>
                     </div>
 
-                    <Route exact path="/" component={Home}/>
-                    <Route path="/budgets/list" component={BudgetsList}/>
-                    <Route path='/budgets/new' component={NewBudgetPlan} />
+                    <PrivateRoute exact path="/" component={Home}/>
+                    <Route exact path="/login" component={Login}/>
+                    <Route exact path="/register" component={Register}/>
+                    <PrivateRoute exact path="/changePassword" component={ChangePassword}/>
+                    <PrivateRoute exact path="/budgets/list" component={BudgetsList}/>
+                    <PrivateRoute exact path='/budgets/new' component={NewBudgetPlan}/>
                 </MuiThemeProvider>
             </Router>
         );
     }
 }
 
-export default withStyles(styles, { withTheme: true })(App);
+export default withStyles(styles, {withTheme: true})(App);

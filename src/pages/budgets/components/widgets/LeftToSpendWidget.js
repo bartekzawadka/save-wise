@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Typography from "@material-ui/core/es/Typography/Typography";
-import CurrencyText from "../../../common/CurrencyText";
+import CurrencyText from "../../../../common/CurrencyText";
 import LinearProgress from "@material-ui/core/es/LinearProgress/LinearProgress";
 import {withStyles} from "@material-ui/core";
 import Widget from "./Widget";

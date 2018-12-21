@@ -7,10 +7,8 @@ import {withStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import './Home.css';
 import {Link} from "react-router-dom";
-import Zoom from "@material-ui/core/Zoom/Zoom";
-import axios from 'axios';
-import ApiCalls from '../ApiCalls';
 import PlanSummary from '../budgets/components/PlanSummary';
+import PlanService from "../../services/PlanService";
 
 const styles = theme => ({
     landingPageTitle: {
@@ -39,16 +37,24 @@ class Home extends Component {
 
         this.state = {
             budgetPlans: []
-        }
+        };
+
+        this.planService = new PlanService();
     }
 
     componentDidMount() {
-        axios.get(ApiCalls.getCurrentPlanUrl()).then(data => {
+        this.planService.getCurrentPlan().then(data=>{
+            let plans = [];
+            if(data && data.data){
+                plans = [data.data];
+            }
             this.setState({
-                budgetPlans: [data.data]
+                budgetPlans: plans
             });
-
-        }).catch(e => console.log(e));
+        }).catch(e=>{
+            //todo: handle error
+            console.log(e);
+        })
     }
 
     render() {
@@ -78,37 +84,9 @@ class Home extends Component {
             content =
                 this.state.budgetPlans.map(item => {
                     return <div>
-                        <PlanSummary plan={item}/>
-                        {/*<Zoom*/}
-                            {/*key='secondary'*/}
-                            {/*in='true'*/}
-                            {/*timeout={classes.transitionDuration}*/}
-                            {/*style={{*/}
-                                {/*transitionDelay: `${classes.transitionDuration.exit}ms`,*/}
-                            {/*}}*/}
-                            {/*unmountOnExit>*/}
-                            {/*<Button variant="extendedFab" className={classes.fab} color='secondary'>*/}
-                                {/*<AddIcon/>*/}
-                                {/*Dodaj wydatek*/}
-                            {/*</Button>*/}
-                        {/*</Zoom>;*/}
+                        <PlanSummary plan={item} />
                     </div>
                 });
-            //
-            // content +=
-            // <Zoom
-            //     key='secondary'
-            //     in='true'
-            //     timeout={classes.transitionDuration}
-            //     style={{
-            //         transitionDelay: `${classes.transitionDuration.exit}ms`,
-            //     }}
-            //     unmountOnExit>
-            //     <Button variant="extendedFab" className={classes.fab} color='secondary'>
-            //         <AddIcon/>
-            //         Dodaj wydatek
-            //     </Button>
-            // </Zoom>;
         }
 
         return (

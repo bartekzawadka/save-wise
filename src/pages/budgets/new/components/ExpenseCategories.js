@@ -6,7 +6,7 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpandMoreIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import CurrencyText from "../../../common/CurrencyText";
+import CurrencyText from "../../../../common/CurrencyText";
 import {withStyles} from "@material-ui/core";
 
 const styles = theme => ({
