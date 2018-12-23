@@ -14,6 +14,8 @@ import IncomesPerCategoryWidget from "./widgets/IncomesPerCategoryWidget";
 import AppBar from "@material-ui/core/es/AppBar/AppBar";
 import Toolbar from "@material-ui/core/es/Toolbar/Toolbar";
 import Button from "@material-ui/core/Button/Button";
+import AddIcon from "@material-ui/icons/Add";
+import {Link} from "react-router-dom";
 
 const styles = theme => ({
     root: {
@@ -75,7 +77,16 @@ class PlanSummary extends Component {
                                 Bieżąca realizacja budżetu
                                 ({moment(this.props.plan.startDate).format('L') + " - " + moment(this.props.plan.endDate).format('L')})
                             </Typography>
-                            <Button color="inherit">
+                            <Button color="primary"
+                                    variant="contained"
+                                    component={Link}
+                                    to={"/plan/incomes/"+this.props.plan.id}>
+                                Przychody
+                            </Button>
+                            <Button color="secondary"
+                                    variant="contained"
+                                    component={Link}
+                                    to={"/expense/add/"+this.props.plan.id}>
                                 Dodaj wydatek
                             </Button>
                         </Toolbar>

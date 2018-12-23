@@ -1,0 +1,403 @@
+import React, {Component} from 'react';
+import {TextField, withStyles} from "@material-ui/core";
+import Card from "@material-ui/core/es/Card/Card";
+import CardHeader from "@material-ui/core/es/CardHeader/CardHeader";
+import CardContent from "@material-ui/core/es/CardContent/CardContent";
+import FormControl from "@material-ui/core/es/FormControl/FormControl";
+import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
+import Select from "@material-ui/core/es/Select/Select";
+import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
+import CardActions from "@material-ui/core/es/CardActions/CardActions";
+import Button from "@material-ui/core/es/Button/Button";
+import {Link} from "react-router-dom";
+import CloseIcon from "@material-ui/icons/Close";
+import SaveIcon from "@material-ui/icons/Save";
+import AddIcon from "@material-ui/icons/Add";
+import CurrencyField from "../budgets/new/components/CurrencyField";
+import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
+import FormHelperText from "@material-ui/core/es/FormHelperText/FormHelperText";
+import ExpenseService from "../../services/ExpenseService";
+import AddCategory from "./AddCategory";
+import IconButton from "@material-ui/core/es/IconButton/IconButton";
+import AddCategoryType from "./AddCategoryType";
+
+const styles = theme => ({
+    root: {
+        maxWidth: '600px',
+        marginTop: 20,
+        marginRight: 'auto',
+        marginBottom: 20,
+        marginLeft: 'auto',
+    },
+    paper: {
+        padding: theme.spacing.unit * 2,
+    },
+    datePicker: {
+        margin: theme.spacing.unit,
+        width: '100%'
+    },
+    error: {
+        color: "#ff3d00"
+    },
+    formContainer: {
+        margin: '0 auto',
+        display: 'flex',
+        flexWrap: 'wrap'
+    },
+    formControl: {
+        margin: theme.spacing.unit,
+        flex: '1 auto'
+    },
+    saveButton: {
+        marginLeft: 'auto'
+    },
+    actions: {
+        display: 'flex'
+    },
+    iconButton: {
+        height: 48,
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    }
+});
+
+
+class AddExpense extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            categories: [],
+            types: [],
+            date: {
+                value: new Date().yyyymmdd(),
+                isInvalid: false,
+                defaultErrorMessage: 'Data wydatku jest wymagana',
+                errorMessage: ''
+            },
+            category: {
+                value: '',
+                isInvalid: true,
+                defaultErrorMessage: 'Nie wybrano kategorii wydatku',
+                errorMessage: 'Nie wybrano kategorii wydatku'
+            },
+            type: {
+                value: '',
+                isInvalid: true,
+                defaultErrorMessage: 'Nie wybrano typu kategorii',
+                errorMessage: 'Nie wybrano typu kategorii'
+            },
+            comment: {
+                value: ''
+            },
+            amount: {
+                value: 0.0,
+                isInvalid: true,
+                defaultErrorMessage: 'Kwota wydatku jest nieprawidłowa',
+                errorMessage: 'Kwota wydatku jest nieprawidłowa'
+            },
+            isFormInvalid: true,
+            addCategoryOpen: false,
+            addCategoryTypeOpen: false
+        };
+
+        this.expenseService = new ExpenseService();
+    }
+
+    componentDidMount() {
+        this.getData();
+    }
+
+    getData = () => {
+        return this.expenseService.getExpenseCategories().then(data => {
+            let state = this.state;
+            state.categories = data.data;
+            state.types = AddExpense.getTypes(this.state);
+
+            this.setState(state);
+        });
+    };
+
+    onCategoryChange = event => {
+        this.onValueChange('category', event.target.value);
+    };
+
+    onTypeChange = event => {
+        this.onValueChange('type', event.target.value);
+    };
+
+    onCommentChange = event => {
+        this.onValueChange('comment', event.target.value);
+    };
+
+    onDateChange = event => {
+        this.onValueChange('date', event.target.value);
+    };
+
+    onValueChange = (property, value) => {
+        let state = this.state;
+        state[property].value = value;
+        if (state[property].value) {
+            state[property].isInvalid = false;
+            state[property].errorMessage = '';
+        } else {
+            state[property].isInvalid = true;
+            state[property].errorMessage = state[property].defaultErrorMessage;
+        }
+
+        if (property === 'category') {
+            state['type'].value = '';
+            state.types = AddExpense.getTypes(state);
+        }
+
+        this.setState(state);
+        this.validateForm();
+    };
+
+    static getTypes(state) {
+        let types = [];
+        if (state.category.value) {
+            for (let k in state.categories) {
+                if (state.categories.hasOwnProperty(k)) {
+                    if (state.categories[k].name !== state.category.value) {
+                        continue;
+                    }
+
+                    if (state.categories[k].types && state.categories[k].types.length > 0) {
+                        types = state.categories[k].types.map(item => {
+                            return item.name;
+                        });
+                    }
+                }
+            }
+        }
+
+        return types;
+    }
+
+    onAmountChange = event => {
+        let state = this.state;
+
+        try {
+            state.amount.value = parseFloat(event.target.value);
+            if (state.amount.value > 0.0) {
+                state.amount.isInvalid = false;
+                state.amount.errorMessage = '';
+            } else {
+                state.amount.isInvalid = true;
+                state.amount.errorMessage = state.amount.defaultErrorMessage;
+            }
+        } catch {
+            state.amount.isInvalid = true;
+            state.amount.errorMessage = state.amount.defaultErrorMessage;
+        }
+
+        this.setState(state);
+        this.validateForm();
+    };
+
+    validateForm = () => {
+        let state = this.state;
+        state.isFormInvalid = state.date.isInvalid
+            || state.category.isInvalid
+            || state.type.isInvalid
+            || state.amount.isInvalid;
+
+        this.setState(state);
+    };
+
+    submit = () => {
+        let data = {
+            date: this.state.date.value,
+            category: this.state.category.value,
+            type: this.state.type.value,
+            comment: this.state.comment.value,
+            amount: this.state.amount.value
+        };
+
+        this.expenseService.addExpense(this.props.match.params.planId, data)
+            .then(() => {
+                this.props.history.push('/');
+            })
+            .catch(e => {
+                console.log(e);
+            })
+    };
+
+    handleOpenAddCategory = () => {
+        this.setState({
+            addCategoryOpen: true
+        })
+    };
+
+    handleOpenAddCategoryType = () => {
+        this.setState({
+            addCategoryTypeOpen: true
+        });
+    };
+
+    handleCloseAddCategory = category => {
+        this.setState({
+            addCategoryOpen: false
+        });
+
+        if (category && category !== '') {
+            this.expenseService.addExpenseCategory({
+                name: category
+            }).then(() => {
+                this.getData().then(()=>{
+                    this.onValueChange('category', category);
+                });
+            }).catch(e => {
+                console.log(e);
+            });
+        }
+    };
+
+    handleCloseAddCategoryType = (category, type) => {
+        this.setState({
+            addCategoryTypeOpen: false
+        });
+
+        if(category && type){
+            let categoryId = '';
+            for(let k in this.state.categories){
+                if(this.state.categories.hasOwnProperty(k)){
+                    if(this.state.categories[k].name === category){
+                        categoryId = this.state.categories[k].id;
+                        console.log('CATEGORY ID FOUND: '+categoryId);
+                        break;
+                    }
+                }
+            }
+
+            this.expenseService.addExpenseCategoryType(categoryId, {
+                name: type
+            }).then(() => {
+               this.getData().then(() => {
+                   this.onValueChange('type', type);
+               });
+            });
+        }
+    };
+
+    render() {
+        const {classes} = this.props;
+
+        return <div className={classes.root}>
+            <Card>
+                <CardHeader title="Dodaj wydatek"/>
+                <CardContent>
+                    <div className={classes.formContainer} align="center">
+                        <TextField
+                            label="Data wydatku"
+                            type='date'
+                            required
+                            error={this.state.date.isInvalid}
+                            helperText={this.state.date.errorMessage}
+                            value={this.state.date.value}
+                            onChange={this.onDateChange}
+                            className={classes.datePicker}
+                            InputLabelProps={{
+                                shrink: true
+                            }}/>
+                    </div>
+                    <div className={classes.formContainer} align="center">
+                        <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="expense-category">Kategoria</InputLabel>
+                            <Select value={this.state.category.value}
+                                    required
+                                    error={this.state.category.isInvalid}
+                                    onChange={this.onCategoryChange}
+                                    inputProps={{
+                                        name: 'expense-category',
+                                        id: 'expense-category'
+                                    }}>
+                                {this.state.categories.map((item, index) => {
+                                    return <MenuItem value={item.name} divider={true} key={"expense-category-" + index}
+                                                     id={"expense-category-" + index}>
+                                        {item.name}
+                                    </MenuItem>
+                                })}
+                            </Select>
+                            <FormHelperText className={classes.error}>
+                                {this.state.category.errorMessage}
+                            </FormHelperText>
+                        </FormControl>
+                        <IconButton color="primary" onClick={this.handleOpenAddCategory} className={classes.iconButton}>
+                            <AddIcon/>
+                        </IconButton>
+                    </div>
+                    <div className={classes.formContainer} align="center">
+                        <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="expense-type">Typ</InputLabel>
+                            <Select value={this.state.type.value}
+                                    required
+                                    error={this.state.type.isInvalid}
+                                    onChange={this.onTypeChange}
+                                    inputProps={{
+                                        name: 'expense-type',
+                                        id: 'expense-type'
+                                    }}>
+                                {this.state.types.map((item, index) => {
+                                    return <MenuItem value={item} key={"expense-type-" + index}>
+                                        {item}
+                                    </MenuItem>
+                                })}
+                            </Select>
+                            <FormHelperText className={classes.error}>{this.state.type.errorMessage}</FormHelperText>
+                        </FormControl>
+                        <IconButton color="primary" onClick={this.handleOpenAddCategoryType}
+                                    className={classes.iconButton}>
+                            <AddIcon/>
+                        </IconButton>
+                    </div>
+                    <div className={classes.formContainer} align="center">
+                        <FormControl className={classes.formControl}>
+                            <TextField value={this.state.amount.value}
+                                       required
+                                       error={this.state.amount.isInvalid}
+                                       helperText={this.state.amount.errorMessage}
+                                       onChange={this.onAmountChange}
+                                       label="Kwota" InputProps={{
+                                inputComponent: CurrencyField,
+                                endAdornment: <InputAdornment position="end">zł</InputAdornment>
+                            }}
+                            />
+                        </FormControl>
+                    </div>
+                    <div className={classes.formContainer} align="center">
+                        <FormControl className={classes.formControl}>
+                            <TextField value={this.state.comment.value}
+                                       onChange={this.onCommentChange}
+                                       label="Komentarz" rows={6} multiline/>
+                        </FormControl>
+                    </div>
+                </CardContent>
+                <CardActions className={classes.actions} disableActionSpacing>
+                    <Button variant="outlined" color="default" component={Link} to="/">
+                        <CloseIcon/>
+                        Anuluj
+                    </Button>
+                    <Button variant="outlined"
+                            color="primary"
+                            disabled={this.state.isFormInvalid}
+                            className={classes.saveButton}
+                            onClick={this.submit}>
+                        <SaveIcon/>
+                        Zapisz
+                    </Button>
+                </CardActions>
+            </Card>
+            {this.state.addCategoryOpen ?
+                <AddCategory onClose={this.handleCloseAddCategory} open={this.state.addCategoryOpen}/> : undefined}
+            {this.state.addCategoryTypeOpen ?
+                <AddCategoryType onClose={this.handleCloseAddCategoryType}
+                                 open={this.state.addCategoryTypeOpen}
+                                 category={this.state.category.value}
+                                 categories={this.state.categories}/> : undefined}
+        </div>
+    }
+}
+
+export default withStyles(styles)(AddExpense);

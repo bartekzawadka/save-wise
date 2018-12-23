@@ -60,11 +60,7 @@ class PlanPeriod extends Component {
     };
 
     isPeriodValid() {
-        if (this.state.from && this.state.to && this.state.to > this.state.from) {
-            return true;
-        } else {
-            return false;
-        }
+        return !!(this.state.from && this.state.to && this.state.to > this.state.from);
     }
 
     getError() {
