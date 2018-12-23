@@ -77,11 +77,16 @@ class PlanSummary extends Component {
                                 Bieżąca realizacja budżetu
                                 ({moment(this.props.plan.startDate).format('L') + " - " + moment(this.props.plan.endDate).format('L')})
                             </Typography>
+                            <Button color="primary"
+                                    variant="contained"
+                                    component={Link}
+                                    to={"/plan/incomes/"+this.props.plan.id}>
+                                Przychody
+                            </Button>
                             <Button color="secondary"
                                     variant="contained"
                                     component={Link}
                                     to={"/expense/add/"+this.props.plan.id}>
-                                <AddIcon />
                                 Dodaj wydatek
                             </Button>
                         </Toolbar>

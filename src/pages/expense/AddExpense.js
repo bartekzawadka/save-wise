@@ -12,10 +12,14 @@ import Button from "@material-ui/core/es/Button/Button";
 import {Link} from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
 import SaveIcon from "@material-ui/icons/Save";
+import AddIcon from "@material-ui/icons/Add";
 import CurrencyField from "../budgets/new/components/CurrencyField";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 import FormHelperText from "@material-ui/core/es/FormHelperText/FormHelperText";
 import ExpenseService from "../../services/ExpenseService";
+import AddCategory from "./AddCategory";
+import IconButton from "@material-ui/core/es/IconButton/IconButton";
+import AddCategoryType from "./AddCategoryType";
 
 const styles = theme => ({
     root: {
@@ -36,11 +40,13 @@ const styles = theme => ({
         color: "#ff3d00"
     },
     formContainer: {
-        margin: '0 auto'
+        margin: '0 auto',
+        display: 'flex',
+        flexWrap: 'wrap'
     },
     formControl: {
         margin: theme.spacing.unit,
-        width: '100%',
+        flex: '1 auto'
     },
     saveButton: {
         marginLeft: 'auto'
@@ -48,6 +54,11 @@ const styles = theme => ({
     actions: {
         display: 'flex'
     },
+    iconButton: {
+        height: 48,
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    }
 });
 
 
@@ -85,25 +96,47 @@ class AddExpense extends Component {
                 defaultErrorMessage: 'Kwota wydatku jest nieprawidłowa',
                 errorMessage: 'Kwota wydatku jest nieprawidłowa'
             },
-            isFormInvalid: true
+            isFormInvalid: true,
+            addCategoryOpen: false,
+            addCategoryTypeOpen: false
         };
 
         this.expenseService = new ExpenseService();
     }
 
     componentDidMount() {
-        this.expenseService.getExpenseCategories().then(data => {
+        this.getData();
+    }
+
+    getData = () => {
+        return this.expenseService.getExpenseCategories().then(data => {
             let state = this.state;
             state.categories = data.data;
             state.types = AddExpense.getTypes(this.state);
 
             this.setState(state);
         });
-    }
+    };
 
-    onValueChange = (property) => event => {
+    onCategoryChange = event => {
+        this.onValueChange('category', event.target.value);
+    };
+
+    onTypeChange = event => {
+        this.onValueChange('type', event.target.value);
+    };
+
+    onCommentChange = event => {
+        this.onValueChange('comment', event.target.value);
+    };
+
+    onDateChange = event => {
+        this.onValueChange('date', event.target.value);
+    };
+
+    onValueChange = (property, value) => {
         let state = this.state;
-        state[property].value = event.target.value;
+        state[property].value = value;
         if (state[property].value) {
             state[property].isInvalid = false;
             state[property].errorMessage = '';
@@ -130,9 +163,11 @@ class AddExpense extends Component {
                         continue;
                     }
 
-                    types = state.categories[k].types.map(item => {
-                        return item.name;
-                    });
+                    if (state.categories[k].types && state.categories[k].types.length > 0) {
+                        types = state.categories[k].types.map(item => {
+                            return item.name;
+                        });
+                    }
                 }
             }
         }
@@ -140,7 +175,7 @@ class AddExpense extends Component {
         return types;
     }
 
-    onAmountChange = () => event => {
+    onAmountChange = event => {
         let state = this.state;
 
         try {
@@ -181,12 +216,69 @@ class AddExpense extends Component {
         };
 
         this.expenseService.addExpense(this.props.match.params.planId, data)
-            .then(()=>{
+            .then(() => {
                 this.props.history.push('/');
             })
-            .catch(e=>{
+            .catch(e => {
                 console.log(e);
             })
+    };
+
+    handleOpenAddCategory = () => {
+        this.setState({
+            addCategoryOpen: true
+        })
+    };
+
+    handleOpenAddCategoryType = () => {
+        this.setState({
+            addCategoryTypeOpen: true
+        });
+    };
+
+    handleCloseAddCategory = category => {
+        this.setState({
+            addCategoryOpen: false
+        });
+
+        if (category && category !== '') {
+            this.expenseService.addExpenseCategory({
+                name: category
+            }).then(() => {
+                this.getData().then(()=>{
+                    this.onValueChange('category', category);
+                });
+            }).catch(e => {
+                console.log(e);
+            });
+        }
+    };
+
+    handleCloseAddCategoryType = (category, type) => {
+        this.setState({
+            addCategoryTypeOpen: false
+        });
+
+        if(category && type){
+            let categoryId = '';
+            for(let k in this.state.categories){
+                if(this.state.categories.hasOwnProperty(k)){
+                    if(this.state.categories[k].name === category){
+                        categoryId = this.state.categories[k].id;
+                        console.log('CATEGORY ID FOUND: '+categoryId);
+                        break;
+                    }
+                }
+            }
+
+            this.expenseService.addExpenseCategoryType(categoryId, {
+                name: type
+            }).then(() => {
+               this.getData().then(() => {
+                   this.onValueChange('type', type);
+               });
+            });
+        }
     };
 
     render() {
@@ -204,7 +296,7 @@ class AddExpense extends Component {
                             error={this.state.date.isInvalid}
                             helperText={this.state.date.errorMessage}
                             value={this.state.date.value}
-                            onChange={this.onValueChange('date')}
+                            onChange={this.onDateChange}
                             className={classes.datePicker}
                             InputLabelProps={{
                                 shrink: true
@@ -216,20 +308,25 @@ class AddExpense extends Component {
                             <Select value={this.state.category.value}
                                     required
                                     error={this.state.category.isInvalid}
-                                    onChange={this.onValueChange('category')}
+                                    onChange={this.onCategoryChange}
                                     inputProps={{
                                         name: 'expense-category',
                                         id: 'expense-category'
                                     }}>
-                                {this.state.categories.map((item) => {
-                                    return <MenuItem value={item.name}>
+                                {this.state.categories.map((item, index) => {
+                                    return <MenuItem value={item.name} divider={true} key={"expense-category-" + index}
+                                                     id={"expense-category-" + index}>
                                         {item.name}
                                     </MenuItem>
                                 })}
                             </Select>
-                            <FormHelperText
-                                className={classes.error}>{this.state.category.errorMessage}</FormHelperText>
+                            <FormHelperText className={classes.error}>
+                                {this.state.category.errorMessage}
+                            </FormHelperText>
                         </FormControl>
+                        <IconButton color="primary" onClick={this.handleOpenAddCategory} className={classes.iconButton}>
+                            <AddIcon/>
+                        </IconButton>
                     </div>
                     <div className={classes.formContainer} align="center">
                         <FormControl className={classes.formControl}>
@@ -237,19 +334,23 @@ class AddExpense extends Component {
                             <Select value={this.state.type.value}
                                     required
                                     error={this.state.type.isInvalid}
-                                    onChange={this.onValueChange('type')}
+                                    onChange={this.onTypeChange}
                                     inputProps={{
                                         name: 'expense-type',
                                         id: 'expense-type'
                                     }}>
-                                {this.state.types.map((item) => {
-                                    return <MenuItem value={item}>
-                                            {item}
+                                {this.state.types.map((item, index) => {
+                                    return <MenuItem value={item} key={"expense-type-" + index}>
+                                        {item}
                                     </MenuItem>
                                 })}
                             </Select>
                             <FormHelperText className={classes.error}>{this.state.type.errorMessage}</FormHelperText>
                         </FormControl>
+                        <IconButton color="primary" onClick={this.handleOpenAddCategoryType}
+                                    className={classes.iconButton}>
+                            <AddIcon/>
+                        </IconButton>
                     </div>
                     <div className={classes.formContainer} align="center">
                         <FormControl className={classes.formControl}>
@@ -257,7 +358,7 @@ class AddExpense extends Component {
                                        required
                                        error={this.state.amount.isInvalid}
                                        helperText={this.state.amount.errorMessage}
-                                       onChange={this.onAmountChange()}
+                                       onChange={this.onAmountChange}
                                        label="Kwota" InputProps={{
                                 inputComponent: CurrencyField,
                                 endAdornment: <InputAdornment position="end">zł</InputAdornment>
@@ -268,7 +369,7 @@ class AddExpense extends Component {
                     <div className={classes.formContainer} align="center">
                         <FormControl className={classes.formControl}>
                             <TextField value={this.state.comment.value}
-                                       onChange={this.onValueChange('comment')}
+                                       onChange={this.onCommentChange}
                                        label="Komentarz" rows={6} multiline/>
                         </FormControl>
                     </div>
@@ -288,6 +389,13 @@ class AddExpense extends Component {
                     </Button>
                 </CardActions>
             </Card>
+            {this.state.addCategoryOpen ?
+                <AddCategory onClose={this.handleCloseAddCategory} open={this.state.addCategoryOpen}/> : undefined}
+            {this.state.addCategoryTypeOpen ?
+                <AddCategoryType onClose={this.handleCloseAddCategoryType}
+                                 open={this.state.addCategoryTypeOpen}
+                                 category={this.state.category.value}
+                                 categories={this.state.categories}/> : undefined}
         </div>
     }
 }
