@@ -33,6 +33,7 @@ import UserMenu from "./UserMenu";
 import ChangePassword from "./pages/user/ChangePassword";
 import Register from "./pages/user/Register";
 import AddExpense from "./pages/expense/AddExpense";
+import EditIncomes from "./pages/budgets/EditIncomes";
 
 // import PrivateRoute from "./common/PrivateRoute";
 
@@ -174,6 +175,7 @@ class App extends Component {
                     <PrivateRoute exact path="/budgets/list" component={BudgetsList}/>
                     <PrivateRoute exact path='/budgets/new' component={NewBudgetPlan}/>
                     <PrivateRoute exact path='/expense/add/:planId' component={AddExpense}/>
+                    <PrivateRoute exact path='/plan/incomes/:planId' component={EditIncomes}/>
                 </MuiThemeProvider>
             </Router>
         );
