@@ -11,8 +11,6 @@ import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import CheckIcon from '@material-ui/icons/Check';
 import '../../../helpers/date';
-import axios from 'axios';
-import ApiCalls from '../../../ApiCalls';
 import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
 import PlanPeriod from "./components/PlanPeriod";
 import AmountsList from "./components/AmountsList";

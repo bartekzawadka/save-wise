@@ -1,24 +1,17 @@
 import React, {Component} from 'react';
-import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
-import TimelineIcon from '@material-ui/icons/Timeline';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import './App.css';
 import {createMuiTheme, withStyles} from '@material-ui/core/styles';
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import {fade} from '@material-ui/core/styles/colorManipulator';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
 import {CssBaseline} from '@material-ui/core';
 import {
     BrowserRouter as Router,
     Route,
-    Link, withRouter, Redirect
+    Link, Redirect
 } from 'react-router-dom';
 import Home from './pages/home/Home';
 import BudgetsList from './pages/budgets/BudgetsList';
@@ -74,7 +67,8 @@ const styles = theme => ({
             display: 'block',
         },
         fontFamily: 'Kabel Bk BT',
-        fontSize: 35
+        fontSize: 35,
+        textDecoration: 'none'
     },
     search: {
         position: 'relative',
@@ -147,21 +141,8 @@ class App extends Component {
                                 <CreditCardIcon className={classes.menuButtonIcon}/>
                                 <Typography className={classes.title} color="inherit" variant="h6" noWrap
                                             component={Link} to="/">
-                                    savesmart
+                                    savewise
                                 </Typography>
-                                <div className={classes.grow}/>
-                                <Button className={this.props.classes.menuButton} color="inherit" component={Link} to="/budgets">
-                                    <TimelineIcon/>
-                                    <Typography color="inherit">
-                                        Budżety
-                                    </Typography>
-                                </Button>
-                                <Button className={this.props.classes.menuButton} color="inherit">
-                                    <AttachMoneyIcon/>
-                                    <Typography color="inherit">
-                                        Wydatki
-                                    </Typography>
-                                </Button>
                                 <div className={this.props.classes.grow}/>
                                 <UserMenu />
                             </Toolbar>
