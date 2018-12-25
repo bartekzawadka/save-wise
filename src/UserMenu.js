@@ -8,6 +8,9 @@ import Divider from "@material-ui/core/es/Divider/Divider";
 import {userService} from "./services/UserService";
 import {withStyles} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import HistoryIcon from"@material-ui/icons/History";
+import VpnKeyIcon from"@material-ui/icons/VpnKey";
+import ExitToAppIcon from"@material-ui/icons/ExitToApp";
 
 const ITEM_HEIGHT = 48;
 
@@ -17,6 +20,9 @@ const styles = theme => ({
     },
     icon: {
         color: theme.palette.common.white
+    },
+    menuIcon: {
+        marginRight: theme.spacing.unit
     }
 });
 
@@ -81,11 +87,18 @@ class UserMenu extends React.Component {
                     },
                 }}
             >
+                <MenuItem>
+                    <HistoryIcon className={this.props.classes.menuIcon}/>
+                    Historia budżetów
+                </MenuItem>
+                <Divider/>
                 <MenuItem component={Link} to="/changePassword">
+                    <VpnKeyIcon className={this.props.classes.menuIcon}/>
                     Zmiana hasła
                 </MenuItem>
                 <Divider/>
                 <MenuItem onClick={this.logout}>
+                    <ExitToAppIcon className={this.props.classes.menuIcon}/>
                     Wyloguj
                 </MenuItem>
             </Menu>

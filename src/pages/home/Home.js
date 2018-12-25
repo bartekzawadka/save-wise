@@ -36,7 +36,7 @@ class Home extends Component {
         super(props);
 
         this.state = {
-            budgetPlans: []
+            budget: {}
         };
 
         this.planService = new PlanService();
@@ -44,12 +44,12 @@ class Home extends Component {
 
     componentDidMount() {
         this.planService.getCurrentPlan().then(data=>{
-            let plans = [];
+            let plans = {};
             if(data && data.data){
-                plans = [data.data];
+                plans = data.data;
             }
             this.setState({
-                budgetPlans: plans
+                budget: plans
             });
         }).catch(e=>{
             //todo: handle error
@@ -62,7 +62,7 @@ class Home extends Component {
 
         let content;
 
-        if (!this.state.budgetPlans || this.state.budgetPlans.length === 0) {
+        if (!this.state.budget || !this.state.budget.id) {
             content =
                 <div>
                     <Grid container direction="column" alignItems="center" justify="center" className="landing-pane">
@@ -81,12 +81,9 @@ class Home extends Component {
                     </Grid>
                 </div>;
         } else {
-            content =
-                this.state.budgetPlans.map(item => {
-                    return <div>
-                        <PlanSummary plan={item} />
-                    </div>
-                });
+            content = <div>
+                <PlanSummary plan={this.state.budget} />
+            </div>
         }
 
         return (

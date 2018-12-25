@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Typography from "@material-ui/core/es/Typography/Typography";
+import PropTypes from 'prop-types';
 import CurrencyText from "../../../../common/CurrencyText";
 import Table from "@material-ui/core/es/Table/Table";
 import TableHead from "@material-ui/core/es/TableHead/TableHead";
@@ -7,15 +7,58 @@ import TableCell from "@material-ui/core/es/TableCell/TableCell";
 import TableBody from "@material-ui/core/es/TableBody/TableBody";
 import TableRow from "@material-ui/core/TableRow/TableRow";
 import Widget from "./Widget";
+import PercentageText from "../../../../common/PercentageText";
+import {withStyles} from "@material-ui/core";
+
+const styles = () => ({
+    percentageOk: {
+        color: "#357a38",
+    },
+    percentageWrong: {
+        color: "#ff3d00",
+    },
+});
 
 class ExpensesPerCategoryWidget extends Component {
+    getPercentage = (sum, plannedSum) => {
+        try {
+            let plannedSumFloat = parseFloat(plannedSum);
+            if (plannedSumFloat > 0.0) {
+                return parseFloat(sum / plannedSum * 100.0);
+            }
+            return 0.0;
+        } catch {
+            return '-';
+        }
+    };
+
+    getData = () => {
+        let data = [];
+        if (!this.props.plan.expensesPerCategory || this.props.plan.expensesPerCategory.length === 0) {
+            return data;
+        }
+
+        return this.props.plan.expensesPerCategory.map(item => {
+            return {
+                name: item.category,
+                plannedValue: parseFloat(item.plannedSum),
+                realValue: parseFloat(item.sum),
+                percentage: this.getPercentage(item.sum, item.plannedSum)
+            }
+        });
+    };
+
+    getColor = (item) => {
+        if (item.percentage > 100.0) {
+            return this.props.classes.percentageWrong;
+        }
+        if (item.percentage > 0.0) {
+            return this.props.classes.percentageOk;
+        }
+    };
+
     render() {
-        const data = [{name: "Test 1", plannedValue: 100.0, realValue: 75.0, percentage: 75},
-            {name: "Test 2", plannedValue: 100.0, realValue: 75.0, percentage: 75},
-            {name: "Test 3", plannedValue: 100.0, realValue: 75.0, percentage: 75},
-            {name: "Test 4", plannedValue: 100.0, realValue: 75.0, percentage: 75},
-            {name: "Test 5", plannedValue: 100.0, realValue: 75.0, percentage: 75},
-            {name: "Test 6", plannedValue: 100.0, realValue: 75.0, percentage: 75}];
+        let data = this.getData();
 
         return <Widget
             gridSizeXl={12}
@@ -47,9 +90,7 @@ class ExpensesPerCategoryWidget extends Component {
                                     <CurrencyText value={item.realValue}/>
                                 </TableCell>
                                 <TableCell>
-                                    <Typography>
-                                        {item.percentage}%
-                                    </Typography>
+                                    <PercentageText value={item.percentage} className={this.getColor(item)}/>
                                 </TableCell>
                             </TableRow>
                         )
@@ -60,4 +101,8 @@ class ExpensesPerCategoryWidget extends Component {
     }
 }
 
-export default ExpensesPerCategoryWidget;
+ExpensesPerCategoryWidget.propTypes = {
+    plan: PropTypes.object.required
+};
+
+export default withStyles(styles)(ExpensesPerCategoryWidget);

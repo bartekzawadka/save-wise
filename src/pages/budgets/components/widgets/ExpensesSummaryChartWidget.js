@@ -1,21 +1,32 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Bar} from "react-chartjs-2";
 import Widget from "./Widget";
 
 class ExpensesSummaryChartWidget extends Component {
-    getData() {
+    getValue = (property) => {
+        try {
+            return parseFloat(this.props.plan[property] ? this.props.plan[property] : 0.0);
+        } catch {
+            return 0.0;
+        }
+    };
+
+    getData = () => {
+        return [
+            this.getValue('incomesSum'),
+            this.getValue('expensesSum')
+        ]
+    };
+
+    getChartParams() {
         return {
             labels: ["Przychody", "Wydatki"],
             datasets: [{
-                data: [7724.48, 2255.11],
+                data: this.getData(),
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ]
+                    '#77a258', '#d84315'
+                ],
             }]
         }
     }
@@ -28,11 +39,15 @@ class ExpensesSummaryChartWidget extends Component {
             gridSizeMd={6}
             gridSizeXl={6}
             title="Zestawienie wydatków">
-            <Bar data={this.getData()} legend={{
+            <Bar data={this.getChartParams()} legend={{
                 display: false
             }}/>
         </Widget>
     }
 }
+
+ExpensesSummaryChartWidget.propTypes = {
+    plan: PropTypes.object.required
+};
 
 export default ExpensesSummaryChartWidget;
