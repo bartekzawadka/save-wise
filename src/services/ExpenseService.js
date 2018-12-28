@@ -11,13 +11,26 @@ class ExpenseService extends Service {
         return axios.post(ApiCalls.getExpenseUrl() + '/categories/add', category, super.getRequestConfig());
     };
 
-    addExpense = (planId, expense) => {
+    getExpense = (planId, expenseId) => {
+        return axios.get(ApiCalls.getExpenseUrl() + "/" + planId + "/" + expenseId, super.getRequestConfig());
+    };
+
+    upsertExpense = (planId, expense, expenseId) => {
+        if (planId && expenseId) {
+            return axios.put(ApiCalls.getExpenseUrl() + "/" + planId + "/" + expenseId,
+                expense,
+                super.getRequestConfig());
+        }
         return axios.post(ApiCalls.getExpenseUrl() + "/" + planId, expense, super.getRequestConfig());
     };
 
     addExpenseCategoryType = (categoryId, type) => {
-        return axios.post(ApiCalls.getExpenseUrl() + "/categories/"+categoryId+"/type", type, super.getRequestConfig());
-    }
+        return axios.post(ApiCalls.getExpenseUrl() + "/categories/" + categoryId + "/type", type, super.getRequestConfig());
+    };
+
+    getExpenses = (planId, searchData) => {
+        return axios.post(ApiCalls.getExpenseUrl() + "/list/" + planId, searchData, super.getRequestConfig());
+    };
 }
 
 export default ExpenseService;

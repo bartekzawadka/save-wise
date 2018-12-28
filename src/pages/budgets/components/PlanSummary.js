@@ -156,17 +156,10 @@ class PlanSummary extends Component {
                             </Button>
                             <Button color="primary"
                                     variant="flat"
-                                    disabled
-                                    className={classes.buttonBarButton}>
-                                <DateRangeIcon/>
-                                Wydatki z dnia
-                            </Button>
-                            <Button color="primary"
-                                    variant="flat"
-                                    disabled
-                                    className={classes.buttonBarButton}>
+                                    className={classes.buttonBarButton}
+                                    component={Link} to={"/expenses/" + this.props.plan.id}>
                                 <ListIcon/>
-                                Wydatki dla kategorii
+                                Wydatki
                             </Button>
                             <Button color="secondary"
                                     variant="contained"

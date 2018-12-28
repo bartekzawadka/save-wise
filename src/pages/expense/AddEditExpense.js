@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {TextField, withStyles} from "@material-ui/core";
+import PropTypes from 'prop-types';
 import Card from "@material-ui/core/es/Card/Card";
 import CardHeader from "@material-ui/core/es/CardHeader/CardHeader";
 import CardContent from "@material-ui/core/es/CardContent/CardContent";
@@ -62,7 +63,7 @@ const styles = theme => ({
 });
 
 
-class AddExpense extends Component {
+class AddEditExpense extends Component {
     constructor(props) {
         super(props);
 
@@ -96,7 +97,10 @@ class AddExpense extends Component {
                 defaultErrorMessage: 'Kwota wydatku jest nieprawidłowa',
                 errorMessage: 'Kwota wydatku jest nieprawidłowa'
             },
-            isFormInvalid: true,
+            isFormInvalid: false,
+            expenseId: (this.props.match.params && this.props.match.params.expenseId)
+                ? this.props.match.params.expenseId
+                : '',
             addCategoryOpen: false,
             addCategoryTypeOpen: false
         };
@@ -108,13 +112,85 @@ class AddExpense extends Component {
         this.getData();
     }
 
+    getExpenseObjectState = (defaultValue, defaultErrorMessage, isValidFunction, getValueFunction) => {
+        return {
+            value: isValidFunction() ? getValueFunction() : defaultValue,
+            isInvalid: !isValidFunction(),
+            defaultErrorMessage: defaultErrorMessage,
+            errorMessage: isValidFunction() ? '' : defaultErrorMessage
+        };
+    };
+
+    getFormInvalid = (values) => {
+        let result = true;
+        for (let k in values) {
+            if (values.hasOwnProperty(k) && values[k].isInvalid === true) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    };
+
     getData = () => {
         return this.expenseService.getExpenseCategories().then(data => {
             let state = this.state;
             state.categories = data.data;
-            state.types = AddExpense.getTypes(this.state);
+            state.types = AddEditExpense.getTypes(this.state);
 
             this.setState(state);
+
+
+            if (this.props.match.params.planId && this.props.match.params.expenseId) {
+                this.expenseService.getExpense(this.props.match.params.planId, this.props.match.params.expenseId)
+                    .then(data => {
+                        if (data && data.data) {
+                            this.setExpense(data.data);
+                            this.setState({
+                                types: AddEditExpense.getTypes(this.state)
+                            });
+                        }
+                    });
+            }
+        });
+    };
+
+    setExpense = (data) => {
+
+        let date = this.getExpenseObjectState(new Date().yyyymmdd(),
+            'Data wydatku jest wymagana',
+            () => {
+                return true;
+            },
+            () => new Date(data.date).yyyymmdd());
+        let category = this.getExpenseObjectState('',
+            'Nie wybrano kategorii wydatku',
+            () => {
+                return !!(data.category);
+            },
+            () => data.category);
+        let type = this.getExpenseObjectState('',
+            'Nie wybrano typu kategorii',
+            () => {
+                return !!(data.type)
+            },
+            () => data.type);
+        let amount = this.getExpenseObjectState(0.0,
+            'Kwota wydatku jest nieprawidłowa',
+            () => {
+                return !!(data.amount && data.amount > 0.0);
+            },
+            () => data.amount);
+
+        this.setState({
+            date: date,
+            category: category,
+            type: type,
+            amount: amount,
+            isFormInvalid: this.getFormInvalid([category.value, type.value, amount.value]),
+            comment: {
+                value: (data.comment) ? data.comment : ''
+            }
         });
     };
 
@@ -147,11 +223,18 @@ class AddExpense extends Component {
 
         if (property === 'category') {
             state['type'].value = '';
-            state.types = AddExpense.getTypes(state);
+            state.types = AddEditExpense.getTypes(state);
         }
 
         this.setState(state);
         this.validateForm();
+    };
+
+    getTitle = () => {
+        if (this.state.expenseId) {
+            return "Edycja wydatku";
+        }
+        return "Dodaj wydatek";
     };
 
     static getTypes(state) {
@@ -212,16 +295,25 @@ class AddExpense extends Component {
             category: this.state.category.value,
             type: this.state.type.value,
             comment: this.state.comment.value,
-            amount: this.state.amount.value
+            amount: this.state.amount.value,
+            id: this.state.expenseId
         };
 
-        this.expenseService.addExpense(this.props.match.params.planId, data)
+        this.expenseService.upsertExpense(this.props.match.params.planId, data, this.state.expenseId)
             .then(() => {
-                this.props.history.push('/');
+                if(this.props.match.params.planId, data, this.state.expenseId){
+                    this.props.history.goBack();
+                }else {
+                    this.props.history.push('/');
+                }
             })
             .catch(e => {
                 console.log(e);
             })
+    };
+
+    onCancel = () => {
+        this.props.history.goBack();
     };
 
     handleOpenAddCategory = () => {
@@ -245,7 +337,7 @@ class AddExpense extends Component {
             this.expenseService.addExpenseCategory({
                 name: category
             }).then(() => {
-                this.getData().then(()=>{
+                this.getData().then(() => {
                     this.onValueChange('category', category);
                 });
             }).catch(e => {
@@ -259,13 +351,12 @@ class AddExpense extends Component {
             addCategoryTypeOpen: false
         });
 
-        if(category && type){
+        if (category && type) {
             let categoryId = '';
-            for(let k in this.state.categories){
-                if(this.state.categories.hasOwnProperty(k)){
-                    if(this.state.categories[k].name === category){
+            for (let k in this.state.categories) {
+                if (this.state.categories.hasOwnProperty(k)) {
+                    if (this.state.categories[k].name === category) {
                         categoryId = this.state.categories[k].id;
-                        console.log('CATEGORY ID FOUND: '+categoryId);
                         break;
                     }
                 }
@@ -274,9 +365,9 @@ class AddExpense extends Component {
             this.expenseService.addExpenseCategoryType(categoryId, {
                 name: type
             }).then(() => {
-               this.getData().then(() => {
-                   this.onValueChange('type', type);
-               });
+                this.getData().then(() => {
+                    this.onValueChange('type', type);
+                });
             });
         }
     };
@@ -286,7 +377,7 @@ class AddExpense extends Component {
 
         return <div className={classes.root}>
             <Card>
-                <CardHeader title="Dodaj wydatek"/>
+                <CardHeader title={this.getTitle()}/>
                 <CardContent>
                     <div className={classes.formContainer} align="center">
                         <TextField
@@ -375,7 +466,7 @@ class AddExpense extends Component {
                     </div>
                 </CardContent>
                 <CardActions className={classes.actions} disableActionSpacing>
-                    <Button variant="outlined" color="default" component={Link} to="/">
+                    <Button variant="outlined" color="default" onClick={this.onCancel}>
                         <CloseIcon/>
                         Anuluj
                     </Button>
@@ -400,4 +491,9 @@ class AddExpense extends Component {
     }
 }
 
-export default withStyles(styles)(AddExpense);
+AddEditExpense.propTypes = {
+    expense: PropTypes.object,
+    planId: PropTypes.string
+};
+
+export default withStyles(styles)(AddEditExpense);

@@ -41,6 +41,15 @@ class ExpensesSummaryChartWidget extends Component {
             title="Zestawienie wydatków">
             <Bar data={this.getChartParams()} legend={{
                 display: false
+            }} options={{
+                scales: {
+                    yAxes: [{
+                        display: true,
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
             }}/>
         </Widget>
     }
