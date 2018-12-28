@@ -42,11 +42,18 @@ function login(username, password) {
 }
 
 function register(user) {
-    return axios.post(ApiCalls.getUserUrl() + '/register', user, {
-        headers: {'Content-Type': 'application/json'}
-    }).catch(response => {
-        return Promise.reject(response.response);
-    })
+    return axios.post(ApiCalls.getUserUrl() + '/register', user)
+        .catch(response => {
+            return Promise.reject(response.response);
+        }).then(user => {
+            console.log(user);
+
+            if (user && user.data && user.data.token) {
+                localStorage.setItem('user', JSON.stringify(user.data));
+            }
+
+            return user;
+        });
 }
 
 function changePassword(user) {

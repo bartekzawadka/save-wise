@@ -102,7 +102,7 @@ class Login extends Component {
         return (
             <div className={classes.root}>
                 <Paper elevation={1} className={classes.paper}>
-                    <Typography variant='h6'>
+                    <Typography variant='h5'>
                         Logowanie
                     </Typography>
 

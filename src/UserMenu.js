@@ -87,7 +87,7 @@ class UserMenu extends React.Component {
                     },
                 }}
             >
-                <MenuItem>
+                <MenuItem disabled>
                     <HistoryIcon className={this.props.classes.menuIcon}/>
                     Historia budżetów
                 </MenuItem>
@@ -116,8 +116,8 @@ class UserMenu extends React.Component {
                     },
                 }}
             >
-                <MenuItem component={Link} to="/register">
-                    Rejestracja
+                <MenuItem component={Link} to="/main">
+                    Logowanie
                 </MenuItem>
             </Menu>
         }

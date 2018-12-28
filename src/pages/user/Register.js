@@ -24,6 +24,9 @@ const styles = theme => ({
     formContainer: {
         margin: '0 auto'
     },
+    field: {
+        minWidth: 400
+    },
     chipError: {
         color: "#ff3d00",
         borderColor: "#ff3d00"

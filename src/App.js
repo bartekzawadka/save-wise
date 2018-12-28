@@ -25,10 +25,11 @@ import {userService} from "./services/UserService";
 import UserMenu from "./UserMenu";
 import ChangePassword from "./pages/user/ChangePassword";
 import Register from "./pages/user/Register";
-import AddExpense from "./pages/expense/AddExpense";
 import EditIncomes from "./pages/budgets/EditIncomes";
-
-// import PrivateRoute from "./common/PrivateRoute";
+import ExpenseList from "./pages/expense/ExpenseList";
+import AddEditExpense from "./pages/expense/AddEditExpense";
+import logo from "./logo.png";
+import Main from "./pages/user/Main";
 
 function getTheme(type) {
     return createMuiTheme({
@@ -111,20 +112,25 @@ const styles = theme => ({
             },
         },
     },
+    logo: {
+        marginRight: 5
+    }
 });
 
 const PrivateRoute = ({component: Component, ...rest}) => (
     <Route {...rest} render={(props) => (
         userService.isAuthenticated() === true
             ? <Component {...props} />
-            : <Redirect to='/login' />
+            : <Redirect to='/main' />
     )}/>
 );
 
 class App extends Component {
     constructor(props) {
         super(props);
-        loadProgressBar();
+        loadProgressBar({
+            showSpinner: false
+        });
     }
 
     render() {
@@ -138,7 +144,7 @@ class App extends Component {
                     <div className={classes.root}>
                         <AppBar position="static">
                             <Toolbar>
-                                <CreditCardIcon className={classes.menuButtonIcon}/>
+                                <img src={logo} width={48} height={48} className={classes.logo}/>
                                 <Typography className={classes.title} color="inherit" variant="h6" noWrap
                                             component={Link} to="/">
                                     savewise
@@ -150,13 +156,15 @@ class App extends Component {
                     </div>
 
                     <PrivateRoute exact path="/" component={Home}/>
-                    <Route exact path="/login" component={Login}/>
+                    <Route exact path="/main" component={Main}/>
                     <Route exact path="/register" component={Register}/>
                     <PrivateRoute exact path="/changePassword" component={ChangePassword}/>
                     <PrivateRoute exact path="/budgets/list" component={BudgetsList}/>
                     <PrivateRoute exact path='/budgets/new' component={NewBudgetPlan}/>
-                    <PrivateRoute exact path='/expense/add/:planId' component={AddExpense}/>
+                    <PrivateRoute exact path='/expense/add/:planId' component={AddEditExpense}/>
                     <PrivateRoute exact path='/plan/incomes/:planId' component={EditIncomes}/>
+                    <PrivateRoute exact path='/expenses/:planId' component={ExpenseList}/>
+                    <PrivateRoute exact path='/expense/edit/:planId/:expenseId' component={AddEditExpense}/>
                 </MuiThemeProvider>
             </Router>
         );

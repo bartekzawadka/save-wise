@@ -36,24 +36,28 @@ class Home extends Component {
         super(props);
 
         this.state = {
-            budget: {}
+            budget: undefined
         };
 
         this.planService = new PlanService();
     }
 
     componentDidMount() {
-        this.planService.getCurrentPlan().then(data=>{
+        this.planService.getCurrentPlan().then(data => {
             let plans = {};
-            if(data && data.data){
+            if (data && data.data) {
                 plans = data.data;
             }
             this.setState({
                 budget: plans
             });
-        }).catch(e=>{
+        }).catch(e => {
             //todo: handle error
             console.log(e);
+
+            this.setState({
+                budget: {}
+            });
         })
     }
 
@@ -62,13 +66,21 @@ class Home extends Component {
 
         let content;
 
-        if (!this.state.budget || !this.state.budget.id) {
+        if (!this.state.budget) {
+            return <Grid container direction="column" alignItems="center" justify="center" className="landing-pane">
+                <Grid item>
+                    <Typography variant="h3" className={classes.landingPageTitle}>
+                        Ładowanie...
+                    </Typography>
+                </Grid>
+            </Grid>;
+        } else if (this.state.budget && !this.state.budget.id) {
             content =
                 <div>
                     <Grid container direction="column" alignItems="center" justify="center" className="landing-pane">
                         <Grid item>
                             <Typography variant="h3" className={classes.landingPageTitle}>
-                                Nie masz jeszcze żadnego planu budżetowego!
+                                Nie masz jeszcze budżetu wliczającego dzisiejszy dzień!
                             </Typography>
                         </Grid>
                         <Grid item>
@@ -82,7 +94,7 @@ class Home extends Component {
                 </div>;
         } else {
             content = <div>
-                <PlanSummary plan={this.state.budget} />
+                <PlanSummary plan={this.state.budget}/>
             </div>
         }
 
