@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Dialog from "@material-ui/core/es/Dialog/Dialog";
-import DialogTitle from "@material-ui/core/es/DialogTitle/DialogTitle";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import {TextField, withStyles} from "@material-ui/core";
-import DialogContent from "@material-ui/core/es/DialogContent/DialogContent";
-import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import AddIcon from "@material-ui/icons/Add";

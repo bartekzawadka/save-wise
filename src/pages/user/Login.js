@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {userService} from "../../services/UserService";
 import {TextField, withStyles} from "@material-ui/core";
-import Paper from "@material-ui/core/es/Paper/Paper";
+import Paper from "@material-ui/core/Paper/Paper";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/es/Button/Button";
-import Chip from "@material-ui/core/es/Chip/Chip";
+import Button from "@material-ui/core/Button/Button";
+import Chip from "@material-ui/core/Chip/Chip";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import {Redirect} from "react-router-dom";
 

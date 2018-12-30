@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core';
 import PropTypes from 'prop-types';
-import red from '@material-ui/core/colors/red';
-import grey from '@material-ui/core/colors/grey';
 import moment from 'moment';
 import Grid from "@material-ui/core/Grid/Grid";
-import Typography from "@material-ui/core/es/Typography/Typography";
+import Typography from "@material-ui/core/Typography/Typography";
 import ExpensesSummaryChartWidget from "./widgets/ExpensesSummaryChartWidget";
 import LeftToSpendWidget from "./widgets/LeftToSpendWidget";
 import ExpensesPerCategoryWidget from "./widgets/ExpensesPerCategoryWidget";

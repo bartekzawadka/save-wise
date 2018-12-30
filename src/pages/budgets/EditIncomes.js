@@ -1,24 +1,24 @@
 import React, {Component} from 'react';
 import {withStyles} from "@material-ui/core";
-import Card from "@material-ui/core/es/Card/Card";
-import CardHeader from "@material-ui/core/es/CardHeader/CardHeader";
-import CardContent from "@material-ui/core/es/CardContent/CardContent";
+import Card from "@material-ui/core/Card/Card";
+import CardHeader from "@material-ui/core/CardHeader/CardHeader";
+import CardContent from "@material-ui/core/CardContent/CardContent";
 import PlanService from "../../services/PlanService";
-import CardActions from "@material-ui/core/es/CardActions/CardActions";
+import CardActions from "@material-ui/core/CardActions/CardActions";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import {Link} from "react-router-dom";
 import SaveIcon from "@material-ui/icons/Save";
-import Divider from "@material-ui/core/es/Divider/Divider";
-import Table from "@material-ui/core/es/Table/Table";
-import TableHead from "@material-ui/core/es/TableHead/TableHead";
-import TableRow from "@material-ui/core/es/TableRow/TableRow";
-import TableCell from "@material-ui/core/es/TableCell/TableCell";
-import TableBody from "@material-ui/core/es/TableBody/TableBody";
+import Divider from "@material-ui/core/Divider/Divider";
+import Table from "@material-ui/core/Table/Table";
+import TableHead from "@material-ui/core/TableHead/TableHead";
+import TableRow from "@material-ui/core/TableRow/TableRow";
+import TableCell from "@material-ui/core/TableCell/TableCell";
+import TableBody from "@material-ui/core/TableBody/TableBody";
 import CurrencyText from "../../common/CurrencyText";
 import TextField from "@material-ui/core/TextField";
 import CurrencyField from "./new/components/CurrencyField";
-import InputAdornment from "@material-ui/core/es/InputAdornment/InputAdornment";
+import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 
 const styles = () => ({
     EditIncomesRoot: {

@@ -4,7 +4,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {Link} from "react-router-dom";
-import Divider from "@material-ui/core/es/Divider/Divider";
+import Divider from "@material-ui/core/Divider/Divider";
 import {userService} from "./services/UserService";
 import {withStyles} from "@material-ui/core";
 import Button from "@material-ui/core/Button";

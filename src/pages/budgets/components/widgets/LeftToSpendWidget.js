@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Typography from "@material-ui/core/es/Typography/Typography";
+import Typography from "@material-ui/core/Typography/Typography";
 import CurrencyText from "../../../../common/CurrencyText";
-import LinearProgress from "@material-ui/core/es/LinearProgress/LinearProgress";
+import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
 import {withStyles} from "@material-ui/core";
 import Widget from "./Widget";
 import PercentageText from "../../../../common/PercentageText";

@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CurrencyText from "../../../../common/CurrencyText";
-import Table from "@material-ui/core/es/Table/Table";
-import TableHead from "@material-ui/core/es/TableHead/TableHead";
-import TableCell from "@material-ui/core/es/TableCell/TableCell";
-import TableBody from "@material-ui/core/es/TableBody/TableBody";
+import Table from "@material-ui/core/Table/Table";
+import TableHead from "@material-ui/core/TableHead/TableHead";
+import TableCell from "@material-ui/core/TableCell/TableCell";
+import TableBody from "@material-ui/core/TableBody/TableBody";
 import TableRow from "@material-ui/core/TableRow/TableRow";
 import Widget from "./Widget";
 import PercentageText from "../../../../common/PercentageText";

@@ -8,9 +8,9 @@ import ExpenseService from "../../services/ExpenseService";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
-import Typography from "@material-ui/core/es/Typography/Typography";
+import Typography from "@material-ui/core/Typography/Typography";
 import CurrencyText from "../../common/CurrencyText";
-import ListSubheader from "@material-ui/core/es/ListSubheader/ListSubheader";
+import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 import {Link} from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
 

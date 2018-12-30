@@ -1,24 +1,24 @@
 import React, {Component} from 'react';
 import {TextField, withStyles} from "@material-ui/core";
 import PropTypes from 'prop-types';
-import Card from "@material-ui/core/es/Card/Card";
-import CardHeader from "@material-ui/core/es/CardHeader/CardHeader";
-import CardContent from "@material-ui/core/es/CardContent/CardContent";
-import FormControl from "@material-ui/core/es/FormControl/FormControl";
-import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
-import Select from "@material-ui/core/es/Select/Select";
-import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
-import CardActions from "@material-ui/core/es/CardActions/CardActions";
-import Button from "@material-ui/core/es/Button/Button";
+import Card from "@material-ui/core/Card/Card";
+import CardHeader from "@material-ui/core/CardHeader/CardHeader";
+import CardContent from "@material-ui/core/CardContent/CardContent";
+import FormControl from "@material-ui/core/FormControl/FormControl";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import Select from "@material-ui/core/Select/Select";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import CardActions from "@material-ui/core/CardActions/CardActions";
+import Button from "@material-ui/core/Button/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import SaveIcon from "@material-ui/icons/Save";
 import AddIcon from "@material-ui/icons/Add";
 import CurrencyField from "../budgets/new/components/CurrencyField";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import FormHelperText from "@material-ui/core/es/FormHelperText/FormHelperText";
+import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import ExpenseService from "../../services/ExpenseService";
 import AddCategory from "./AddCategory";
-import IconButton from "@material-ui/core/es/IconButton/IconButton";
+import IconButton from "@material-ui/core/IconButton/IconButton";
 import AddCategoryType from "./AddCategoryType";
 
 const styles = theme => ({

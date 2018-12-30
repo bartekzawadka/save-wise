@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {userService} from "../../services/UserService";
-import Chip from "@material-ui/core/es/Chip/Chip";
+import Chip from "@material-ui/core/Chip/Chip";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import {Link, Redirect} from "react-router-dom";
 import {TextField, withStyles} from "@material-ui/core";
-import CardHeader from "@material-ui/core/es/CardHeader/CardHeader";
-import CardContent from "@material-ui/core/es/CardContent/CardContent";
-import CardActions from "@material-ui/core/es/CardActions";
-import Button from "@material-ui/core/es/Button";
-import Card from "@material-ui/core/es/Card";
+import CardHeader from "@material-ui/core/CardHeader/CardHeader";
+import CardContent from "@material-ui/core/CardContent/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
 
 const styles = theme => ({
     RegisterRoot: {
