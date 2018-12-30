@@ -16,7 +16,6 @@ import AddIcon from "@material-ui/icons/Add";
 import {Link} from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import DateRangeIcon from "@material-ui/icons/DateRange";
 import ListIcon from "@material-ui/icons/List";
 import Chip from "@material-ui/core/Chip";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";

@@ -8,7 +8,6 @@ import ExpenseService from "../../services/ExpenseService";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import CurrencyText from "../../common/CurrencyText";
 import ListSubheader from "@material-ui/core/es/ListSubheader/ListSubheader";

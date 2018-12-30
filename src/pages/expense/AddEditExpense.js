@@ -10,7 +10,6 @@ import Select from "@material-ui/core/es/Select/Select";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import CardActions from "@material-ui/core/es/CardActions/CardActions";
 import Button from "@material-ui/core/es/Button/Button";
-import {Link} from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
 import SaveIcon from "@material-ui/icons/Save";
 import AddIcon from "@material-ui/icons/Add";
@@ -301,7 +300,7 @@ class AddEditExpense extends Component {
 
         this.expenseService.upsertExpense(this.props.match.params.planId, data, this.state.expenseId)
             .then(() => {
-                if(this.props.match.params.planId, data, this.state.expenseId){
+                if(this.props.match.params.planId && this.state.expenseId){
                     this.props.history.goBack();
                 }else {
                     this.props.history.push('/');

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import CreditCardIcon from '@material-ui/icons/CreditCard';
 import './App.css';
 import {createMuiTheme, withStyles} from '@material-ui/core/styles';
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
@@ -20,7 +19,6 @@ import {loadProgressBar} from "axios-progress-bar";
 import 'axios-progress-bar/dist/nprogress.css';
 import moment from 'moment';
 import 'moment/locale/pl';
-import Login from "./pages/user/Login";
 import {userService} from "./services/UserService";
 import UserMenu from "./UserMenu";
 import ChangePassword from "./pages/user/ChangePassword";
@@ -144,7 +142,7 @@ class App extends Component {
                     <div className={classes.root}>
                         <AppBar position="static">
                             <Toolbar>
-                                <img src={logo} width={48} height={48} className={classes.logo}/>
+                                <img src={logo} width={48} height={48} className={classes.logo} alt=""/>
                                 <Typography className={classes.title} color="inherit" variant="h6" noWrap
                                             component={Link} to="/">
                                     savewise
@@ -165,6 +163,7 @@ class App extends Component {
                     <PrivateRoute exact path='/plan/incomes/:planId' component={EditIncomes}/>
                     <PrivateRoute exact path='/expenses/:planId' component={ExpenseList}/>
                     <PrivateRoute exact path='/expense/edit/:planId/:expenseId' component={AddEditExpense}/>
+                    <Redirect to="/main" />
                 </MuiThemeProvider>
             </Router>
         );
