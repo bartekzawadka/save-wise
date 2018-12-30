@@ -1,19 +1,19 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Typography from "@material-ui/core/es/Typography/Typography";
+import Typography from "@material-ui/core/Typography/Typography";
 import CurrencyText from "../../../../common/CurrencyText";
-import LinearProgress from "@material-ui/core/es/LinearProgress/LinearProgress";
+import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
 import {withStyles} from "@material-ui/core";
 import Widget from "./Widget";
 import PercentageText from "../../../../common/PercentageText";
 
 const styles = theme => ({
-    expensesLeftOk: {
+    LeftToSpendWidgetExpensesLeftOk: {
         color: "#357a38",
         fontSize: theme.typography.pxToRem(28),
         marginBottom: '23px'
     },
-    expensesLeftWrong: {
+    LeftToSpendWidgetExpensesLeftWrong: {
         color: "#ff3d00",
         fontSize: theme.typography.pxToRem(28),
         marginBottom: '23px'
@@ -22,7 +22,12 @@ const styles = theme => ({
 
 class LeftToSpendWidget extends Component {
     getExpensesLeftPercentage = () => {
-        let val = (this.getExpensesLeftValue()/this.props.plan.incomesSum * 100.0);
+        let part = this.getExpensesLeftValue()/this.props.plan.incomesSum;
+        if(this.props.plan.incomesSum <= 0.0){
+            part = 0.0;
+        }
+
+        let val = (part * 100.0);
         return parseFloat(val);
     };
 
@@ -32,10 +37,10 @@ class LeftToSpendWidget extends Component {
 
     getColor = (value) => {
         if(value < 0.0){
-            return this.props.classes.expensesLeftWrong;
+            return this.props.classes.LeftToSpendWidgetExpensesLeftWrong;
         }
 
-        return this.props.classes.expensesLeftOk;
+        return this.props.classes.LeftToSpendWidgetExpensesLeftOk;
     };
 
     render() {

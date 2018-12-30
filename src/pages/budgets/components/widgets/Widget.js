@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
-import CardHeader from "@material-ui/core/es/CardHeader/CardHeader";
-import Card from "@material-ui/core/es/Card/Card";
+import CardHeader from "@material-ui/core/CardHeader/CardHeader";
+import Card from "@material-ui/core/Card/Card";
 import Grid from "@material-ui/core/Grid/Grid";
-import CardContent from "@material-ui/core/es/CardContent/CardContent";
+import CardContent from "@material-ui/core/CardContent/CardContent";
 import {withStyles} from "@material-ui/core";
 
 const styles = () => ({
-    cardContent: {
+    WidgetCardContent: {
         paddingTop: '0px'
     },
 });
@@ -23,7 +23,7 @@ class Widget extends Component{
         return <Grid item xs={this.props.gridSizeXs} md={this.props.gridSizeMd} xl={this.props.gridSizeXl}>
             <Card>
                 {this.getCardHeader()}
-                <CardContent className={this.props.noPadding === true ? this.props.classes.cardContent : undefined}>
+                <CardContent className={this.props.noPadding === true ? this.props.classes.WidgetCardContent : undefined}>
                     {this.props.children}
                 </CardContent>
             </Card>

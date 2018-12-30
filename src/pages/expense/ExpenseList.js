@@ -8,31 +8,30 @@ import ExpenseService from "../../services/ExpenseService";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/es/Typography/Typography";
+import Typography from "@material-ui/core/Typography/Typography";
 import CurrencyText from "../../common/CurrencyText";
-import ListSubheader from "@material-ui/core/es/ListSubheader/ListSubheader";
+import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 import {Link} from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
 
 const styles = () => ({
-    root: {
+    ExpenseListRoot: {
         marginTop: '30px',
         maxWidth: '960px',
         marginLeft: 'auto',
         marginRight: 'auto',
         marginBottom: '50px'
     },
-    goBackButton: {
+    ExpenseListGoBackButton: {
         marginBottom: 10
     },
-    buttonBarRightButton: {
+    ExpenseListButtonBarRightButton: {
         float: 'right'
     },
-    paper: {
+    ExpenseListPaper: {
         marginTop: 10
     },
-    title: {
+    ExpenseListTitle: {
         marginBottom: 10
     }
 });
@@ -71,7 +70,7 @@ class ExpenseList extends Component {
         let items = [];
         for (let prop in this.state.data) {
             if (this.state.data.hasOwnProperty(prop) && this.state.data[prop] && this.state.data[prop].length > 0) {
-                items.push(<Paper elevation={1} className={this.props.classes.paper}>
+                items.push(<Paper elevation={1} className={this.props.classes.ExpenseListPaper}>
                         <List component="nav">
                             <ListSubheader>{prop}</ListSubheader>
                             {
@@ -97,20 +96,20 @@ class ExpenseList extends Component {
         const {classes} = this.props;
 
         return (
-            <div className={classes.root}>
-                <Typography variant="h6" className={classes.title}>
+            <div className={classes.ExpenseListRoot}>
+                <Typography variant="h6" className={classes.ExpenseListTitle}>
                     Lista wydatków
                 </Typography>
                 <Button variant="contained"
                         color="primary"
-                        className={classes.goBackButton}
+                        className={classes.ExpenseListGoBackButton}
                         onClick={this.onGoBack}>
                     <KeyboardArrowLeftIcon/>
                     Powrót
                 </Button>
                 <Button color="secondary"
                         variant="contained"
-                        className={classes.buttonBarRightButton}
+                        className={classes.ExpenseListButtonBarRightButton}
                         component={Link}
                         to={"/expense/add/" + this.props.match.params.planId}>
                     <AddIcon/>

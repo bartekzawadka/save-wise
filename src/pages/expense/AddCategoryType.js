@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Dialog from "@material-ui/core/es/Dialog/Dialog";
-import DialogTitle from "@material-ui/core/es/DialogTitle/DialogTitle";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import {TextField, withStyles} from "@material-ui/core";
-import DialogContent from "@material-ui/core/es/DialogContent/DialogContent";
-import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import AddIcon from "@material-ui/icons/Add";
@@ -14,12 +14,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 
 const styles = (theme) => ({
-    formContainer: {
+    AddCategoryTypeFormContainer: {
         margin: '0 auto',
         display: 'flex',
         flexWrap: 'wrap'
     },
-    formControl: {
+    AddCategoryTypeFormControl: {
         margin: theme.spacing.unit,
         flex: '1 auto'
     }
@@ -75,8 +75,8 @@ class AddCategoryType extends Component {
             <Dialog onClose={this.handleClose} open={open} key={"add-category-type-dialog"} disableAutoFocus={true}>
                 <DialogTitle>Dodaj typ kategorii</DialogTitle>
                 <DialogContent>
-                    <div className={classes.formContainer}>
-                        <FormControl className={classes.formControl}>
+                    <div className={classes.AddCategoryTypeFormContainer}>
+                        <FormControl className={classes.AddCategoryTypeFormControl}>
                             <InputLabel htmlFor="expense-category-dialog">Kategoria</InputLabel>
                             <Select value={this.state.category}
                                     onChange={this.handleCategoryChange}
@@ -95,9 +95,9 @@ class AddCategoryType extends Component {
                             </Select>
                         </FormControl>
                     </div>
-                    <div className={classes.formContainer}>
+                    <div className={classes.AddCategoryTypeFormContainer}>
                         <TextField value={this.state.type}
-                                   className={classes.formControl}
+                                   className={classes.AddCategoryTypeFormControl}
                                    onChange={this.handleCategoryTypeChange}
                                    required
                                    label="Typ kategorii"/>

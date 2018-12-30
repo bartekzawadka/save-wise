@@ -6,23 +6,18 @@ import Chip from "@material-ui/core/Chip";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 const styles = theme => ({
-    datePickersContainer: {
+    PlanPeriodDatePickersContainer: {
         margin: '0 auto'
     },
-    datePicker: {
+    PlanPeriodDatePicker: {
         margin: theme.spacing.unit * 2,
         width: 200,
     },
-    errorMessageContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-    },
-    chipOutline: {
+    PlanPeriodChipOutline: {
         color: "#ff3d00",
         borderColor: "#ff3d00"
     },
-    chip: {
+    PlanPeriodChip: {
         margin: theme.spacing.unit,
     },
 });
@@ -67,25 +62,25 @@ class PlanPeriod extends Component {
         if (!this.state.datesValid) {
             return <Chip
                 label="Data końcowa musi być późniejsza niż data początkowa"
-                className={this.props.classes.chip}
+                className={this.props.classes.PlanPeriodChip}
                 variant="outlined"
                 color="secondary"
                 classes={{
-                    outlinedSecondary: this.props.classes.chipOutline
+                    outlinedSecondary: this.props.classes.PlanPeriodChipOutline
                 }}
                 icon={<ErrorOutlineIcon/>}/>
         }
     }
 
     render() {
-        return <div className={this.props.classes.datePickersContainer}>
+        return <div className={this.props.classes.PlanPeriodDatePickersContainer}>
             <div>
                 <TextField
                     label='Od'
                     type='date'
                     value={this.state.from}
                     onChange={this.handleFromChange()}
-                    className={this.props.classes.datePicker}
+                    className={this.props.classes.PlanPeriodDatePicker}
                     InputLabelProps={{
                         shrink: true,
                     }}/>
@@ -94,7 +89,7 @@ class PlanPeriod extends Component {
                     type='date'
                     value={this.state.to}
                     onChange={this.handleToChange()}
-                    className={this.props.classes.datePicker}
+                    className={this.props.classes.PlanPeriodDatePicker}
                     InputLabelProps={{
                         shrink: true
                     }}/>

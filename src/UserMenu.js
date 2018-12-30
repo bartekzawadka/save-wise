@@ -4,7 +4,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {Link} from "react-router-dom";
-import Divider from "@material-ui/core/es/Divider/Divider";
+import Divider from "@material-ui/core/Divider/Divider";
 import {userService} from "./services/UserService";
 import {withStyles} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
@@ -15,13 +15,13 @@ import ExitToAppIcon from"@material-ui/icons/ExitToApp";
 const ITEM_HEIGHT = 48;
 
 const styles = theme => ({
-    loginButton: {
+    UserMenuLoginButton: {
         marginLeft: 5
     },
-    icon: {
+    UserMenuIcon: {
         color: theme.palette.common.white
     },
-    menuIcon: {
+    UserMenuMenuIcon: {
         marginRight: theme.spacing.unit
     }
 });
@@ -53,7 +53,7 @@ class UserMenu extends React.Component {
                 aria-haspopup="true"
                 variant="flat"
                 onClick={this.handleClick}
-                className={this.props.classes.icon}
+                className={this.props.classes.UserMenuIcon}
             >
                 <AccountCircleIcon/>
                 {userInfo.username}
@@ -64,7 +64,7 @@ class UserMenu extends React.Component {
                 aria-owns={isOpen ? 'long-menu' : undefined}
                 aria-haspopup="true"
                 onClick={this.handleClick}
-                className={this.props.classes.icon}
+                className={this.props.classes.UserMenuIcon}
 
             >
                 <AccountCircleIcon/>
@@ -79,7 +79,7 @@ class UserMenu extends React.Component {
                 anchorEl={anchorEl}
                 open={isOpen}
                 onClose={this.handleClose}
-                className={this.props.classes.loginButton}
+                className={this.props.classes.UserMenuLoginButton}
                 PaperProps={{
                     style: {
                         maxHeight: ITEM_HEIGHT * 4.5,
@@ -88,17 +88,17 @@ class UserMenu extends React.Component {
                 }}
             >
                 <MenuItem disabled>
-                    <HistoryIcon className={this.props.classes.menuIcon}/>
+                    <HistoryIcon className={this.props.classes.UserMenuMenuIcon}/>
                     Historia budżetów
                 </MenuItem>
                 <Divider/>
                 <MenuItem component={Link} to="/changePassword">
-                    <VpnKeyIcon className={this.props.classes.menuIcon}/>
+                    <VpnKeyIcon className={this.props.classes.UserMenuMenuIcon}/>
                     Zmiana hasła
                 </MenuItem>
                 <Divider/>
                 <MenuItem onClick={this.logout}>
-                    <ExitToAppIcon className={this.props.classes.menuIcon}/>
+                    <ExitToAppIcon className={this.props.classes.UserMenuMenuIcon}/>
                     Wyloguj
                 </MenuItem>
             </Menu>
@@ -108,7 +108,7 @@ class UserMenu extends React.Component {
                 anchorEl={anchorEl}
                 open={isOpen}
                 onClose={this.handleClose}
-                className={this.props.classes.loginButton}
+                className={this.props.classes.UserMenuLoginButton}
                 PaperProps={{
                     style: {
                         maxHeight: ITEM_HEIGHT * 4.5,

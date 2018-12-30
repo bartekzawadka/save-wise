@@ -1,40 +1,40 @@
 import React, {Component} from 'react';
 import {userService} from "../../services/UserService";
-import Chip from "@material-ui/core/es/Chip/Chip";
+import Chip from "@material-ui/core/Chip/Chip";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import {Link, Redirect} from "react-router-dom";
 import {TextField, withStyles} from "@material-ui/core";
-import CardHeader from "@material-ui/core/es/CardHeader/CardHeader";
-import CardContent from "@material-ui/core/es/CardContent/CardContent";
-import CardActions from "@material-ui/core/es/CardActions";
-import Button from "@material-ui/core/es/Button";
-import Card from "@material-ui/core/es/Card";
+import CardHeader from "@material-ui/core/CardHeader/CardHeader";
+import CardContent from "@material-ui/core/CardContent/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
 
 const styles = theme => ({
-    root: {
+    RegisterRoot: {
         maxWidth: '960px',
         marginTop: 20,
         marginRight: 'auto',
         marginBottom: 20,
         marginLeft: 'auto',
     },
-    chip: {
+    RegisterChip: {
         margin: theme.spacing.unit,
     },
-    formContainer: {
+    RegisterFormContainer: {
         margin: '0 auto'
     },
-    field: {
+    RegisterField: {
         minWidth: 400
     },
-    chipError: {
+    RegisterChipError: {
         color: "#ff3d00",
         borderColor: "#ff3d00"
     },
-    registerButton: {
+    RegisterButton: {
         marginLeft: 'auto'
     },
-    actions: {
+    RegisterActions: {
         display: 'flex'
     },
 });
@@ -91,9 +91,9 @@ class Register extends Component {
     getError = () => {
         if (this.state.errorMessage) {
             return <Chip label={this.state.errorMessage}
-                         className={this.props.classes.chip}
+                         className={this.props.classes.RegisterChip}
                          classes={{
-                             outlinedSecondary: this.props.classes.chipError
+                             outlinedSecondary: this.props.classes.RegisterChipError
                          }}
                          color="secondary"
                          variant="outlined"
@@ -108,17 +108,17 @@ class Register extends Component {
             return <Redirect to='/'/>
         }
 
-        return <Card className={classes.root}>
+        return <Card className={classes.RegisterRoot}>
             <CardHeader title="Rejestracja"/>
             <CardContent>
-                <div className={classes.formContainer} align="center">
+                <div className={classes.RegisterFormContainer} align="center">
                     {this.getError()}
                     <div>
                         <TextField label="Nazwa użytkownika"
                                    value={this.state.username}
                                    onChange={this.onFieldChange('username')}
                                    margin="normal"
-                                   className={classes.field}/>
+                                   className={classes.RegisterField}/>
                     </div>
                     <div>
                         <TextField label="Hasło"
@@ -126,7 +126,7 @@ class Register extends Component {
                                    onChange={this.onFieldChange('password')}
                                    type="password"
                                    margin="normal"
-                                   className={classes.field}/>
+                                   className={classes.RegisterField}/>
                     </div>
                     <div>
                         <TextField label="Potwierdź hasło"
@@ -134,17 +134,17 @@ class Register extends Component {
                                    onChange={this.onFieldChange('passwordConfirm')}
                                    type="password"
                                    margin="normal"
-                                   className={classes.field}/>
+                                   className={classes.RegisterField}/>
                     </div>
                 </div>
             </CardContent>
-            <CardActions className={classes.actions} disableActionSpacing>
+            <CardActions className={classes.RegisterActions} disableActionSpacing>
                 <Button variant="outlined" color="default" component={Link} to="/">
                     Anuluj
                 </Button>
                 <Button variant="outlined"
                         color="primary"
-                        className={classes.registerButton}
+                        className={classes.RegisterButton}
                         onClick={this.submit}
                         disabled={this.state.registerButtonDisabled}>
                     Zarejestruj

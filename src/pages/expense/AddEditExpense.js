@@ -1,61 +1,57 @@
 import React, {Component} from 'react';
 import {TextField, withStyles} from "@material-ui/core";
 import PropTypes from 'prop-types';
-import Card from "@material-ui/core/es/Card/Card";
-import CardHeader from "@material-ui/core/es/CardHeader/CardHeader";
-import CardContent from "@material-ui/core/es/CardContent/CardContent";
-import FormControl from "@material-ui/core/es/FormControl/FormControl";
-import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
-import Select from "@material-ui/core/es/Select/Select";
-import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
-import CardActions from "@material-ui/core/es/CardActions/CardActions";
-import Button from "@material-ui/core/es/Button/Button";
-import {Link} from "react-router-dom";
+import Card from "@material-ui/core/Card/Card";
+import CardHeader from "@material-ui/core/CardHeader/CardHeader";
+import CardContent from "@material-ui/core/CardContent/CardContent";
+import FormControl from "@material-ui/core/FormControl/FormControl";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import Select from "@material-ui/core/Select/Select";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import CardActions from "@material-ui/core/CardActions/CardActions";
+import Button from "@material-ui/core/Button/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import SaveIcon from "@material-ui/icons/Save";
 import AddIcon from "@material-ui/icons/Add";
 import CurrencyField from "../budgets/new/components/CurrencyField";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import FormHelperText from "@material-ui/core/es/FormHelperText/FormHelperText";
+import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import ExpenseService from "../../services/ExpenseService";
 import AddCategory from "./AddCategory";
-import IconButton from "@material-ui/core/es/IconButton/IconButton";
+import IconButton from "@material-ui/core/IconButton/IconButton";
 import AddCategoryType from "./AddCategoryType";
 
 const styles = theme => ({
-    root: {
+    AddEditExpenseRoot: {
         maxWidth: '600px',
         marginTop: 20,
         marginRight: 'auto',
         marginBottom: 20,
         marginLeft: 'auto',
     },
-    paper: {
-        padding: theme.spacing.unit * 2,
-    },
-    datePicker: {
+    AddEditExpenseDatePicker: {
         margin: theme.spacing.unit,
         width: '100%'
     },
-    error: {
+    AddEditExpenseError: {
         color: "#ff3d00"
     },
-    formContainer: {
+    AddEditExpenseFormContainer: {
         margin: '0 auto',
         display: 'flex',
         flexWrap: 'wrap'
     },
-    formControl: {
+    AddEditExpenseFormControl: {
         margin: theme.spacing.unit,
         flex: '1 auto'
     },
-    saveButton: {
+    AddEditExpenseSaveButton: {
         marginLeft: 'auto'
     },
-    actions: {
+    AddEditExpenseActions: {
         display: 'flex'
     },
-    iconButton: {
+    AddEditExpenseIconButton: {
         height: 48,
         marginTop: 'auto',
         marginBottom: 'auto'
@@ -301,7 +297,7 @@ class AddEditExpense extends Component {
 
         this.expenseService.upsertExpense(this.props.match.params.planId, data, this.state.expenseId)
             .then(() => {
-                if(this.props.match.params.planId, data, this.state.expenseId){
+                if(this.props.match.params.planId && this.state.expenseId){
                     this.props.history.goBack();
                 }else {
                     this.props.history.push('/');
@@ -375,11 +371,11 @@ class AddEditExpense extends Component {
     render() {
         const {classes} = this.props;
 
-        return <div className={classes.root}>
+        return <div className={classes.AddEditExpenseRoot}>
             <Card>
                 <CardHeader title={this.getTitle()}/>
                 <CardContent>
-                    <div className={classes.formContainer} align="center">
+                    <div className={classes.AddEditExpenseFormContainer} align="center">
                         <TextField
                             label="Data wydatku"
                             type='date'
@@ -388,13 +384,13 @@ class AddEditExpense extends Component {
                             helperText={this.state.date.errorMessage}
                             value={this.state.date.value}
                             onChange={this.onDateChange}
-                            className={classes.datePicker}
+                            className={classes.AddEditExpenseDatePicker}
                             InputLabelProps={{
                                 shrink: true
                             }}/>
                     </div>
-                    <div className={classes.formContainer} align="center">
-                        <FormControl className={classes.formControl}>
+                    <div className={classes.AddEditExpenseFormContainer} align="center">
+                        <FormControl className={classes.AddEditExpenseFormControl}>
                             <InputLabel htmlFor="expense-category">Kategoria</InputLabel>
                             <Select value={this.state.category.value}
                                     required
@@ -411,16 +407,16 @@ class AddEditExpense extends Component {
                                     </MenuItem>
                                 })}
                             </Select>
-                            <FormHelperText className={classes.error}>
+                            <FormHelperText className={classes.AddEditExpenseError}>
                                 {this.state.category.errorMessage}
                             </FormHelperText>
                         </FormControl>
-                        <IconButton color="primary" onClick={this.handleOpenAddCategory} className={classes.iconButton}>
+                        <IconButton color="primary" onClick={this.handleOpenAddCategory} className={classes.AddEditExpenseIconButton}>
                             <AddIcon/>
                         </IconButton>
                     </div>
-                    <div className={classes.formContainer} align="center">
-                        <FormControl className={classes.formControl}>
+                    <div className={classes.AddEditExpenseFormContainer} align="center">
+                        <FormControl className={classes.AddEditExpenseFormControl}>
                             <InputLabel htmlFor="expense-type">Typ</InputLabel>
                             <Select value={this.state.type.value}
                                     required
@@ -436,15 +432,15 @@ class AddEditExpense extends Component {
                                     </MenuItem>
                                 })}
                             </Select>
-                            <FormHelperText className={classes.error}>{this.state.type.errorMessage}</FormHelperText>
+                            <FormHelperText className={classes.AddEditExpenseError}>{this.state.type.errorMessage}</FormHelperText>
                         </FormControl>
                         <IconButton color="primary" onClick={this.handleOpenAddCategoryType}
-                                    className={classes.iconButton}>
+                                    className={classes.AddEditExpenseIconButton}>
                             <AddIcon/>
                         </IconButton>
                     </div>
-                    <div className={classes.formContainer} align="center">
-                        <FormControl className={classes.formControl}>
+                    <div className={classes.AddEditExpenseFormContainer} align="center">
+                        <FormControl className={classes.AddEditExpenseFormControl}>
                             <TextField value={this.state.amount.value}
                                        required
                                        error={this.state.amount.isInvalid}
@@ -457,15 +453,15 @@ class AddEditExpense extends Component {
                             />
                         </FormControl>
                     </div>
-                    <div className={classes.formContainer} align="center">
-                        <FormControl className={classes.formControl}>
+                    <div className={classes.AddEditExpenseFormContainer} align="center">
+                        <FormControl className={classes.AddEditExpenseFormControl}>
                             <TextField value={this.state.comment.value}
                                        onChange={this.onCommentChange}
                                        label="Komentarz" rows={6} multiline/>
                         </FormControl>
                     </div>
                 </CardContent>
-                <CardActions className={classes.actions} disableActionSpacing>
+                <CardActions className={classes.AddEditExpenseActions} disableActionSpacing>
                     <Button variant="outlined" color="default" onClick={this.onCancel}>
                         <CloseIcon/>
                         Anuluj
@@ -473,7 +469,7 @@ class AddEditExpense extends Component {
                     <Button variant="outlined"
                             color="primary"
                             disabled={this.state.isFormInvalid}
-                            className={classes.saveButton}
+                            className={classes.AddEditExpenseSaveButton}
                             onClick={this.submit}>
                         <SaveIcon/>
                         Zapisz

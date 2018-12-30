@@ -1,40 +1,40 @@
 import React, {Component} from 'react';
 import {withStyles} from "@material-ui/core";
-import Card from "@material-ui/core/es/Card/Card";
-import CardHeader from "@material-ui/core/es/CardHeader/CardHeader";
-import CardContent from "@material-ui/core/es/CardContent/CardContent";
+import Card from "@material-ui/core/Card/Card";
+import CardHeader from "@material-ui/core/CardHeader/CardHeader";
+import CardContent from "@material-ui/core/CardContent/CardContent";
 import PlanService from "../../services/PlanService";
-import CardActions from "@material-ui/core/es/CardActions/CardActions";
+import CardActions from "@material-ui/core/CardActions/CardActions";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import {Link} from "react-router-dom";
 import SaveIcon from "@material-ui/icons/Save";
-import Divider from "@material-ui/core/es/Divider/Divider";
-import Table from "@material-ui/core/es/Table/Table";
-import TableHead from "@material-ui/core/es/TableHead/TableHead";
-import TableRow from "@material-ui/core/es/TableRow/TableRow";
-import TableCell from "@material-ui/core/es/TableCell/TableCell";
-import TableBody from "@material-ui/core/es/TableBody/TableBody";
+import Divider from "@material-ui/core/Divider/Divider";
+import Table from "@material-ui/core/Table/Table";
+import TableHead from "@material-ui/core/TableHead/TableHead";
+import TableRow from "@material-ui/core/TableRow/TableRow";
+import TableCell from "@material-ui/core/TableCell/TableCell";
+import TableBody from "@material-ui/core/TableBody/TableBody";
 import CurrencyText from "../../common/CurrencyText";
 import TextField from "@material-ui/core/TextField";
 import CurrencyField from "./new/components/CurrencyField";
-import InputAdornment from "@material-ui/core/es/InputAdornment/InputAdornment";
+import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 
-const styles = theme => ({
-    root: {
+const styles = () => ({
+    EditIncomesRoot: {
         maxWidth: '960px',
         marginTop: 20,
         marginRight: 'auto',
         marginBottom: 20,
         marginLeft: 'auto',
     },
-    table: {
+    EditIncomesTable: {
         margin: '0 auto'
     },
-    confirmButton: {
+    EditIncomesConfirmButton: {
         marginLeft: 'auto'
     },
-    negativeDiff: {
+    EditIncomesNegativeDiff: {
         color: "#ff3d00"
     }
 });
@@ -111,7 +111,9 @@ class EditIncomes extends Component {
                                }}/>
                 </TableCell>
                 <TableCell numeric>
-                    <CurrencyText value={item.diff} className={item.diff < 0.0 ? this.props.classes.negativeDiff : ''}/>
+                    <CurrencyText value={item.diff} className={item.diff < 0.0
+                        ? this.props.classes.EditIncomesNegativeDiff
+                        : ''}/>
                 </TableCell>
             </TableRow>);
         });
@@ -131,12 +133,12 @@ class EditIncomes extends Component {
     render() {
         const {classes} = this.props;
 
-        return <div className={classes.root}>
+        return <div className={classes.EditIncomesRoot}>
             <Card>
                 <CardHeader title="Określ rzeczywiste przychody"/>
                 <Divider/>
                 <CardContent>
-                    <Table className={classes.table}>
+                    <Table className={classes.EditIncomesTable}>
                         <TableHead>
                             <TableRow>
                                 <TableCell>Nazwa kategorii</TableCell>
@@ -158,7 +160,7 @@ class EditIncomes extends Component {
                     </Button>
                     <Button variant="outlined"
                             color="primary"
-                            className={classes.confirmButton}
+                            className={classes.EditIncomesConfirmButton}
                             onClick={this.submit}>
                         <SaveIcon/>
                         Zapisz

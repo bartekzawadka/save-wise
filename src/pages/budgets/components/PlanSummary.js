@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core';
 import PropTypes from 'prop-types';
-import red from '@material-ui/core/colors/red';
-import grey from '@material-ui/core/colors/grey';
 import moment from 'moment';
 import Grid from "@material-ui/core/Grid/Grid";
-import Typography from "@material-ui/core/es/Typography/Typography";
+import Typography from "@material-ui/core/Typography/Typography";
 import ExpensesSummaryChartWidget from "./widgets/ExpensesSummaryChartWidget";
 import LeftToSpendWidget from "./widgets/LeftToSpendWidget";
 import ExpensesPerCategoryWidget from "./widgets/ExpensesPerCategoryWidget";
@@ -16,73 +14,37 @@ import AddIcon from "@material-ui/icons/Add";
 import {Link} from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import DateRangeIcon from "@material-ui/icons/DateRange";
 import ListIcon from "@material-ui/icons/List";
 import Chip from "@material-ui/core/Chip";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 
 const styles = theme => ({
-    root: {
+    PlanSummaryRoot: {
         marginTop: '30px',
         maxWidth: '960px',
         marginLeft: 'auto',
         marginRight: 'auto',
         marginBottom: '50px'
     },
-    globalAmount: {
-        fontSize: theme.typography.pxToRem(22),
-        color: grey[700]
-    },
-    expensesLeftContainer: {
-        width: '100%',
-    },
-    expensesLeftOk: {
-        color: "#357a38",
-        fontSize: theme.typography.pxToRem(28),
-    },
-    card: {
-        maxWidth: 800,
-    },
-    avatar: {
-        backgroundColor: red[500],
-    },
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap'
-    },
-    row: {
-        display: 'flex'
-    },
-    sumTitle: {
-        flex: '1 auto',
-        paddingTop: '5px'
-    },
-    cardContent: {
-        paddingTop: '0px'
-    },
-    sumContainer: {
-        display: 'flex',
-        marginBottom: '18px'
-    },
-    grow: {
+    PlanSummaryGrow: {
         flexGrow: 1
     },
-    paper: {
+    PlanSummaryPaper: {
         padding: theme.spacing.unit * 2,
     },
-    titleContainer: {
+    PlanSummaryTitleContainer: {
         marginBottom: 5
     },
-    buttonBarButton: {
+    PlanSummaryTitleButtonBarButton: {
         marginRight: theme.spacing.unit * 2,
     },
-    buttonBarRightButton: {
+    PlanSummaryTitleButtonBarRightButton: {
         float: 'right'
     },
-    chip: {
+    PlanSummaryChip: {
         marginBottom: theme.spacing.unit * 2
     },
-    chipContent: {
+    PlanSummaryChipContent: {
         color: "#ff3d00",
         borderColor: "#ff3d00"
     }
@@ -120,11 +82,11 @@ class PlanSummary extends Component {
                 <Chip
                     align="center"
                     label="Nie określono rzeczywistych przychodów!"
-                    className={this.props.classes.chip}
+                    className={this.props.classes.PlanSummaryChip}
                     variant="outlined"
                     color="secondary"
                     classes={{
-                        outlinedSecondary: this.props.classes.chipContent
+                        outlinedSecondary: this.props.classes.PlanSummaryChipContent
                     }}
                     icon={<CheckCircleOutlineIcon/>}/>
             </div>;
@@ -134,13 +96,13 @@ class PlanSummary extends Component {
     render() {
         const {classes} = this.props;
 
-        return <div className={classes.root}>
+        return <div className={classes.PlanSummaryRoot}>
             {this.getIncomesMissingAlert()}
             <Grid container alignItems="stretch" justify="center" spacing={8}>
                 <Grid item xs={12}>
-                    <Paper elevation={1} className={classes.paper}>
-                        <div className={classes.titleContainer}>
-                            <Typography variant="h6" color="inherit" className={classes.grow}>
+                    <Paper elevation={1} className={classes.PlanSummaryPaper}>
+                        <div className={classes.PlanSummaryTitleContainer}>
+                            <Typography variant="h6" color="inherit" className={classes.PlanSummaryGrow}>
                                 Bieżąca realizacja budżetu
                                 ({moment(this.props.plan.startDate).format('L') + " - " + moment(this.props.plan.endDate).format('L')})
                             </Typography>
@@ -149,21 +111,21 @@ class PlanSummary extends Component {
                             <Button color="primary"
                                     variant="flat"
                                     component={Link}
-                                    className={classes.buttonBarButton}
+                                    className={classes.PlanSummaryTitleButtonBarButton}
                                     to={"/plan/incomes/" + this.props.plan.id}>
                                 <AttachMoneyIcon/>
                                 Przychody
                             </Button>
                             <Button color="primary"
                                     variant="flat"
-                                    className={classes.buttonBarButton}
+                                    className={classes.PlanSummaryTitleButtonBarButton}
                                     component={Link} to={"/expenses/" + this.props.plan.id}>
                                 <ListIcon/>
                                 Wydatki
                             </Button>
                             <Button color="secondary"
                                     variant="contained"
-                                    className={classes.buttonBarRightButton}
+                                    className={classes.PlanSummaryTitleButtonBarRightButton}
                                     component={Link}
                                     to={"/expense/add/" + this.props.plan.id}>
                                 <AddIcon/>

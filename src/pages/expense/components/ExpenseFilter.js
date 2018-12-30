@@ -1,24 +1,24 @@
 import React, {Component} from 'react';
 import {TextField, withStyles} from '@material-ui/core';
 import PropTypes from 'prop-types';
-import ExpansionPanel from "@material-ui/core/es/ExpansionPanel/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/es/ExpansionPanelSummary/ExpansionPanelSummary";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Typography from "@material-ui/core/es/Typography/Typography";
-import ExpansionPanelDetails from "@material-ui/core/es/ExpansionPanelDetails/ExpansionPanelDetails";
-import ExpansionPanelActions from "@material-ui/core/es/ExpansionPanelActions/ExpansionPanelActions";
+import Typography from "@material-ui/core/Typography/Typography";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails";
+import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions/ExpansionPanelActions";
 import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
 
 const styles = (theme) => ({
-    heading: {
+    ExpenseFilterHeading: {
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
     },
-    container: {
+    ExpenseFilterContainer: {
         margin: '0 auto'
     },
-    filterField: {
+    ExpenseFilterFilterField: {
         margin: theme.spacing.unit,
         width: 200,
     },
@@ -55,12 +55,12 @@ class ExpenseFilter extends Component {
         return (
             <ExpansionPanel>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                    <Typography className={classes.heading}>Filtry</Typography>
+                    <Typography className={classes.ExpenseFilterHeading}>Filtry</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <div className={classes.container}>
+                    <div className={classes.ExpenseFilterContainer}>
                         <div>
-                            <TextField className={classes.filterField}
+                            <TextField className={classes.ExpenseFilterFilterField}
                                        label="Data od:"
                                        type="date"
                                        onChange={this.onValueChange('dateFrom')}
@@ -69,7 +69,7 @@ class ExpenseFilter extends Component {
                                            shrink: true
                                        }}
                             />
-                            <TextField className={classes.filterField}
+                            <TextField className={classes.ExpenseFilterFilterField}
                                        label="Data do:"
                                        type="date"
                                        onChange={this.onValueChange('dateTo')}
@@ -78,7 +78,7 @@ class ExpenseFilter extends Component {
                                            shrink: true
                                        }}
                             />
-                            <TextField className={classes.filterField}
+                            <TextField className={classes.ExpenseFilterFilterField}
                                        label="Kategoria"
                                        onChange={this.onValueChange('category')}
                                        value={this.state.category}

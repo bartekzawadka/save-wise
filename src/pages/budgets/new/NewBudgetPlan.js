@@ -20,65 +20,65 @@ import Summary from "./components/Summary";
 import PlanService from "../../../services/PlanService";
 
 const styles = theme => ({
-    root: {
+    NewBudgetPlanRoot: {
         maxWidth: '960px',
         marginTop: 20,
         marginRight: 'auto',
         marginBottom: 20,
         marginLeft: 'auto',
     },
-    paper: {
+    NewBudgetPlanPaper: {
         padding: theme.spacing.unit * 2,
     },
-    container: {
+    NewBudgetPlanContainer: {
         display: 'flex',
         flexWrap: 'wrap',
         width: '100%'
     },
-    button: {
+    NewBudgetPlanButton: {
         marginRight: theme.spacing.unit,
     },
-    buttonNext: {
+    NewBudgetPlanButtonNext: {
         float: 'right'
     },
-    expensePanel: {
+    NewBudgetPlanExpensePanel: {
         width: '100%'
     },
-    expensesLeftContainer: {
+    NewBudgetPlanExpensesLeftContainer: {
         display: 'flex',
         width: '100%',
         marginBottom: '10px'
     },
-    expensesLeftTitle: {
+    NewBudgetPlanExpensesLeftTitle: {
         fontSize: theme.typography.pxToRem(18),
         color: theme.palette.text.primary,
         flex: '1 auto'
     },
-    expensesLeftAmount: {
+    NewBudgetPlanExpensesLeftAmount: {
         fontSize: theme.typography.pxToRem(18),
         color: theme.palette.text.primary
     },
-    expensesLeftAmountOk: {
+    NewBudgetPlanExpensesLeftAmountOk: {
         fontSize: theme.typography.pxToRem(18),
         color: "#357a38",
     },
-    expensesLeftAmountWrong: {
+    NewBudgetPlanExpensesLeftAmountWrong: {
         fontSize: theme.typography.pxToRem(18),
         color: "#ff3d00"
     },
-    progressRoot: {
+    NewBudgetPlanProgressRoot: {
         flexGrow: 1
     },
-    progressColorOk: {
+    NewBudgetPlanProgressColorOk: {
         backgroundColor: "#6fbf73"
     },
-    progressBarColorOk: {
+    NewBudgetPlanProgressBarColorOk: {
         backgroundColor: "#357a38"
     },
-    progressColorWrong: {
+    NewBudgetPlanProgressColorWrong: {
         backgroundColor: "#ff6333"
     },
-    progressBarColorWrong: {
+    NewBudgetPlanProgressBarColorWrong: {
         backgroundColor: "#ff3d00",
     },
 });
@@ -282,38 +282,44 @@ class NewBudgetPlan extends Component {
     };
 
     getExpenseCategories(classes) {
-        return <div className={classes.expensePanel}>
-            <div className={classes.expensesLeftContainer}>
-                <Typography className={classes.expensesLeftTitle}>
+        return <div className={classes.NewBudgetPlanExpensePanel}>
+            <div className={classes.NewBudgetPlanExpensesLeftContainer}>
+                <Typography className={classes.NewBudgetPlanExpensesLeftTitle}>
                     Suma przychodów:
                 </Typography>
-                <Typography className={classes.expensesLeftAmount}>
+                <Typography className={classes.NewBudgetPlanExpensesLeftAmount}>
                     <CurrencyText value={this.state.plan.incomesSum}/>
                 </Typography>
             </div>
-            <div className={classes.expensesLeftContainer}>
-                <Typography className={classes.expensesLeftTitle}>
+            <div className={classes.NewBudgetPlanExpensesLeftContainer}>
+                <Typography className={classes.NewBudgetPlanExpensesLeftTitle}>
                     Suma wydatków:
                 </Typography>
                 <Typography
-                    className={classes.expensesLeftAmount}>
+                    className={classes.NewBudgetPlanExpensesLeftAmount}>
                     <CurrencyText value={this.state.plan.expensesSum}/>
                 </Typography>
             </div>
-            <div className={classes.expensesLeftContainer}>
-                <Typography className={classes.expensesLeftTitle}>
+            <div className={classes.NewBudgetPlanExpensesLeftContainer}>
+                <Typography className={classes.NewBudgetPlanExpensesLeftTitle}>
                     Pozostało do zagospodarowania:
                 </Typography>
                 <Typography
-                    className={this.state.plan.expensesLeft >= 0 ? classes.expensesLeftAmountOk : classes.expensesLeftAmountWrong}>
+                    className={this.state.plan.expensesLeft >= 0
+                        ? classes.NewBudgetPlanExpensesLeftAmountOk
+                        : classes.NewBudgetPlanExpensesLeftAmountWrong}>
                     <CurrencyText value={this.state.plan.expensesLeft}/>
                 </Typography>
             </div>
-            <div className={classes.progressRoot}>
+            <div className={classes.NewBudgetPlanProgressRoot}>
                 <LinearProgress variant="determinate" color="primary" value={this.state.plan.expensesLeftProgress}
                                 classes={{
-                                    colorPrimary: this.state.plan.expensesLeft >= 0 ? classes.progressColorOk : classes.progressColorWrong,
-                                    barColorPrimary: this.state.plan.expensesLeft >= 0 ? classes.progressBarColorOk : classes.progressBarColorWrong
+                                    colorPrimary: this.state.plan.expensesLeft >= 0
+                                        ? classes.NewBudgetPlanProgressColorOk
+                                        : classes.NewBudgetPlanProgressColorWrong,
+                                    barColorPrimary: this.state.plan.expensesLeft >= 0
+                                        ? classes.NewBudgetPlanProgressBarColorOk
+                                        : classes.NewBudgetPlanProgressBarColorWrong
                                 }}/>
             </div>
             <ExpenseCategories classes={classes} expenseCategories={this.state.plan.expenseCategories}
@@ -345,8 +351,8 @@ class NewBudgetPlan extends Component {
         const steps = getSteps();
 
         return (
-            <div className={classes.root}>
-                <Paper elevation={1} className={classes.paper}>
+            <div className={classes.NewBudgetPlanRoot}>
+                <Paper elevation={1} className={classes.NewBudgetPlanPaper}>
                     <Typography variant='h6'>
                         Nowy plan budżetowy
                     </Typography>
@@ -363,14 +369,14 @@ class NewBudgetPlan extends Component {
                     </Stepper>
                     <div>
                         <div>
-                            <div className={classes.container}>
+                            <div className={classes.NewBudgetPlanContainer}>
                                 {this.getStepContent(this.state.activeStep, classes)}
                             </div>
                             <div>
                                 <Button
                                     disabled={this.state.activeStep === 0}
                                     onClick={this.handleBack}
-                                    className={classes.button}>
+                                    className={classes.NewBudgetPlanButton}>
                                     <KeyboardArrowLeftIcon/>
                                     Wstecz
                                 </Button>
@@ -378,7 +384,7 @@ class NewBudgetPlan extends Component {
                                     variant="contained"
                                     color="primary"
                                     onClick={this.handleNext}
-                                    className={classes.buttonNext}
+                                    className={classes.NewBudgetPlanButtonNext}
                                     disabled={this.getNextDisabled()}
                                 >
                                     {this.state.activeStep === steps.length - 1 ? <CheckIcon/> :

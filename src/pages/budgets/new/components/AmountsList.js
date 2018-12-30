@@ -15,17 +15,17 @@ import {withStyles} from "@material-ui/core";
 import CurrencyText from "../../../../common/CurrencyText";
 
 const styles = () => ({
-    table: {
+    AmountsListTable: {
         margin: '5px auto 15px auto'
     },
-    tableInput: {
+    AmountsListTableInput: {
         width: '100px',
         paddingTop: '8px'
     },
-    fullWidthInput: {
+    AmountsListFullWidthInput: {
         width: '100%'
     },
-    tableSumInput: {
+    AmountsListTableSumInput: {
         width: '100px',
         marginRight: '48px',
         fontSize: '14px',
@@ -131,7 +131,7 @@ class AmountsList extends Component {
                     <b>SUMA</b>
                 </TableCell>
                 <TableCell numeric>
-                    <CurrencyText value={this.state.sum} className={this.props.classes.tableSumInput}/>
+                    <CurrencyText value={this.state.sum} className={this.props.classes.AmountsListTableSumInput}/>
                 </TableCell>
             </TableRow>
         }
@@ -140,7 +140,7 @@ class AmountsList extends Component {
     render() {
         const {classes} = this.props;
 
-        return  <Table className={classes.table}>
+        return  <Table className={classes.AmountsListTable}>
             <TableHead>
                 <TableRow>
                     <TableCell>Nazwa kategorii</TableCell>
@@ -155,7 +155,7 @@ class AmountsList extends Component {
                                 {ic.name}
                             </TableCell>
                             <TableCell numeric>
-                                <TextField className={classes.tableInput}
+                                <TextField className={classes.AmountsListTableInput}
                                            value={ic.value}
                                            onChange={this.onItemAmountChange(ic.name)}
                                            InputProps={{
@@ -173,7 +173,7 @@ class AmountsList extends Component {
                 })}
                 <TableRow key="new-income-category">
                     <TableCell numeric>
-                        <TextField className={classes.fullWidthInput}
+                        <TextField className={classes.AmountsListFullWidthInput}
                                    value={this.state.newItemName}
                                    placeholder={this.props.newItemTitle}
                                    onChange={this.onNewItemNameChange()}
