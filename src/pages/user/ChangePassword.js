@@ -11,35 +11,29 @@ import CardActions from "@material-ui/core/es/CardActions/CardActions";
 import {Link, Redirect} from "react-router-dom";
 
 const styles = theme => ({
-    root: {
+    ChangePasswordRoot: {
         maxWidth: '700px',
         marginTop: 20,
         marginRight: 'auto',
         marginBottom: 20,
         marginLeft: 'auto',
     },
-    paper: {
-        padding: theme.spacing.unit * 2,
-    },
-    field: {
+    ChangePasswordField: {
         width: '100%'
     },
-    formContainer: {
+    ChangePasswordFormContainer: {
         margin: '0 auto'
     },
-    changePasswordButtonContainer: {
-        display: 'flex'
-    },
-    changePasswordButton: {
+    ChangePasswordButton: {
         marginLeft: 'auto'
     },
-    actions: {
+    ChangePasswordActions: {
         display: 'flex'
     },
-    chip: {
+    ChangePasswordChip: {
         margin: theme.spacing.unit,
     },
-    chipError: {
+    ChangePasswordChipError: {
         color: "#ff3d00",
         borderColor: "#ff3d00"
     },
@@ -100,9 +94,9 @@ class ChangePassword extends Component {
     getError = () => {
         if (this.state.changePasswordErrorMessage) {
             return <Chip label={this.state.changePasswordErrorMessage}
-                         className={this.props.classes.chip}
+                         className={this.props.classes.ChangePasswordChip}
                          classes={{
-                             outlinedSecondary: this.props.classes.chipError
+                             outlinedSecondary: this.props.classes.ChangePasswordChipError
                          }}
                          color="secondary"
                          variant="outlined"
@@ -117,17 +111,17 @@ class ChangePassword extends Component {
             return <Redirect to='/'/>
         }
 
-        return <Card className={classes.root}>
+        return <Card className={classes.ChangePasswordRoot}>
             <CardHeader title="Zmiana hasła"/>
             <CardContent>
-                <div className={classes.formContainer} align="center">
+                <div className={classes.ChangePasswordFormContainer} align="center">
                     {this.getError()}
                     <div>
                         <TextField label="Nazwa użytkownika"
                                    value={this.state.username}
                                    onChange={this.onFieldChange('username')}
                                    margin="normal"
-                                   className={classes.field}/>
+                                   className={classes.ChangePasswordField}/>
                     </div>
                     <div>
                         <TextField label="Stare hasło"
@@ -135,7 +129,7 @@ class ChangePassword extends Component {
                                    onChange={this.onFieldChange('oldPassword')}
                                    type="password"
                                    margin="normal"
-                                   className={classes.field}/>
+                                   className={classes.ChangePasswordField}/>
                     </div>
                     <div>
                         <TextField label="Nowe hasło"
@@ -143,7 +137,7 @@ class ChangePassword extends Component {
                                    onChange={this.onFieldChange('newPassword')}
                                    type="password"
                                    margin="normal"
-                                   className={classes.field}/>
+                                   className={classes.ChangePasswordField}/>
                     </div>
                     <div>
                         <TextField label="Potwierdź hasło"
@@ -151,17 +145,17 @@ class ChangePassword extends Component {
                                    onChange={this.onFieldChange('passwordConfirm')}
                                    type="password"
                                    margin="normal"
-                                   className={classes.field}/>
+                                   className={classes.ChangePasswordField}/>
                     </div>
                 </div>
             </CardContent>
-            <CardActions className={classes.actions} disableActionSpacing>
+            <CardActions className={classes.ChangePasswordActions} disableActionSpacing>
                 <Button variant="outlined" color="default" component={Link} to="/">
                     Anuluj
                 </Button>
                 <Button variant="outlined"
                         color="primary"
-                        className={classes.changePasswordButton}
+                        className={classes.ChangePasswordButton}
                         onClick={this.submit}
                         disabled={this.state.buttonDisabled}>
                     Zmień hasło

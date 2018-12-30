@@ -11,10 +11,10 @@ import PercentageText from "../../../../common/PercentageText";
 import {withStyles} from "@material-ui/core";
 
 const styles = () => ({
-    percentageOk: {
+    ExpensesPerCategoryWidgetPercentageOk: {
         color: "#357a38",
     },
-    percentageWrong: {
+    ExpensesPerCategoryWidgetPercentageWrong: {
         color: "#ff3d00",
     },
 });
@@ -50,10 +50,10 @@ class ExpensesPerCategoryWidget extends Component {
 
     getColor = (item) => {
         if (item.percentage > 100.0) {
-            return this.props.classes.percentageWrong;
+            return this.props.classes.ExpensesPerCategoryWidgetPercentageWrong;
         }
         if (item.percentage > 0.0) {
-            return this.props.classes.percentageOk;
+            return this.props.classes.ExpensesPerCategoryWidgetPercentageOk;
         }
     };
 

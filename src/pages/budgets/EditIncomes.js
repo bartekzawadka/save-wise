@@ -20,21 +20,21 @@ import TextField from "@material-ui/core/TextField";
 import CurrencyField from "./new/components/CurrencyField";
 import InputAdornment from "@material-ui/core/es/InputAdornment/InputAdornment";
 
-const styles = theme => ({
-    root: {
+const styles = () => ({
+    EditIncomesRoot: {
         maxWidth: '960px',
         marginTop: 20,
         marginRight: 'auto',
         marginBottom: 20,
         marginLeft: 'auto',
     },
-    table: {
+    EditIncomesTable: {
         margin: '0 auto'
     },
-    confirmButton: {
+    EditIncomesConfirmButton: {
         marginLeft: 'auto'
     },
-    negativeDiff: {
+    EditIncomesNegativeDiff: {
         color: "#ff3d00"
     }
 });
@@ -111,7 +111,9 @@ class EditIncomes extends Component {
                                }}/>
                 </TableCell>
                 <TableCell numeric>
-                    <CurrencyText value={item.diff} className={item.diff < 0.0 ? this.props.classes.negativeDiff : ''}/>
+                    <CurrencyText value={item.diff} className={item.diff < 0.0
+                        ? this.props.classes.EditIncomesNegativeDiff
+                        : ''}/>
                 </TableCell>
             </TableRow>);
         });
@@ -131,12 +133,12 @@ class EditIncomes extends Component {
     render() {
         const {classes} = this.props;
 
-        return <div className={classes.root}>
+        return <div className={classes.EditIncomesRoot}>
             <Card>
                 <CardHeader title="Określ rzeczywiste przychody"/>
                 <Divider/>
                 <CardContent>
-                    <Table className={classes.table}>
+                    <Table className={classes.EditIncomesTable}>
                         <TableHead>
                             <TableRow>
                                 <TableCell>Nazwa kategorii</TableCell>
@@ -158,7 +160,7 @@ class EditIncomes extends Component {
                     </Button>
                     <Button variant="outlined"
                             color="primary"
-                            className={classes.confirmButton}
+                            className={classes.EditIncomesConfirmButton}
                             onClick={this.submit}>
                         <SaveIcon/>
                         Zapisz

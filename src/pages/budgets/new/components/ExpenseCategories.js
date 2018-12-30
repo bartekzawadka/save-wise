@@ -10,15 +10,15 @@ import CurrencyText from "../../../../common/CurrencyText";
 import {withStyles} from "@material-ui/core";
 
 const styles = theme => ({
-    expansionPanelContainer: {
+    ExpenseCategoriesExpansionPanelContainer: {
         marginTop: '15px',
         marginBottom: '15px'
     },
-    expansionPanelHeading: {
+    ExpenseCategoriesExpansionPanelHeading: {
         fontSize: theme.typography.pxToRem(15),
         flex: '1 auto'
     },
-    expansionPanelSubHeading: {
+    ExpenseCategoriesExpansionPanelSubHeading: {
         fontWeight: 'bold'
     }
 });
@@ -50,14 +50,14 @@ class ExpenseCategories extends Component {
     render() {
         const {classes} = this.props;
 
-        return <div className={classes.expansionPanelContainer}>
+        return <div className={classes.ExpenseCategoriesExpansionPanelContainer}>
             {this.state.expenseCategories.map((ec, ecIndex) => {
                 return <ExpansionPanel defaultExpanded={false}>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                        <Typography className={classes.expansionPanelHeading}>
+                        <Typography className={classes.ExpenseCategoriesExpansionPanelHeading}>
                             {ec.name}
                         </Typography>
-                        <Typography className={classes.expansionPanelSubHeading}>
+                        <Typography className={classes.ExpenseCategoriesExpansionPanelSubHeading}>
                             <CurrencyText value={ec.sum}/>
                         </Typography>
                     </ExpansionPanelSummary>

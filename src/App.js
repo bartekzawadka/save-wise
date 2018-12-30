@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import './App.css';
 import {createMuiTheme, withStyles} from '@material-ui/core/styles';
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import {fade} from '@material-ui/core/styles/colorManipulator';
 import {CssBaseline} from '@material-ui/core';
 import {
     BrowserRouter as Router,
@@ -46,21 +45,13 @@ function getTheme(type) {
 const theme = getTheme('light');
 
 const styles = theme => ({
-    root: {
+    AppRootClass: {
         width: '100%'
     },
-    grow: {
+    AppGrow: {
         flexGrow: 1,
     },
-    menuButton: {
-        marginLeft: -12,
-        marginRight: 20,
-    },
-    menuButtonIcon: {
-        marginRight: 10,
-        marginTop: 8
-    },
-    title: {
+    AppTitle: {
         display: 'none',
         [theme.breakpoints.up('sm')]: {
             display: 'block',
@@ -69,48 +60,7 @@ const styles = theme => ({
         fontSize: 35,
         textDecoration: 'none'
     },
-    search: {
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing.unit,
-            width: 'auto',
-        },
-    },
-    searchIcon: {
-        width: theme.spacing.unit * 9,
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    inputRoot: {
-        color: 'inherit',
-        width: '100%',
-    },
-    inputInput: {
-        paddingTop: theme.spacing.unit,
-        paddingRight: theme.spacing.unit,
-        paddingBottom: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 10,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: 120,
-            '&:focus': {
-                width: 200,
-            },
-        },
-    },
-    logo: {
+    AppLogoClass: {
         marginRight: 5
     }
 });
@@ -139,15 +89,15 @@ class App extends Component {
             <Router>
                 <MuiThemeProvider theme={theme}>
                     <CssBaseline/>
-                    <div className={classes.root}>
+                    <div className={classes.AppRootClass}>
                         <AppBar position="static">
                             <Toolbar>
-                                <img src={logo} width={48} height={48} className={classes.logo} alt=""/>
-                                <Typography className={classes.title} color="inherit" variant="h6" noWrap
+                                <img src={logo} width={48} height={48} className={classes.AppLogoClass} alt=""/>
+                                <Typography className={classes.AppTitle} color="inherit" variant="h6" noWrap
                                             component={Link} to="/">
                                     savewise
                                 </Typography>
-                                <div className={this.props.classes.grow}/>
+                                <div className={this.props.classes.AppGrow}/>
                                 <UserMenu />
                             </Toolbar>
                         </AppBar>

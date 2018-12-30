@@ -11,13 +11,7 @@ import PropTypes from "prop-types";
 import PercentageText from "../../../../common/PercentageText";
 
 const styles = () => ({
-    cardContent: {
-        paddingTop: '0px'
-    },
-    valueOk: {
-        color: "#357a38",
-    },
-    valueWrong: {
+    IncomesPerCategoryWidgetValueWrong: {
         color: "#ff3d00",
     },
 });
@@ -54,7 +48,7 @@ class IncomesPerCategoryWidget extends Component {
 
     getDiffColor = (item) => {
         if (item.diff < 0.0) {
-            return this.props.classes.valueWrong;
+            return this.props.classes.IncomesPerCategoryWidgetValueWrong;
         }
     };
 

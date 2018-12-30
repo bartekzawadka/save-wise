@@ -14,12 +14,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 
 const styles = (theme) => ({
-    formContainer: {
+    AddCategoryTypeFormContainer: {
         margin: '0 auto',
         display: 'flex',
         flexWrap: 'wrap'
     },
-    formControl: {
+    AddCategoryTypeFormControl: {
         margin: theme.spacing.unit,
         flex: '1 auto'
     }
@@ -75,8 +75,8 @@ class AddCategoryType extends Component {
             <Dialog onClose={this.handleClose} open={open} key={"add-category-type-dialog"} disableAutoFocus={true}>
                 <DialogTitle>Dodaj typ kategorii</DialogTitle>
                 <DialogContent>
-                    <div className={classes.formContainer}>
-                        <FormControl className={classes.formControl}>
+                    <div className={classes.AddCategoryTypeFormContainer}>
+                        <FormControl className={classes.AddCategoryTypeFormControl}>
                             <InputLabel htmlFor="expense-category-dialog">Kategoria</InputLabel>
                             <Select value={this.state.category}
                                     onChange={this.handleCategoryChange}
@@ -95,9 +95,9 @@ class AddCategoryType extends Component {
                             </Select>
                         </FormControl>
                     </div>
-                    <div className={classes.formContainer}>
+                    <div className={classes.AddCategoryTypeFormContainer}>
                         <TextField value={this.state.type}
-                                   className={classes.formControl}
+                                   className={classes.AddCategoryTypeFormControl}
                                    onChange={this.handleCategoryTypeChange}
                                    required
                                    label="Typ kategorii"/>

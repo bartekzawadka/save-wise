@@ -10,24 +10,12 @@ import {Link} from "react-router-dom";
 import PlanSummary from '../budgets/components/PlanSummary';
 import PlanService from "../../services/PlanService";
 
-const styles = theme => ({
-    landingPageTitle: {
+const styles = () => ({
+    HomeLandingPageTitle: {
         color: grey['500']
     },
-    fab: {
-        position: 'absolute',
-        bottom: theme.spacing.unit * 4,
-        right: theme.spacing.unit * 4,
-    },
-    zoom: {
-        transitionDelay: `${theme.transitions.duration.leavingScreen}ms`
-    },
-    newPlanButton: {
+    HomeNewPlanButton: {
         marginTop: '24px'
-    },
-    transitionDuration: {
-        enter: theme.transitions.duration.enteringScreen,
-        exit: theme.transitions.duration.leavingScreen,
     }
 });
 
@@ -69,7 +57,7 @@ class Home extends Component {
         if (!this.state.budget) {
             return <Grid container direction="column" alignItems="center" justify="center" className="landing-pane">
                 <Grid item>
-                    <Typography variant="h3" className={classes.landingPageTitle}>
+                    <Typography variant="h3" className={classes.HomeLandingPageTitle}>
                         Ładowanie...
                     </Typography>
                 </Grid>
@@ -79,12 +67,12 @@ class Home extends Component {
                 <div>
                     <Grid container direction="column" alignItems="center" justify="center" className="landing-pane">
                         <Grid item>
-                            <Typography variant="h3" className={classes.landingPageTitle}>
+                            <Typography variant="h3" className={classes.HomeLandingPageTitle}>
                                 Nie masz jeszcze budżetu wliczającego dzisiejszy dzień!
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button variant="outlined" color="primary" className={classes.newPlanButton}
+                            <Button variant="outlined" color="primary" className={classes.HomeNewPlanButton}
                                     component={Link} to='/budgets/new'>
                                 <AddIcon/>
                                 Utwóż nowy

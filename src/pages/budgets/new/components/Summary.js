@@ -12,40 +12,40 @@ import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 const styles = theme => ({
-    table: {
+    SummaryTable: {
         margin: '5px auto 15px auto'
     },
-    tableSummarySumInput: {
+    SummaryTableTableSummarySumInput: {
         width: '100px',
         fontSize: '14px',
         fontWeight: 'bold'
     },
-    summaryPanel: {
+    SummarySummaryPanel: {
         width: '100%'
     },
-    summaryTitleOk: {
+    SummarySummaryTitleOk: {
         color: "#357a38",
         borderColor: "#357a38"
     },
-    summaryTitleWrong: {
+    SummarySummaryTitleWrong: {
         color: "#ff3d00",
         borderColor: "#ff3d00"
     },
-    summaryTitleContainer: {
+    SummarySummaryTitleContainer: {
         display: 'flex',
         justifyContent: 'center',
         flexWrap: 'wrap',
     },
-    chip: {
+    SummaryChip: {
         margin: theme.spacing.unit,
     },
-    expensesLeftSummaryInputOk: {
+    SummaryExpensesLeftSummaryInputOk: {
         width: '100px',
         fontSize: '14px',
         fontWeight: 'bold',
         color: "#357a38",
     },
-    expensesLeftSummaryInputWrong: {
+    SummaryExpensesLeftSummaryInputWrong: {
         width: '100px',
         fontSize: '14px',
         fontWeight: 'bold',
@@ -63,8 +63,8 @@ class Summary extends Component {
     render() {
         const {classes} = this.props;
 
-        return <div className={classes.summaryPanel}>
-            <Table className={classes.table}>
+        return <div className={classes.SummarySummaryPanel}>
+            <Table className={classes.SummaryTable}>
                 <TableHead>
                     <TableRow>
                         <TableCell>Pozycja</TableCell>
@@ -77,7 +77,7 @@ class Summary extends Component {
                             Suma przychodów
                         </TableCell>
                         <TableCell numeric>
-                            <CurrencyText className={classes.tableSummarySumInput}
+                            <CurrencyText className={classes.SummaryTableTableSummarySumInput}
                                           value={this.state.incomesSum}/>
                         </TableCell>
                     </TableRow>
@@ -86,7 +86,7 @@ class Summary extends Component {
                             Suma wydatków
                         </TableCell>
                         <TableCell numeric>
-                            <CurrencyText className={classes.tableSummarySumInput}
+                            <CurrencyText className={classes.SummaryTableTableSummarySumInput}
                                           value={this.state.expensesSum}/>
                         </TableCell>
                     </TableRow>
@@ -96,22 +96,24 @@ class Summary extends Component {
                         </TableCell>
                         <TableCell numeric>
                             <CurrencyText
-                                className={this.state.expensesLeft === 0.0 ? classes.expensesLeftSummaryInputOk : classes.expensesLeftSummaryInputWrong}
+                                className={this.state.expensesLeft === 0.0
+                                    ? classes.SummaryExpensesLeftSummaryInputOk
+                                    : classes.SummaryExpensesLeftSummaryInputWrong}
                                 value={this.state.expensesLeft}/>
                         </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
 
-            <div className={classes.summaryTitleContainer}>
+            <div className={classes.SummarySummaryTitleContainer}>
                 <Chip
                     label={this.state.expensesLeft === 0.0 ? "Bilans planu prawidłowy!" : "Całkowita kwota kosztów nie pokrywa planowanych wydatków!"}
-                    className={classes.chip}
+                    className={classes.SummaryChip}
                     variant="outlined"
                     color={this.state.expensesLeft === 0.0 ? "primary" : "secondary"}
                     classes={{
-                        outlinedPrimary: classes.summaryTitleOk,
-                        outlinedSecondary: classes.summaryTitleWrong
+                        outlinedPrimary: classes.SummarySummaryTitleOk,
+                        outlinedSecondary: classes.SummarySummaryTitleWrong
                     }}
                     icon={this.state.expensesLeft === 0.0 ? <CheckCircleOutlineIcon/> : <ErrorOutlineIcon/>}/>
             </div>
