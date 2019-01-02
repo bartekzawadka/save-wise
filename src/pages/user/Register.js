@@ -10,6 +10,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import "../../helpers/array";
+import ErrorResolver from '../../common/ErrorResolver';
 
 const styles = theme => ({
     RegisterRoot: {
@@ -50,7 +51,7 @@ class Register extends Component {
             passwordConfirm: '',
             registerButtonDisabled: true,
             submitted: false,
-            errorMessage: '',
+            errorMessage: [],
             registrationSucceeded: false
         };
     }
@@ -70,7 +71,7 @@ class Register extends Component {
             }, e => {
                 console.log(e);
                 this.setState({
-                    errorMessage: this.getErrorMessage(e.data),
+                    errorMessage: ErrorResolver.resolveError(e.data),
                     username: '',
                     password: '',
                     passwordConfirm: ''
@@ -89,29 +90,11 @@ class Register extends Component {
         this.setState(state);
     };
 
-    getErrorMessage = (data) => {
-        if(!data || !data.error){
-            return;
-        }
-
-        let result = '';
-
-        if(data.error.isArray() && data.error.length > 0){
-            for(let k in data.error){
-                if(data.error.hasOwnProperty(k)){
-                    result += data.error[k]
-                }
-            }
-        } else {
-            result = data.error;
-        }
-
-        return result;
-    };
-
     getError = () => {
-        if (this.state.errorMessage) {
-            return <Chip label={this.state.errorMessage}
+        if (this.state.errorMessage && this.state.errorMessage.length > 0) {
+
+            return this.state.errorMessage.map(item=> {
+                return <Chip label={item}
                 className={this.props.classes.RegisterChip}
                 classes={{
                     outlinedSecondary: this.props.classes.RegisterChipError
@@ -119,6 +102,7 @@ class Register extends Component {
                 color="secondary"
                 variant="outlined"
                 icon={<ErrorOutlineIcon />} />
+            });
         }
     };
 
