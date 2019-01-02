@@ -8,6 +8,7 @@ import Chip from "@material-ui/core/Chip/Chip";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import { Redirect } from "react-router-dom";
 import ErrorResolver from '../../common/ErrorResolver';
+import HowToRegIcon from '@material-ui/icons/HowToReg';
 
 const styles = theme => ({
     LoginRoot: {
@@ -21,17 +22,16 @@ const styles = theme => ({
         padding: theme.spacing.unit * 2,
     },
     LoginPaperLoginContainer: {
-        width: 400,
+        width: 250,
         margin: '0 auto'
     },
     LoginField: {
-        minWidth: 400
+        width: 250
     },
     LoginButtonContainer: {
         marginTop: '10px',
     },
     LoginButton: {
-        width: 200
     },
     LoginChip: {
         margin: theme.spacing.unit,
@@ -132,6 +132,7 @@ class Login extends Component {
                                 className={classes.LoginButton}
                                 onClick={this.submit}
                                 disabled={this.state.loginButtonDisabled}>
+                                <HowToRegIcon/>
                                 Zaloguj
                             </Button>
                         </div>
