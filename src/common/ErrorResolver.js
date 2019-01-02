@@ -1,4 +1,4 @@
-import "../../helpers/array";
+import "../helpers/array";
 
 class ErrorResolver {
     static resolveError = (responseData) => {
