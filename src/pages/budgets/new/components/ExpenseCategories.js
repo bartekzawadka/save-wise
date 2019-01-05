@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Typography from "@material-ui/core/Typography";
 import AmountsList from "./AmountsList";
 import PropTypes from "prop-types";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpandMoreIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import CurrencyText from "../../../../common/CurrencyText";
 import TextField from "@material-ui/core/TextField/TextField";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import AddIcon from '@material-ui/icons/Add';
-import { withStyles } from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
+import {withStyles} from "@material-ui/core";
 
 const styles = theme => ({
     ExpenseCategoriesExpansionPanelContainer: {
@@ -19,6 +20,7 @@ const styles = theme => ({
     },
     ExpenseCategoriesExpansionPanelHeading: {
         fontSize: theme.typography.pxToRem(15),
+        fontWeight: theme.typography.fontWeightRegular,
         flex: '1 auto'
     },
     ExpenseCategoriesExpansionPanelSubHeading: {
@@ -40,6 +42,11 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit * 2,
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
+    },
+    ExpenseCategoriesDeleteCategoryButton: {
+        color: "#ff3d00",
+        padding: 0,
+        marginLeft: theme.spacing.unit * 2
     }
 });
 
@@ -50,7 +57,7 @@ class ExpenseCategories extends Component {
         this.state = {
             expenseCategories: this.props.expenseCategories ? this.props.expenseCategories : [],
             newExpenseCategory: ''
-        }
+        };
     }
 
     onExpensesChange = (index) => (items, sum) => {
@@ -87,37 +94,52 @@ class ExpenseCategories extends Component {
         });
     };
 
+    deleteCategory = (index) => {
+        let expenseCategories = this.state.expenseCategories;
+        expenseCategories.splice(index, 1);
+
+        this.setState({
+            expenseCategories: expenseCategories
+        });
+    };
+
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return <div className={classes.ExpenseCategoriesExpansionPanelContainer}>
             {this.state.expenseCategories.map((ec, ecIndex) => {
-                return <ExpansionPanel defaultExpanded={false}>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                return <ExpansionPanel defaultExpanded={false} key={'expenseCategory-'+ecIndex}>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                         <Typography className={classes.ExpenseCategoriesExpansionPanelHeading}>
                             {ec.name}
                         </Typography>
                         <Typography className={classes.ExpenseCategoriesExpansionPanelSubHeading}>
-                            <CurrencyText value={ec.sum} />
+                            <CurrencyText value={ec.sum}/>
                         </Typography>
+                        <div>
+                            <IconButton className={classes.ExpenseCategoriesDeleteCategoryButton}
+                                        onClick={() => this.deleteCategory(ecIndex)}>
+                                <DeleteIcon/>
+                            </IconButton>
+                        </div>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <AmountsList showSum={false} onChange={this.onExpensesChange(ecIndex)} items={ec.types}
-                            classes={classes} newItemTitle="Nazwa kategorii" />
+                                     newItemTitle="Nazwa kategorii"/>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
             })}
             <div className={classes.ExpenseCategoriesNewCategoryContainer}>
                 <TextField className={classes.ExpenseCategoriesFullWidthInput}
-                    value={this.state.newExpenseCategory}
-                    placeholder="Nowa grupa wydatków"
-                    onChange={this.onNewItemNameChange()}
+                           value={this.state.newExpenseCategory}
+                           placeholder="Nowa grupa wydatków"
+                           onChange={this.onNewItemNameChange()}
                 />
                 <IconButton color="primary"
-                    className={classes.ExpenseCategoriesAddCategoryButton}
-                    disabled={!this.state.newExpenseCategory}
-                    onClick={this.add} >
-                    <AddIcon />
+                            className={classes.ExpenseCategoriesAddCategoryButton}
+                            disabled={!this.state.newExpenseCategory}
+                            onClick={this.add}>
+                    <AddIcon/>
                 </IconButton>
             </div>
         </div>

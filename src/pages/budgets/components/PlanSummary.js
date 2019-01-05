@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
+import React, {Component} from 'react';
+import {withStyles} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Grid from "@material-ui/core/Grid/Grid";
@@ -11,13 +11,13 @@ import ExpenseCategoryShareWidget from "./widgets/ExpenseCategoryShareWidget";
 import IncomesPerCategoryWidget from "./widgets/IncomesPerCategoryWidget";
 import Button from "@material-ui/core/Button/Button";
 import AddIcon from "@material-ui/icons/Add";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ListIcon from "@material-ui/icons/List";
 import Chip from "@material-ui/core/Chip";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import InfoIcon from "@material-ui/icons/Info";
+import EditIcon from "@material-ui/icons/Edit";
 
 const styles = theme => ({
     PlanSummaryRoot: {
@@ -34,7 +34,7 @@ const styles = theme => ({
         padding: theme.spacing.unit * 2,
     },
     PlanSummaryTitleContainer: {
-        marginBottom: 5
+        marginBottom: 10
     },
     PlanSummaryTitleButtonBarButton: {
         marginRight: theme.spacing.unit * 2,
@@ -96,7 +96,7 @@ class PlanSummary extends Component {
                     classes={{
                         outlinedSecondary: this.props.classes.PlanSummaryChipContentError
                     }}
-                    icon={<ErrorOutlineIcon />} />
+                    icon={<ErrorOutlineIcon/>}/>
             </div>;
         }
     };
@@ -121,11 +121,11 @@ class PlanSummary extends Component {
                 <Typography variant="h6" color="textSecondary">
                     Okres rozliczeniowy zbliża się do końca -
                     <Button variant="flat"
-                        color="primary"
-                        size="small"
-                        className={this.props.classes.PlanSummaryNewPlanButton}
-                        component={Link}
-                        to="/budgets/new">
+                            color="primary"
+                            size="small"
+                            className={this.props.classes.PlanSummaryNewPlanButton}
+                            component={Link}
+                            to="/budgets/new">
                         Utwórz nowy plan
                     </Button>
                 </Typography>
@@ -135,7 +135,7 @@ class PlanSummary extends Component {
     };
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return <div className={classes.PlanSummaryRoot}>
             {this.getIncomesMissingAlert()}
@@ -151,36 +151,44 @@ class PlanSummary extends Component {
                         </div>
                         <div>
                             <Button color="primary"
-                                variant="flat"
-                                component={Link}
-                                className={classes.PlanSummaryTitleButtonBarButton}
-                                to={"/plan/incomes/" + this.props.plan.id}>
-                                <AttachMoneyIcon />
+                                    variant="flat"
+                                    className={classes.PlanSummaryTitleButtonBarButton}
+                                    component={Link}
+                                    to={'/budgets/edit/'+this.props.plan.id}>
+                                <EditIcon />
+                                Edytuj plan
+                            </Button>
+                            <Button color="primary"
+                                    variant="flat"
+                                    component={Link}
+                                    className={classes.PlanSummaryTitleButtonBarButton}
+                                    to={"/plan/incomes/" + this.props.plan.id}>
+                                <AttachMoneyIcon/>
                                 Przychody
                             </Button>
                             <Button color="primary"
-                                variant="flat"
-                                className={classes.PlanSummaryTitleButtonBarButton}
-                                component={Link} to={"/expenses/" + this.props.plan.id}>
-                                <ListIcon />
+                                    variant="flat"
+                                    className={classes.PlanSummaryTitleButtonBarButton}
+                                    component={Link} to={"/expenses/" + this.props.plan.id}>
+                                <ListIcon/>
                                 Wydatki
                             </Button>
                             <Button color="secondary"
-                                variant="contained"
-                                className={classes.PlanSummaryTitleButtonBarRightButton}
-                                component={Link}
-                                to={"/expense/add/" + this.props.plan.id}>
-                                <AddIcon />
+                                    variant="contained"
+                                    className={classes.PlanSummaryTitleButtonBarRightButton}
+                                    component={Link}
+                                    to={"/expense/add/" + this.props.plan.id}>
+                                <AddIcon/>
                                 Dodaj wydatek
                             </Button>
                         </div>
                     </Paper>
                 </Grid>
-                <LeftToSpendWidget plan={this.state.budget} />
-                <ExpensesSummaryChartWidget plan={this.state.budget} />
-                <ExpenseCategoryShareWidget plan={this.state.budget} />
-                <ExpensesPerCategoryWidget plan={this.state.budget} />
-                <IncomesPerCategoryWidget plan={this.state.budget} />
+                <LeftToSpendWidget plan={this.state.budget}/>
+                <ExpensesSummaryChartWidget plan={this.state.budget}/>
+                <ExpenseCategoryShareWidget plan={this.state.budget}/>
+                <ExpensesPerCategoryWidget plan={this.state.budget}/>
+                <IncomesPerCategoryWidget plan={this.state.budget}/>
             </Grid>
         </div>
     }

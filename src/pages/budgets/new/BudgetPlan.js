@@ -18,6 +18,7 @@ import ExpenseCategories from "./components/ExpenseCategories";
 import CurrencyText from "../../../common/CurrencyText";
 import Summary from "./components/Summary";
 import PlanService from "../../../services/PlanService";
+import CloseIcon from "@material-ui/icons/Close";
 
 const styles = theme => ({
     NewBudgetPlanRoot: {
@@ -87,7 +88,7 @@ function getSteps() {
     return ['Wybierz okres rozliczeniowy', 'Zaplanuj przychody', 'Określ planowane wydatki', 'Podsumowanie'];
 }
 
-class NewBudgetPlan extends Component {
+class BudgetPlan extends Component {
     constructor(props) {
         super(props);
 
@@ -113,45 +114,115 @@ class NewBudgetPlan extends Component {
         this.planService = new PlanService();
     }
 
-    async componentDidMount() {
-        await this.getData();
+    componentDidMount() {
+        this.getData();
     }
 
-    async getData() {
-        let result = await this.planService.getNewPlan();
-        let state = this.state;
+    getData = () => {
+        if (this.props.match.params.planId) {
+            this.planService.getPlan(this.props.match.params.planId).then(result => {
+                this.initializePlan(result);
+            });
+        } else {
+            this.planService.getNewPlan().then(result => {
+                this.initializePlan(result);
+            });
+        }
+    };
 
-        let data = result.data.incomeCategories;
-        for (let k in data) {
-            if (data.hasOwnProperty(k)) {
-                data[k].value = 0
+    setIncomes = (plan) => {
+        let result = [];
+        let sum = 0;
+        if (plan.data.incomes && plan.data.incomes.length > 0) {
+            for (let k in plan.data.incomes) {
+                if (plan.data.incomes.hasOwnProperty(k)) {
+                    sum += plan.data.incomes[k].plannedAmount;
+                    result.push({
+                        name: plan.data.incomes[k].category,
+                        value: plan.data.incomes[k].plannedAmount
+                    })
+                }
             }
         }
 
-        state.plan.incomeCategories = data;
+        return {
+            result: result,
+            sum: sum
+        };
+    };
 
-        state.plan.expenseCategories = result.data.expenseCategories.map(category => {
-            return {
-                "name": category.name,
-                "sum": 0,
-                "types": category.types.map(type => {
-                    return {
-                        "name": type.name,
-                        "value": 0
-                    }
-                })
+    setExpenses = (plan) => {
+        let result = [];
+        if (plan.data.expenses && plan.data.expenses.length > 0) {
+            for (let k in plan.data.expenses) {
+                if (!plan.data.expenses.hasOwnProperty(k)) {
+                    continue;
+                }
+                if (!result[plan.data.expenses[k].category]) {
+                    result[plan.data.expenses[k].category] = [];
+                }
+
+                result[plan.data.expenses[k].category].push({
+                    type: plan.data.expenses[k].type,
+                    value: plan.data.expenses[k].plannedAmount
+                });
             }
-        });
 
-        let expenseCategoriesSums = [];
-        state.plan.expenseCategories.map(item => {
-            expenseCategoriesSums[item.name] = 0
-        });
+            let tmp = [];
 
-        state.plan.expenseCategoriesSums = expenseCategoriesSums;
+            for (let v in result) {
+                if (!result.hasOwnProperty(v)) {
+                    continue;
+                }
+                let sum = 0;
+
+                for (let s in result[v]) {
+                    if (result[v].hasOwnProperty(s)) {
+                        sum += result[v][s].value;
+                    }
+                }
+                tmp.push({
+                    name: v,
+                    sum: sum,
+                    types: result[v].map(category => {
+                        return {
+                            name: category.type,
+                            value: category.value
+                        }
+                    })
+                });
+            }
+
+            result = tmp;
+        }
+
+        return result;
+    };
+
+    initializePlan = (plan) => {
+        let state = this.state;
+        let result = plan;
+
+        if (result.data.startDate) {
+            let startDate = new Date(result.data.startDate.toString());
+            startDate.setHours(0, 0, 0, 0);
+            state.plan.from = startDate.yyyymmdd();
+        }
+        if (result.data.endDate) {
+            let endDate = new Date(result.data.endDate.toString());
+            endDate.setHours(0, 0, 0, 0);
+            state.plan.to = endDate.yyyymmdd();
+        }
+
+        let incomes = this.setIncomes(result);
+
+        state.plan.incomeCategories = incomes.result;
+        state.plan.incomesSum = incomes.sum;
+        state.plan.expenseCategories = this.setExpenses(result);
 
         this.setState(state);
-    }
+        this.updateExpenses();
+    };
 
     savePlan() {
 
@@ -163,17 +234,20 @@ class NewBudgetPlan extends Component {
         });
 
         let expenses = [];
+        //todo: refactor
         for (let k in this.state.plan.expenseCategories) {
-            if (this.state.plan.expenseCategories.hasOwnProperty(k)) {
-                for (let t in this.state.plan.expenseCategories[k].types) {
-                    if (this.state.plan.expenseCategories[k].types.hasOwnProperty(t)) {
-                        expenses.push({
-                            plannedAmount: this.state.plan.expenseCategories[k].types[t].value,
-                            type: this.state.plan.expenseCategories[k].types[t].name,
-                            category: this.state.plan.expenseCategories[k].name
-                        });
-                    }
+            if (!this.state.plan.expenseCategories.hasOwnProperty(k)) {
+                continue;
+            }
+            for (let t in this.state.plan.expenseCategories[k].types) {
+                if (!this.state.plan.expenseCategories[k].types.hasOwnProperty(t)) {
+                    continue;
                 }
+                expenses.push({
+                    plannedAmount: this.state.plan.expenseCategories[k].types[t].value,
+                    type: this.state.plan.expenseCategories[k].types[t].name,
+                    category: this.state.plan.expenseCategories[k].name
+                });
             }
         }
 
@@ -184,9 +258,15 @@ class NewBudgetPlan extends Component {
             expenses: expenses
         };
 
-        this.planService.addNewPlan(saveData).then(() => {
-            this.props.history.push('/');
-        }).catch(e => console.log(e));
+        if (this.props.match.params.planId) {
+            this.planService.updatePlan(this.props.match.params.planId, saveData).then(() => {
+                this.props.history.push('/');
+            }).catch(e => console.log(e));
+        } else {
+            this.planService.addNewPlan(saveData).then(() => {
+                this.props.history.push('/');
+            }).catch(e => console.log(e));
+        }
     }
 
     updateIncomeCategories = () => (items, sum) => {
@@ -212,7 +292,7 @@ class NewBudgetPlan extends Component {
             case 3:
                 return this.getSummary();
             default:
-                return 'Unknown step';
+                return 'Nieokreślony krok';
         }
     }
 
@@ -322,7 +402,7 @@ class NewBudgetPlan extends Component {
                                         : classes.NewBudgetPlanProgressBarColorWrong
                                 }}/>
             </div>
-            <ExpenseCategories classes={classes} expenseCategories={this.state.plan.expenseCategories}
+            <ExpenseCategories expenseCategories={this.state.plan.expenseCategories}
                                onChange={this.handleOnExpenseCategoriesChange()}/>
         </div>
     }
@@ -341,9 +421,33 @@ class NewBudgetPlan extends Component {
     };
 
     handleBack = () => {
+        if (this.state.activeStep === 0 && this.props.match.params.planId) {
+            this.props.history.goBack();
+            return;
+        }
+
         this.setState(state => ({
             activeStep: state.activeStep - 1,
         }));
+    };
+
+    getBackButton = () => {
+        if (this.props.match.params.planId && this.state.activeStep === 0) {
+            return <Button
+                onClick={() => this.props.history.goBack()}
+                className={this.props.classes.NewBudgetPlanButton}>
+                <CloseIcon/>
+                Anuluj
+            </Button>
+        } else {
+            return <Button
+                disabled={this.state.activeStep === 0}
+                onClick={this.handleBack}
+                className={this.props.classes.NewBudgetPlanButton}>
+                <KeyboardArrowLeftIcon/>
+                Wstecz
+            </Button>
+        }
     };
 
     render() {
@@ -354,7 +458,7 @@ class NewBudgetPlan extends Component {
             <div className={classes.NewBudgetPlanRoot}>
                 <Paper elevation={1} className={classes.NewBudgetPlanPaper}>
                     <Typography variant='h6'>
-                        Nowy plan budżetowy
+                        {this.props.match.params.planId ? 'Edycja planu budżetowego' : 'Nowy plan budżetowy'}
                     </Typography>
                     <Stepper activeStep={this.state.activeStep}>
                         {steps.map((label) => {
@@ -373,13 +477,7 @@ class NewBudgetPlan extends Component {
                                 {this.getStepContent(this.state.activeStep, classes)}
                             </div>
                             <div>
-                                <Button
-                                    disabled={this.state.activeStep === 0}
-                                    onClick={this.handleBack}
-                                    className={classes.NewBudgetPlanButton}>
-                                    <KeyboardArrowLeftIcon/>
-                                    Wstecz
-                                </Button>
+                                {this.getBackButton()}
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -400,8 +498,8 @@ class NewBudgetPlan extends Component {
     }
 }
 
-NewBudgetPlan.propTypes = {
+BudgetPlan.propTypes = {
     classes: PropTypes.object
 };
 
-export default withStyles(styles)(NewBudgetPlan);
+export default withStyles(styles)(BudgetPlan);

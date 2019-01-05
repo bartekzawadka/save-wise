@@ -1,3 +1,4 @@
+/* eslint-disable no-extend-native */
 Date.prototype.yyyymmdd = function() {
     let mm = this.getMonth() + 1; // getMonth() is zero-based
     let dd = this.getDate();

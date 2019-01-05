@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {userService} from "../../services/UserService";
 import Chip from "@material-ui/core/Chip/Chip";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import {Link, Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import {TextField, withStyles} from "@material-ui/core";
 import CardHeader from "@material-ui/core/CardHeader/CardHeader";
 import CardContent from "@material-ui/core/CardContent/CardContent";

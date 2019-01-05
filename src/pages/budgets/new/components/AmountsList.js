@@ -42,6 +42,9 @@ class AmountsList extends Component {
             newItemName: '',
             sum: 0.0
         };
+    }
+
+    componentDidMount() {
         this.updateSum();
     }
 

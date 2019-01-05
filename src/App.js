@@ -13,7 +13,7 @@ import {
 } from 'react-router-dom';
 import Home from './pages/home/Home';
 import BudgetsList from './pages/budgets/BudgetsList';
-import NewBudgetPlan from "./pages/budgets/new/NewBudgetPlan";
+import BudgetPlan from "./pages/budgets/new/BudgetPlan";
 import {loadProgressBar} from "axios-progress-bar";
 import 'axios-progress-bar/dist/nprogress.css';
 import moment from 'moment';
@@ -38,6 +38,9 @@ function getTheme(type) {
             secondary: {
                 main: '#ffc400',
             },
+        },
+        typography: {
+            useNextVariants: true,
         },
     });
 }
@@ -108,7 +111,8 @@ class App extends Component {
                     <Route exact path="/register" component={Register}/>
                     <PrivateRoute exact path="/changePassword" component={ChangePassword}/>
                     <PrivateRoute exact path="/budgets/list" component={BudgetsList}/>
-                    <PrivateRoute exact path='/budgets/new' component={NewBudgetPlan}/>
+                    <PrivateRoute exact path='/budgets/new' component={BudgetPlan}/>
+                    <PrivateRoute exact path='/budgets/edit/:planId' component={BudgetPlan} />
                     <PrivateRoute exact path='/expense/add/:planId' component={AddEditExpense}/>
                     <PrivateRoute exact path='/plan/incomes/:planId' component={EditIncomes}/>
                     <PrivateRoute exact path='/expenses/:planId' component={ExpenseList}/>
