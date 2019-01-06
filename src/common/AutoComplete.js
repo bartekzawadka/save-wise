@@ -109,9 +109,14 @@ class AutoComplete extends Component {
         const inputLength = inputValue.length;
         let count = 0;
 
-        return inputLength === 0 && this.state.originalSuggestions && this.state.originalSuggestions.length > 0
-            ? []
-            : this.state.originalSuggestions.filter(suggestion => {
+        if(!this.state.originalSuggestions || this.state.originalSuggestions.length === 0){
+            return [];
+        }
+        if(inputLength === 0){
+            return this.state.originalSuggestions;
+        }
+
+        return this.state.originalSuggestions.filter(suggestion => {
                 const keep = count < 5 && suggestion.slice(0, inputLength).toLowerCase() === inputValue;
 
                 if (keep) {
@@ -138,6 +143,10 @@ class AutoComplete extends Component {
         });
     };
 
+    shouldRenderSuggestions = () => {
+        return true;
+    };
+
     handleChange = () => (event, {newValue}) => {
         this.setState({
             value: newValue,
@@ -156,6 +165,7 @@ class AutoComplete extends Component {
             onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
             onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
             getSuggestionValue: this.getSuggestionValue,
+            shouldRenderSuggestions: this.shouldRenderSuggestions,
             renderSuggestion,
 
         };
