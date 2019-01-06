@@ -13,6 +13,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import CurrencyField from "./CurrencyField";
 import {withStyles} from "@material-ui/core";
 import CurrencyText from "../../../../common/CurrencyText";
+import AutoComplete from "../../../../common/AutoComplete";
 
 const styles = () => ({
     AmountsListTable: {
@@ -50,14 +51,34 @@ class AmountsList extends Component {
 
     add() {
         let state = this.state;
-        state.items.push({
-            name: state.newItemName,
-            value: 0
-        });
+
+        let canPush = true;
+
+        if (!state.newItemName) {
+            canPush = false;
+        } else {
+            for (let k in state.items) {
+                if (!state.items.hasOwnProperty(k)) {
+                    break;
+                }
+
+                if (state.items[k].name.toLowerCase() === state.newItemName.toLowerCase()) {
+                    canPush = false;
+                    break;
+                }
+            }
+        }
+
+        if (canPush) {
+            state.items.push({
+                name: state.newItemName,
+                value: 0
+            });
+        }
 
         state.newItemName = "";
         this.setState(state);
-        if(this.props.onChange){
+        if (this.props.onChange) {
             this.props.onChange(state.items);
         }
 
@@ -65,9 +86,9 @@ class AmountsList extends Component {
         this.handleOnChange();
     }
 
-    onNewItemNameChange = () => event => {
+    onNewItemNameChange = () => newValue => {
         this.setState({
-            newItemName: event.target.value
+            newItemName: newValue
         });
     };
 
@@ -87,7 +108,7 @@ class AmountsList extends Component {
         this.handleOnChange();
     };
 
-    deleteItem = (name) =>{
+    deleteItem = (name) => {
         let state = this.state;
         let index;
         for (let k in state.items) {
@@ -107,13 +128,13 @@ class AmountsList extends Component {
         this.handleOnChange();
     };
 
-    handleOnChange(){
-        if(this.props.onChange){
+    handleOnChange() {
+        if (this.props.onChange) {
             this.props.onChange(this.state.items, this.state.sum);
         }
     }
 
-    updateSum(){
+    updateSum() {
         let sum = 0;
         let state = this.state;
 
@@ -127,8 +148,8 @@ class AmountsList extends Component {
         this.setState(state);
     }
 
-    getSum(){
-        if(this.props.showSum){
+    getSum() {
+        if (this.props.showSum) {
             return <TableRow key="sum">
                 <TableCell component="th" scope="row">
                     <b>SUMA</b>
@@ -143,7 +164,7 @@ class AmountsList extends Component {
     render() {
         const {classes} = this.props;
 
-        return  <Table className={classes.AmountsListTable}>
+        return <Table className={classes.AmountsListTable}>
             <TableHead>
                 <TableRow>
                     <TableCell>Nazwa kategorii</TableCell>
@@ -176,10 +197,12 @@ class AmountsList extends Component {
                 })}
                 <TableRow key="new-income-category">
                     <TableCell numeric>
-                        <TextField className={classes.AmountsListFullWidthInput}
-                                   value={this.state.newItemName}
-                                   placeholder={this.props.newItemTitle}
-                                   onChange={this.onNewItemNameChange()}
+                        <AutoComplete
+                            value={this.state.newItemName}
+                            suggestions={this.props.newItemSuggestions}
+                            placeholder={this.props.newItemTitle}
+                            className={classes.AmountsListFullWidthInput}
+                            onChange={this.onNewItemNameChange()}
                         />
                     </TableCell>
                     <TableCell>
@@ -198,7 +221,8 @@ AmountsList.propTypes = {
     items: PropTypes.array,
     onChange: PropTypes.func,
     newItemTitle: PropTypes.string.isRequired,
-    showSum: PropTypes.bool.isRequired
+    showSum: PropTypes.bool.isRequired,
+    newItemSuggestions: PropTypes.array
 };
 
 export default withStyles(styles)(AmountsList);

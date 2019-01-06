@@ -12,6 +12,7 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {withStyles} from "@material-ui/core";
+import AutoComplete from "../../../../common/AutoComplete";
 
 const styles = theme => ({
     ExpenseCategoriesExpansionPanelContainer: {
@@ -56,9 +57,20 @@ class ExpenseCategories extends Component {
 
         this.state = {
             expenseCategories: this.props.expenseCategories ? this.props.expenseCategories : [],
+            allCategories: this.props.allCategories ? this.props.allCategories : [],
+            categoriesNames: [],
             newExpenseCategory: ''
         };
     }
+
+    getCategoriesSuggestions = () => {
+        let names = [];
+        if (this.props.allCategories && this.props.allCategories.length > 0) {
+            names = this.props.allCategories.map(item => item.name);
+        }
+
+        return names;
+    };
 
     onExpensesChange = (index) => (items, sum) => {
         let state = this.state;
@@ -75,19 +87,59 @@ class ExpenseCategories extends Component {
         }
     }
 
-    onNewItemNameChange = () => event => {
+    onNewItemNameChange = () => newValue => {
         this.setState({
-            newExpenseCategory: event.target.value
+            newExpenseCategory: newValue
         });
     };
 
     add = () => {
         let categories = this.state.expenseCategories;
-        categories.push({
-            name: this.state.newExpenseCategory,
-            types: [],
-            sum: 0.0
-        });
+
+        let canPush = true;
+
+        if(!this.state.newExpenseCategory){
+            canPush = false;
+        }
+
+        for(let k in categories){
+            if(!categories.hasOwnProperty(k)){
+                continue;
+            }
+
+            if(categories[k].name.toLowerCase() === this.state.newExpenseCategory.toLowerCase()){
+                canPush = false;
+            }
+        }
+
+        if(canPush) {
+            let value = this.state.newExpenseCategory;
+
+            let itemToAdd = {
+                name: value,
+                types: [],
+                sum: 0.0
+            };
+
+            if(this.props.allCategories && this.props.allCategories.length > 0){
+                let filtered = this.props.allCategories.filter(item => {
+                    return item.name.toLowerCase() === value.toLowerCase();
+                });
+
+                if(filtered && filtered.length > 0){
+                    itemToAdd.value = filtered[0].name;
+                    itemToAdd.types = filtered[0].types.map(type => {
+                        return {
+                            name: type.name,
+                            value: 0
+                        }
+                    });
+                }
+            }
+
+            categories.push(itemToAdd);
+        }
+
         this.setState({
             expenseCategories: categories,
             newExpenseCategory: ''
@@ -108,7 +160,9 @@ class ExpenseCategories extends Component {
 
         return <div className={classes.ExpenseCategoriesExpansionPanelContainer}>
             {this.state.expenseCategories.map((ec, ecIndex) => {
-                return <ExpansionPanel defaultExpanded={false} key={'expenseCategory-'+ecIndex}>
+                let suggestions = ec.types ? ec.types.map(item=>item.name) : [];
+
+                return <ExpansionPanel defaultExpanded={false} key={'expenseCategoryList-' + ecIndex}>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                         <Typography className={classes.ExpenseCategoriesExpansionPanelHeading}>
                             {ec.name}
@@ -124,17 +178,21 @@ class ExpenseCategories extends Component {
                         </div>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                        <AmountsList showSum={false} onChange={this.onExpensesChange(ecIndex)} items={ec.types}
+                        <AmountsList showSum={false}
+                                     onChange={this.onExpensesChange(ecIndex)}
+                                     items={ec.types}
+                                     newItemSuggestions={suggestions}
                                      newItemTitle="Nazwa kategorii"/>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
             })}
             <div className={classes.ExpenseCategoriesNewCategoryContainer}>
-                <TextField className={classes.ExpenseCategoriesFullWidthInput}
-                           value={this.state.newExpenseCategory}
-                           placeholder="Nowa grupa wydatków"
-                           onChange={this.onNewItemNameChange()}
-                />
+                <div className={classes.ExpenseCategoriesFullWidthInput}>
+                <AutoComplete suggestions={this.getCategoriesSuggestions()}
+                              value={this.state.newExpenseCategory}
+                              onChange={this.onNewItemNameChange()}
+                              placeholder="Nowa grupa wydatków"/>
+                </div>
                 <IconButton color="primary"
                             className={classes.ExpenseCategoriesAddCategoryButton}
                             disabled={!this.state.newExpenseCategory}
@@ -148,6 +206,7 @@ class ExpenseCategories extends Component {
 
 ExpenseCategories.propTypes = {
     expenseCategories: PropTypes.array,
+    allCategories: PropTypes.array,
     onChange: PropTypes.func,
 };
 

@@ -19,6 +19,8 @@ import CurrencyText from "../../../common/CurrencyText";
 import Summary from "./components/Summary";
 import PlanService from "../../../services/PlanService";
 import CloseIcon from "@material-ui/icons/Close";
+import IncomeService from "../../../services/IncomeService";
+import ExpenseService from "../../../services/ExpenseService";
 
 const styles = theme => ({
     NewBudgetPlanRoot: {
@@ -95,6 +97,8 @@ class BudgetPlan extends Component {
         let date = new Date();
         this.state = {
             activeStep: 0,
+            dbIncomeCategories: [],
+            dbExpenseCategories: [],
             plan: {
                 from: new Date(date.getFullYear(), date.getMonth(), 1).yyyymmdd(),
                 to: new Date(date.getFullYear(), date.getMonth() + 1, 0).yyyymmdd(),
@@ -112,6 +116,8 @@ class BudgetPlan extends Component {
         };
 
         this.planService = new PlanService();
+        this.incomeService = new IncomeService();
+        this.expenseService = new ExpenseService();
     }
 
     componentDidMount() {
@@ -128,6 +134,28 @@ class BudgetPlan extends Component {
                 this.initializePlan(result);
             });
         }
+
+        this.incomeService.getIncomeCategories().then(result => {
+            if(!result || !result.data || result.data.length === 0){
+                return;
+            }
+
+            let names = result.data.map(item => item.name);
+
+            this.setState({
+                dbIncomeCategories: names
+            });
+        });
+
+        this.expenseService.getExpenseCategories().then(result => {
+            if(!result || !result.data || result.data.length === 0){
+                return;
+            }
+
+            this.setState({
+                dbExpenseCategories: result.data
+            });
+        });
     };
 
     setIncomes = (plan) => {
@@ -234,7 +262,7 @@ class BudgetPlan extends Component {
         });
 
         let expenses = [];
-        //todo: refactor
+
         for (let k in this.state.plan.expenseCategories) {
             if (!this.state.plan.expenseCategories.hasOwnProperty(k)) {
                 continue;
@@ -286,7 +314,7 @@ class BudgetPlan extends Component {
             case 1:
                 return <AmountsList items={this.state.plan.incomeCategories}
                                     newItemTitle="Nazwa kategorii" onChange={this.updateIncomeCategories()}
-                                    showSum={true}/>;
+                                    showSum={true} newItemSuggestions={this.state.dbIncomeCategories}/>;
             case 2:
                 return this.getExpenseCategories(classes);
             case 3:
@@ -403,6 +431,7 @@ class BudgetPlan extends Component {
                                 }}/>
             </div>
             <ExpenseCategories expenseCategories={this.state.plan.expenseCategories}
+                               allCategories={this.state.dbExpenseCategories}
                                onChange={this.handleOnExpenseCategoriesChange()}/>
         </div>
     }
