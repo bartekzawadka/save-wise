@@ -18,6 +18,9 @@ import ListIcon from "@material-ui/icons/List";
 import Chip from "@material-ui/core/Chip";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import EditIcon from "@material-ui/icons/Edit";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import ConfirmationDialog from "../../../common/dialogs/ConfirmationDialog";
+import PlanService from "../../../services/PlanService";
 
 const styles = theme => ({
     PlanSummaryRoot: {
@@ -55,6 +58,9 @@ const styles = theme => ({
     },
     PlanSummaryNewPlanButton: {
         marginLeft: theme.spacing.unit
+    },
+    PlanSummaryDeletePlanButton: {
+        color: "#ff3d00",
     }
 });
 
@@ -64,8 +70,11 @@ class PlanSummary extends Component {
 
         this.state = {
             budget: this.props.plan,
-            incomesMissing: false
-        }
+            incomesMissing: false,
+            deletePlanDialogOpen: false
+        };
+
+        this.planService = new PlanService();
     }
 
     componentDidMount() {
@@ -134,6 +143,30 @@ class PlanSummary extends Component {
         }
     };
 
+    handleDeletePlanDialogOpen = () => {
+        this.setState({
+            deletePlanDialogOpen: true
+        });
+    };
+
+    handleDeletePlanDialogClose = (result) => {
+        this.setState({
+            deletePlanDialogOpen: false
+        });
+
+        if (!result) {
+            return;
+        }
+
+        this.planService.deletePlan(this.state.budget.id).then(() => {
+            if(this.props.onPlanChanged){
+                this.props.onPlanChanged();
+            }
+        }).catch(e => {
+            console.log(e);
+        });
+    };
+
     render() {
         const {classes} = this.props;
 
@@ -150,13 +183,19 @@ class PlanSummary extends Component {
                             </Typography>
                         </div>
                         <div>
+                            <Button className={classes.PlanSummaryDeletePlanButton}
+                                    variant="text"
+                                    onClick={this.handleDeletePlanDialogOpen}>
+                                <DeleteForeverIcon/>
+                                Usuń
+                            </Button>
                             <Button color="primary"
                                     variant="flat"
                                     className={classes.PlanSummaryTitleButtonBarButton}
                                     component={Link}
-                                    to={'/budgets/edit/'+this.props.plan.id}>
-                                <EditIcon />
-                                Edytuj plan
+                                    to={'/budgets/edit/' + this.props.plan.id}>
+                                <EditIcon/>
+                                Edytuj
                             </Button>
                             <Button color="primary"
                                     variant="flat"
@@ -190,13 +229,19 @@ class PlanSummary extends Component {
                 <ExpensesPerCategoryWidget plan={this.state.budget}/>
                 <IncomesPerCategoryWidget plan={this.state.budget}/>
             </Grid>
+            <ConfirmationDialog open={this.state.deletePlanDialogOpen}
+                                onClose={this.handleDeletePlanDialogClose}
+                                title={"Czy na pewno chcesz usunąć?"}
+                                message={"Czy jesteś pewien, że chcesz usunąć cały plan oraz jego realizację? " +
+                                "Ta operacja jest nieodwracalna!"}/>
         </div>
     }
 }
 
 PlanSummary.propTypes = {
     classes: PropTypes.object.required,
-    plan: PropTypes.object.required
+    plan: PropTypes.object.required,
+    onPlanChanged: PropTypes.func
 };
 
 

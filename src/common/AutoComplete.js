@@ -89,21 +89,6 @@ class AutoComplete extends Component {
         };
     }
 
-    componentWillUpdate(nextProps, nextState, nextContext) {
-        if (nextProps.suggestions
-            && nextProps.suggestions.length > 0
-            && (!this.props.suggestions || this.props.suggestions.length === 0)) {
-
-            console.log('NEW PROPS');
-            console.log(nextProps);
-
-            this.setState({
-                suggestions: this.props.suggestions,
-                originalSuggestions: this.props.suggestions,
-            });
-        }
-    }
-
     getSuggestions = (value) => {
         const inputValue = value.trim().toLowerCase();
         const inputLength = inputValue.length;

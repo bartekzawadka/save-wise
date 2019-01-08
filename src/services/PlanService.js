@@ -12,7 +12,7 @@ class PlanService extends Service {
     };
 
     getPlan = (planId) => {
-        return axios.get(ApiCalls.getPlanUrl()+'/'+planId, super.getRequestConfig());
+        return axios.get(ApiCalls.getPlanUrl() + '/' + planId, super.getRequestConfig());
     };
 
     addNewPlan = (plan) => {
@@ -20,7 +20,11 @@ class PlanService extends Service {
     };
 
     updatePlan = (planId, plan) => {
-        return axios.put(ApiCalls.getPlanUrl()+'/'+planId, plan, super.getRequestConfig());
+        return axios.put(ApiCalls.getPlanUrl() + '/' + planId, plan, super.getRequestConfig());
+    };
+
+    deletePlan = (planId) => {
+        return axios.delete(ApiCalls.getPlanUrl() + '/' + planId, super.getRequestConfig());
     };
 
     getPlanIncomes = (planId) => {
