@@ -17,7 +17,7 @@ class CurrencyText extends Component {
 
 CurrencyText.propTypes = {
     className: PropTypes.string,
-    value: PropTypes.object.isRequired
+    value: PropTypes.number.isRequired
 };
 
 export default CurrencyText;

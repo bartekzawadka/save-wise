@@ -20,6 +20,8 @@ import ExpenseService from "../../services/ExpenseService";
 import AddCategory from "./AddCategory";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import AddCategoryType from "./AddCategoryType";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import ConfirmationDialog from "../../common/dialogs/ConfirmationDialog";
 
 const styles = theme => ({
     AddEditExpenseRoot: {
@@ -55,6 +57,9 @@ const styles = theme => ({
         height: 48,
         marginTop: 'auto',
         marginBottom: 'auto'
+    },
+    AddEditExpenseDeleteButton: {
+        color: '#ff3d00'
     }
 });
 
@@ -98,7 +103,8 @@ class AddEditExpense extends Component {
                 ? this.props.match.params.expenseId
                 : '',
             addCategoryOpen: false,
-            addCategoryTypeOpen: false
+            addCategoryTypeOpen: false,
+            expenseDeleteDialogOpen: false
         };
 
         this.expenseService = new ExpenseService();
@@ -186,7 +192,7 @@ class AddEditExpense extends Component {
             isFormInvalid: this.getFormInvalid([category.value, type.value, amount.value]),
             comment: {
                 value: (data.comment) ? data.comment : ''
-            }
+            },
         });
     };
 
@@ -297,9 +303,9 @@ class AddEditExpense extends Component {
 
         this.expenseService.upsertExpense(this.props.match.params.planId, data, this.state.expenseId)
             .then(() => {
-                if(this.props.match.params.planId && this.state.expenseId){
+                if (this.props.match.params.planId && this.state.expenseId) {
                     this.props.history.goBack();
-                }else {
+                } else {
                     this.props.history.push('/');
                 }
             })
@@ -368,12 +374,43 @@ class AddEditExpense extends Component {
         }
     };
 
+    handleDeleteDialogOpen = () => {
+        this.setState({
+            expenseDeleteDialogOpen: true
+        });
+    };
+
+    handleDeleteDialogClose = (result) => {
+        this.setState({
+            expenseDeleteDialogOpen: false
+        });
+
+        if (result) {
+            this.expenseService.deleteExpense(this.props.match.params.planId, this.props.match.params.expenseId)
+                .then(() => {
+                    this.props.history.goBack();
+                }).catch(e => {
+                console.log(e);
+            })
+        }
+    };
+
     render() {
         const {classes} = this.props;
 
         return <div className={classes.AddEditExpenseRoot}>
             <Card>
-                <CardHeader title={this.getTitle()}/>
+                <CardHeader title={this.getTitle()} action={
+                    (this.state.expenseId) ?
+                        <Button variant="text"
+                                className={classes.AddEditExpenseDeleteButton}
+                                onClick={this.handleDeleteDialogOpen}>
+                            <DeleteForeverIcon/>
+                            Usuń
+                        </Button>
+                        : ''
+                }>
+                </CardHeader>
                 <CardContent>
                     <div className={classes.AddEditExpenseFormContainer} align="center">
                         <TextField
@@ -411,7 +448,8 @@ class AddEditExpense extends Component {
                                 {this.state.category.errorMessage}
                             </FormHelperText>
                         </FormControl>
-                        <IconButton color="primary" onClick={this.handleOpenAddCategory} className={classes.AddEditExpenseIconButton}>
+                        <IconButton color="primary" onClick={this.handleOpenAddCategory}
+                                    className={classes.AddEditExpenseIconButton}>
                             <AddIcon/>
                         </IconButton>
                     </div>
@@ -432,7 +470,8 @@ class AddEditExpense extends Component {
                                     </MenuItem>
                                 })}
                             </Select>
-                            <FormHelperText className={classes.AddEditExpenseError}>{this.state.type.errorMessage}</FormHelperText>
+                            <FormHelperText
+                                className={classes.AddEditExpenseError}>{this.state.type.errorMessage}</FormHelperText>
                         </FormControl>
                         <IconButton color="primary" onClick={this.handleOpenAddCategoryType}
                                     className={classes.AddEditExpenseIconButton}>
@@ -483,6 +522,10 @@ class AddEditExpense extends Component {
                                  open={this.state.addCategoryTypeOpen}
                                  category={this.state.category.value}
                                  categories={this.state.categories}/> : undefined}
+            <ConfirmationDialog message="Czy na pewno chcesz usunąć wydatek? Ta operacja jest nieodwracalna!"
+                                title="Czy chcesz kontynuować?"
+                                open={this.state.expenseDeleteDialogOpen}
+                                onClose={this.handleDeleteDialogClose}/>
         </div>
     }
 }

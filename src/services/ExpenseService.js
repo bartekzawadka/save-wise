@@ -24,6 +24,10 @@ class ExpenseService extends Service {
         return axios.post(ApiCalls.getExpenseUrl() + "/" + planId, expense, super.getRequestConfig());
     };
 
+    deleteExpense = (planId, expenseId) => {
+        return axios.delete(ApiCalls.getExpenseUrl() + '/' + planId + '/' + expenseId, super.getRequestConfig());
+    };
+
     addExpenseCategoryType = (categoryId, type) => {
         return axios.post(ApiCalls.getExpenseUrl() + "/categories/" + categoryId + "/type", type, super.getRequestConfig());
     };

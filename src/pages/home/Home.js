@@ -31,6 +31,10 @@ class Home extends Component {
     }
 
     componentDidMount() {
+        this.getData();
+    }
+
+    getData = () => {
         this.planService.getCurrentPlan().then(data => {
             let plans = {};
             if (data && data.data) {
@@ -46,8 +50,8 @@ class Home extends Component {
             this.setState({
                 budget: {}
             });
-        })
-    }
+        });
+    };
 
     render() {
         const {classes} = this.props;
@@ -82,7 +86,7 @@ class Home extends Component {
                 </div>;
         } else {
             content = <div>
-                <PlanSummary plan={this.state.budget}/>
+                <PlanSummary plan={this.state.budget} onPlanChanged={this.getData}/>
             </div>
         }
 

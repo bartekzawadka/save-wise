@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
+import React, {Component} from 'react';
+import {withStyles} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Grid from "@material-ui/core/Grid/Grid";
@@ -11,13 +11,16 @@ import ExpenseCategoryShareWidget from "./widgets/ExpenseCategoryShareWidget";
 import IncomesPerCategoryWidget from "./widgets/IncomesPerCategoryWidget";
 import Button from "@material-ui/core/Button/Button";
 import AddIcon from "@material-ui/icons/Add";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ListIcon from "@material-ui/icons/List";
 import Chip from "@material-ui/core/Chip";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import InfoIcon from "@material-ui/icons/Info";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import ConfirmationDialog from "../../../common/dialogs/ConfirmationDialog";
+import PlanService from "../../../services/PlanService";
 
 const styles = theme => ({
     PlanSummaryRoot: {
@@ -34,7 +37,7 @@ const styles = theme => ({
         padding: theme.spacing.unit * 2,
     },
     PlanSummaryTitleContainer: {
-        marginBottom: 5
+        marginBottom: 10
     },
     PlanSummaryTitleButtonBarButton: {
         marginRight: theme.spacing.unit * 2,
@@ -55,6 +58,9 @@ const styles = theme => ({
     },
     PlanSummaryNewPlanButton: {
         marginLeft: theme.spacing.unit
+    },
+    PlanSummaryDeletePlanButton: {
+        color: "#ff3d00",
     }
 });
 
@@ -64,8 +70,11 @@ class PlanSummary extends Component {
 
         this.state = {
             budget: this.props.plan,
-            incomesMissing: false
-        }
+            incomesMissing: false,
+            deletePlanDialogOpen: false
+        };
+
+        this.planService = new PlanService();
     }
 
     componentDidMount() {
@@ -96,7 +105,7 @@ class PlanSummary extends Component {
                     classes={{
                         outlinedSecondary: this.props.classes.PlanSummaryChipContentError
                     }}
-                    icon={<ErrorOutlineIcon />} />
+                    icon={<ErrorOutlineIcon/>}/>
             </div>;
         }
     };
@@ -121,11 +130,11 @@ class PlanSummary extends Component {
                 <Typography variant="h6" color="textSecondary">
                     Okres rozliczeniowy zbliża się do końca -
                     <Button variant="flat"
-                        color="primary"
-                        size="small"
-                        className={this.props.classes.PlanSummaryNewPlanButton}
-                        component={Link}
-                        to="/budgets/new">
+                            color="primary"
+                            size="small"
+                            className={this.props.classes.PlanSummaryNewPlanButton}
+                            component={Link}
+                            to="/budgets/new">
                         Utwórz nowy plan
                     </Button>
                 </Typography>
@@ -134,8 +143,32 @@ class PlanSummary extends Component {
         }
     };
 
+    handleDeletePlanDialogOpen = () => {
+        this.setState({
+            deletePlanDialogOpen: true
+        });
+    };
+
+    handleDeletePlanDialogClose = (result) => {
+        this.setState({
+            deletePlanDialogOpen: false
+        });
+
+        if (!result) {
+            return;
+        }
+
+        this.planService.deletePlan(this.state.budget.id).then(() => {
+            if(this.props.onPlanChanged){
+                this.props.onPlanChanged();
+            }
+        }).catch(e => {
+            console.log(e);
+        });
+    };
+
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return <div className={classes.PlanSummaryRoot}>
             {this.getIncomesMissingAlert()}
@@ -150,45 +183,65 @@ class PlanSummary extends Component {
                             </Typography>
                         </div>
                         <div>
+                            <Button className={classes.PlanSummaryDeletePlanButton}
+                                    variant="text"
+                                    onClick={this.handleDeletePlanDialogOpen}>
+                                <DeleteForeverIcon/>
+                                Usuń
+                            </Button>
                             <Button color="primary"
-                                variant="flat"
-                                component={Link}
-                                className={classes.PlanSummaryTitleButtonBarButton}
-                                to={"/plan/incomes/" + this.props.plan.id}>
-                                <AttachMoneyIcon />
+                                    variant="flat"
+                                    className={classes.PlanSummaryTitleButtonBarButton}
+                                    component={Link}
+                                    to={'/budgets/edit/' + this.props.plan.id}>
+                                <EditIcon/>
+                                Edytuj
+                            </Button>
+                            <Button color="primary"
+                                    variant="flat"
+                                    component={Link}
+                                    className={classes.PlanSummaryTitleButtonBarButton}
+                                    to={"/plan/incomes/" + this.props.plan.id}>
+                                <AttachMoneyIcon/>
                                 Przychody
                             </Button>
                             <Button color="primary"
-                                variant="flat"
-                                className={classes.PlanSummaryTitleButtonBarButton}
-                                component={Link} to={"/expenses/" + this.props.plan.id}>
-                                <ListIcon />
+                                    variant="flat"
+                                    className={classes.PlanSummaryTitleButtonBarButton}
+                                    component={Link} to={"/expenses/" + this.props.plan.id}>
+                                <ListIcon/>
                                 Wydatki
                             </Button>
                             <Button color="secondary"
-                                variant="contained"
-                                className={classes.PlanSummaryTitleButtonBarRightButton}
-                                component={Link}
-                                to={"/expense/add/" + this.props.plan.id}>
-                                <AddIcon />
+                                    variant="contained"
+                                    className={classes.PlanSummaryTitleButtonBarRightButton}
+                                    component={Link}
+                                    to={"/expense/add/" + this.props.plan.id}>
+                                <AddIcon/>
                                 Dodaj wydatek
                             </Button>
                         </div>
                     </Paper>
                 </Grid>
-                <LeftToSpendWidget plan={this.state.budget} />
-                <ExpensesSummaryChartWidget plan={this.state.budget} />
-                <ExpenseCategoryShareWidget plan={this.state.budget} />
-                <ExpensesPerCategoryWidget plan={this.state.budget} />
-                <IncomesPerCategoryWidget plan={this.state.budget} />
+                <LeftToSpendWidget plan={this.state.budget}/>
+                <ExpensesSummaryChartWidget plan={this.state.budget}/>
+                <ExpenseCategoryShareWidget plan={this.state.budget}/>
+                <ExpensesPerCategoryWidget plan={this.state.budget}/>
+                <IncomesPerCategoryWidget plan={this.state.budget}/>
             </Grid>
+            <ConfirmationDialog open={this.state.deletePlanDialogOpen}
+                                onClose={this.handleDeletePlanDialogClose}
+                                title={"Czy na pewno chcesz usunąć?"}
+                                message={"Czy jesteś pewien, że chcesz usunąć cały plan oraz jego realizację? " +
+                                "Ta operacja jest nieodwracalna!"}/>
         </div>
     }
 }
 
 PlanSummary.propTypes = {
     classes: PropTypes.object.required,
-    plan: PropTypes.object.required
+    plan: PropTypes.object.required,
+    onPlanChanged: PropTypes.func
 };
 
 
