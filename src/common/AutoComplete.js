@@ -89,6 +89,15 @@ class AutoComplete extends Component {
         };
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        if(nextProps.suggestions && (!this.state.suggestions || this.state.suggestions.length === 0)){
+            this.setState({
+                    suggestions: nextProps.suggestions,
+                    originalSuggestions: nextProps.suggestions,
+            })
+        }
+    }
+
     getSuggestions = (value) => {
         const inputValue = value.trim().toLowerCase();
         const inputLength = inputValue.length;
@@ -97,6 +106,7 @@ class AutoComplete extends Component {
         if(!this.state.originalSuggestions || this.state.originalSuggestions.length === 0){
             return [];
         }
+
         if(inputLength === 0){
             return this.state.originalSuggestions;
         }
@@ -161,9 +171,10 @@ class AutoComplete extends Component {
                     {...autosuggestProps}
                     inputProps={{
                         classes,
-                        placeholder: this.props.placeholder ? this.props.placeholder : 'Podaj wartość',
+                        placeholder: this.props.placeholder ? this.props.placeholder : undefined,
                         value: this.props.value,
                         onChange: this.handleChange(),
+                        label: this.props.label ? this.props.label : undefined
                     }}
                     theme={{
                         container: classes.container,
@@ -186,7 +197,8 @@ AutoComplete.propTypes = {
     value: PropTypes.string,
     suggestions: PropTypes.array,
     placeholder: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    label: PropTypes.string
 };
 
 export default withStyles(styles)(AutoComplete);

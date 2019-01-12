@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {withStyles} from '@material-ui/core';
+import {IconButton, ListItemSecondaryAction, withStyles} from '@material-ui/core';
 import ExpenseFilter from "./components/ExpenseFilter";
 import Button from "@material-ui/core/Button";
 import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
@@ -13,6 +13,8 @@ import CurrencyText from "../../common/CurrencyText";
 import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 import {Link} from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import ConfirmationDialog from "../../common/dialogs/ConfirmationDialog";
 
 const styles = () => ({
     ExpenseListRoot: {
@@ -33,6 +35,13 @@ const styles = () => ({
     },
     ExpenseListTitle: {
         marginBottom: 10
+    },
+    ExpenseListItemAmount: {
+        marginRight: 30
+    },
+    ExpenseListItemDelete: {
+        marginRight: 5,
+        color: '#ff3d00'
     }
 });
 
@@ -41,16 +50,28 @@ class ExpenseList extends Component {
         super(props);
 
         this.state = {
-            data: {}
+            data: {},
+            expenseDeleteDialogOpen: false,
+            expenseDeleteData: {},
+            filter: {
+                dateFrom: undefined,
+                dateTo: undefined,
+                category: ''
+            }
         };
 
         this.expenseService = new ExpenseService();
     }
 
     onSearch = (searchData) => {
-        this.expenseService.getExpenses(this.props.match.params.planId, searchData)
+        if(searchData){
+            this.setState({
+                filter: searchData
+            });
+        }
+
+        this.expenseService.getExpenses(this.props.match.params.planId, this.state.filter)
             .then(data => {
-                console.log(data);
                 this.setState({
                     data: data && data.data ? data.data : {}
                 });
@@ -78,8 +99,18 @@ class ExpenseList extends Component {
                                     return <ListItem button component={Link}
                                                      to={"/expense/edit/" + this.props.match.params.planId + "/" + item.id}>
                                         <ListItemText primary={item.type}
-                                                      secondary={new Date(item.date).yyyymmdd()}/>
-                                        <CurrencyText value={item.amount}/>
+                                                      secondary={new Date(item.date).yyyymmdd()}>
+                                        </ListItemText>
+                                        <CurrencyText value={item.amount}
+                                                      className={this.props.classes.ExpenseListItemAmount}/>
+                                        <ListItemSecondaryAction>
+                                            <IconButton className={this.props.classes.ExpenseListItemDelete}
+                                                        onClick={() => this.handleDeleteDialogOpen(
+                                                            this.props.match.params.planId,
+                                                            item.id)}>
+                                                <DeleteForeverIcon/>
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
                                     </ListItem>
                                 })
                             }
@@ -90,6 +121,37 @@ class ExpenseList extends Component {
         }
 
         return items;
+    };
+
+    handleDeleteDialogClose = (result) => {
+        if (result
+            && this.state.expenseDeleteData
+            && this.state.expenseDeleteData.planId
+            && this.state.expenseDeleteData.expenseId) {
+            this.expenseService.deleteExpense(
+                this.state.expenseDeleteData.planId,
+                this.state.expenseDeleteData.expenseId)
+                .then(() => {
+                    this.onSearch();
+                }).catch(e => {
+                console.log(e);
+            });
+        }
+
+        this.setState({
+            expenseDeleteData: {},
+            expenseDeleteDialogOpen: false
+        });
+    };
+
+    handleDeleteDialogOpen = (planId, expenseId) => {
+        this.setState({
+            expenseDeleteData: {
+                planId: planId,
+                expenseId: expenseId
+            },
+            expenseDeleteDialogOpen: true
+        });
     };
 
     render() {
@@ -115,8 +177,12 @@ class ExpenseList extends Component {
                     <AddIcon/>
                     Dodaj wydatek
                 </Button>
-                <ExpenseFilter onSearch={this.onSearch}/>
+                <ExpenseFilter onSearch={this.onSearch} filter={this.state.filter}/>
                 {this.getListItems()}
+                <ConfirmationDialog message="Czy na pewno chcesz usunąć wydatek? Ta operacja jest nieodwracalna!"
+                                    title="Czy chcesz kontynuować?"
+                                    open={this.state.expenseDeleteDialogOpen}
+                                    onClose={this.handleDeleteDialogClose}/>
             </div>
         );
     }
