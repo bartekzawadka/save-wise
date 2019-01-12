@@ -28,7 +28,7 @@ class ExpenseFilter extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.state = this.props.filter ? this.props.filter : {
             dateFrom: undefined,
             dateTo: undefined,
             category: ''
@@ -101,7 +101,8 @@ class ExpenseFilter extends Component {
 }
 
 ExpenseFilter.propTypes = {
-    onSearch: PropTypes.func
+    onSearch: PropTypes.func,
+    filter: PropTypes.object
 };
 
 export default withStyles(styles)(ExpenseFilter);

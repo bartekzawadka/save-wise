@@ -51,7 +51,7 @@ class UserMenu extends React.Component {
             return <Button
                 aria-owns={isOpen ? 'long-menu' : undefined}
                 aria-haspopup="true"
-                variant="flat"
+                variant="text"
                 onClick={this.handleClick}
                 className={this.props.classes.UserMenuIcon}
             >

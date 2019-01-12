@@ -103,8 +103,8 @@ class PlanPeriod extends Component {
 
 PlanPeriod.propTypes = {
     onDatesChanged: PropTypes.func.isRequired,
-    from: PropTypes.object,
-    to: PropTypes.object
+    from: PropTypes.string,
+    to: PropTypes.string
 };
 
 export default withStyles(styles)(PlanPeriod);

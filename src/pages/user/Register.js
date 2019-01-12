@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import {userService} from "../../services/UserService";
 import Chip from "@material-ui/core/Chip/Chip";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import {Link, Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import {TextField, withStyles} from "@material-ui/core";
 import CardHeader from "@material-ui/core/CardHeader/CardHeader";
 import CardContent from "@material-ui/core/CardContent/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
+import ErrorResolver from '../../common/ErrorResolver';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const styles = theme => ({
     RegisterRoot: {
@@ -25,14 +27,14 @@ const styles = theme => ({
         margin: '0 auto'
     },
     RegisterField: {
-        minWidth: 400
+        minWidth: 250
     },
     RegisterChipError: {
         color: "#ff3d00",
         borderColor: "#ff3d00"
     },
     RegisterButton: {
-        marginLeft: 'auto'
+        margin: '0 auto'
     },
     RegisterActions: {
         display: 'flex'
@@ -49,7 +51,7 @@ class Register extends Component {
             passwordConfirm: '',
             registerButtonDisabled: true,
             submitted: false,
-            errorMessage: '',
+            errorMessage: [],
             registrationSucceeded: false
         };
     }
@@ -69,7 +71,7 @@ class Register extends Component {
             }, e => {
                 console.log(e);
                 this.setState({
-                    errorMessage: e.data.error,
+                    errorMessage: ErrorResolver.resolveError(e.data),
                     username: '',
                     password: '',
                     passwordConfirm: ''
@@ -89,15 +91,21 @@ class Register extends Component {
     };
 
     getError = () => {
-        if (this.state.errorMessage) {
-            return <Chip label={this.state.errorMessage}
-                         className={this.props.classes.RegisterChip}
-                         classes={{
-                             outlinedSecondary: this.props.classes.RegisterChipError
-                         }}
-                         color="secondary"
-                         variant="outlined"
-                         icon={<ErrorOutlineIcon/>}/>
+        if (this.state.errorMessage && this.state.errorMessage.length > 0) {
+            return <div>
+                {this.state.errorMessage.map((item, index) => {
+                    return <div row="true"
+                                key={'errorMessage-' + index}>
+                        <Chip label={item}
+                              className={this.props.classes.RegisterChip}
+                              classes={{
+                                  outlinedSecondary: this.props.classes.RegisterChipError
+                              }}
+                              color="secondary"
+                              variant="outlined"
+                              icon={<ErrorOutlineIcon/>}/></div>;
+                })}
+            </div>
         }
     };
 
@@ -139,14 +147,12 @@ class Register extends Component {
                 </div>
             </CardContent>
             <CardActions className={classes.RegisterActions} disableActionSpacing>
-                <Button variant="outlined" color="default" component={Link} to="/">
-                    Anuluj
-                </Button>
                 <Button variant="outlined"
                         color="primary"
                         className={classes.RegisterButton}
                         onClick={this.submit}
                         disabled={this.state.registerButtonDisabled}>
+                    <PersonAddIcon />
                     Zarejestruj
                 </Button>
             </CardActions>
