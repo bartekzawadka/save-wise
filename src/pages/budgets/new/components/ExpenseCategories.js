@@ -7,7 +7,6 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import CurrencyText from "../../../../common/CurrencyText";
-import TextField from "@material-ui/core/TextField/TextField";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';

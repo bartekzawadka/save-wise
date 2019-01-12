@@ -5,23 +5,19 @@ import Card from "@material-ui/core/Card/Card";
 import CardHeader from "@material-ui/core/CardHeader/CardHeader";
 import CardContent from "@material-ui/core/CardContent/CardContent";
 import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import Select from "@material-ui/core/Select/Select";
-import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import CardActions from "@material-ui/core/CardActions/CardActions";
 import Button from "@material-ui/core/Button/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import SaveIcon from "@material-ui/icons/Save";
-import AddIcon from "@material-ui/icons/Add";
 import CurrencyField from "../budgets/new/components/CurrencyField";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import ExpenseService from "../../services/ExpenseService";
 import AddCategory from "./AddCategory";
-import IconButton from "@material-ui/core/IconButton/IconButton";
 import AddCategoryType from "./AddCategoryType";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ConfirmationDialog from "../../common/dialogs/ConfirmationDialog";
+import AutoComplete from "../../common/AutoComplete";
 
 const styles = theme => ({
     AddEditExpenseRoot: {
@@ -142,7 +138,6 @@ class AddEditExpense extends Component {
 
             this.setState(state);
 
-
             if (this.props.match.params.planId && this.props.match.params.expenseId) {
                 this.expenseService.getExpense(this.props.match.params.planId, this.props.match.params.expenseId)
                     .then(data => {
@@ -196,12 +191,12 @@ class AddEditExpense extends Component {
         });
     };
 
-    onCategoryChange = event => {
-        this.onValueChange('category', event.target.value);
+    onCategoryChange = value => {
+        this.onValueChange('category', value);
     };
 
-    onTypeChange = event => {
-        this.onValueChange('type', event.target.value);
+    onTypeChange = value => {
+        this.onValueChange('type', value);
     };
 
     onCommentChange = event => {
@@ -303,11 +298,7 @@ class AddEditExpense extends Component {
 
         this.expenseService.upsertExpense(this.props.match.params.planId, data, this.state.expenseId)
             .then(() => {
-                if (this.props.match.params.planId && this.state.expenseId) {
-                    this.props.history.goBack();
-                } else {
-                    this.props.history.push('/');
-                }
+                this.props.history.goBack();
             })
             .catch(e => {
                 console.log(e);
@@ -316,18 +307,6 @@ class AddEditExpense extends Component {
 
     onCancel = () => {
         this.props.history.goBack();
-    };
-
-    handleOpenAddCategory = () => {
-        this.setState({
-            addCategoryOpen: true
-        })
-    };
-
-    handleOpenAddCategoryType = () => {
-        this.setState({
-            addCategoryTypeOpen: true
-        });
     };
 
     handleCloseAddCategory = category => {
@@ -428,55 +407,31 @@ class AddEditExpense extends Component {
                     </div>
                     <div className={classes.AddEditExpenseFormContainer} align="center">
                         <FormControl className={classes.AddEditExpenseFormControl}>
-                            <InputLabel htmlFor="expense-category">Kategoria</InputLabel>
-                            <Select value={this.state.category.value}
-                                    required
-                                    error={this.state.category.isInvalid}
-                                    onChange={this.onCategoryChange}
-                                    inputProps={{
-                                        name: 'expense-category',
-                                        id: 'expense-category'
-                                    }}>
-                                {this.state.categories.map((item, index) => {
-                                    return <MenuItem value={item.name} divider={true} key={"expense-category-" + index}
-                                                     id={"expense-category-" + index}>
-                                        {item.name}
-                                    </MenuItem>
-                                })}
-                            </Select>
+                            <AutoComplete value={this.state.category.value}
+                                          required
+                                          onChange={this.onCategoryChange}
+                                          error={this.state.category.isInvalid}
+                                          suggestions={this.state.categories.map(item => item.name)}
+                                          label='Kategoria'
+                            />
                             <FormHelperText className={classes.AddEditExpenseError}>
                                 {this.state.category.errorMessage}
                             </FormHelperText>
                         </FormControl>
-                        <IconButton color="primary" onClick={this.handleOpenAddCategory}
-                                    className={classes.AddEditExpenseIconButton}>
-                            <AddIcon/>
-                        </IconButton>
                     </div>
                     <div className={classes.AddEditExpenseFormContainer} align="center">
                         <FormControl className={classes.AddEditExpenseFormControl}>
-                            <InputLabel htmlFor="expense-type">Typ</InputLabel>
-                            <Select value={this.state.type.value}
-                                    required
-                                    error={this.state.type.isInvalid}
-                                    onChange={this.onTypeChange}
-                                    inputProps={{
-                                        name: 'expense-type',
-                                        id: 'expense-type'
-                                    }}>
-                                {this.state.types.map((item, index) => {
-                                    return <MenuItem value={item} key={"expense-type-" + index}>
-                                        {item}
-                                    </MenuItem>
-                                })}
-                            </Select>
-                            <FormHelperText
-                                className={classes.AddEditExpenseError}>{this.state.type.errorMessage}</FormHelperText>
+                            <AutoComplete value={this.state.type.value}
+                                          required
+                                          onChange={this.onTypeChange}
+                                          error={this.state.type.isInvalid}
+                                          suggestions={this.state.types}
+                                          label='Podkategoria'
+                            />
+                            <FormHelperText className={classes.AddEditExpenseError}>
+                                {this.state.type.errorMessage}
+                            </FormHelperText>
                         </FormControl>
-                        <IconButton color="primary" onClick={this.handleOpenAddCategoryType}
-                                    className={classes.AddEditExpenseIconButton}>
-                            <AddIcon/>
-                        </IconButton>
                     </div>
                     <div className={classes.AddEditExpenseFormContainer} align="center">
                         <FormControl className={classes.AddEditExpenseFormControl}>
