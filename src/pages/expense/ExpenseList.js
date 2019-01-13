@@ -53,21 +53,38 @@ class ExpenseList extends Component {
             data: {},
             expenseDeleteDialogOpen: false,
             expenseDeleteData: {},
+            expenseCategories: [],
             filter: {
                 dateFrom: undefined,
                 dateTo: undefined,
-                category: ''
+                category: this.props.match.params.category ? atob(this.props.match.params.category) : ''
             }
         };
 
         this.expenseService = new ExpenseService();
     }
 
+    componentDidMount() {
+        this.getCategories();
+    }
+
+    getCategories = () => {
+        this.expenseService.getExpenseCategories()
+            .then(data => {
+                if(data && data.data && data.data.length > 0){
+                    let categories = data.data.map(item=>item.name);
+                    this.setState({
+                        expenseCategories: categories
+                    })
+                }
+            }).catch(e => console.log(e));
+    };
+
     onSearch = (searchData) => {
-        if(searchData){
-            this.setState({
-                filter: searchData
-            });
+        if (searchData) {
+            let state = this.state;
+            state.filter = searchData;
+            this.setState(state);
         }
 
         this.expenseService.getExpenses(this.props.match.params.planId, this.state.filter)
@@ -177,7 +194,10 @@ class ExpenseList extends Component {
                     <AddIcon/>
                     Dodaj wydatek
                 </Button>
-                <ExpenseFilter onSearch={this.onSearch} filter={this.state.filter}/>
+                <ExpenseFilter onSearch={this.onSearch}
+                               filter={this.state.filter}
+                               categories={this.state.expenseCategories}
+                />
                 {this.getListItems()}
                 <ConfirmationDialog message="Czy na pewno chcesz usunąć wydatek? Ta operacja jest nieodwracalna!"
                                     title="Czy chcesz kontynuować?"

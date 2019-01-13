@@ -116,6 +116,7 @@ class App extends Component {
                     <PrivateRoute exact path='/expense/add/:planId' component={AddEditExpense}/>
                     <PrivateRoute exact path='/plan/incomes/:planId' component={EditIncomes}/>
                     <PrivateRoute exact path='/expenses/:planId' component={ExpenseList}/>
+                    <PrivateRoute exact path='/expenses/:planId/:category' component={ExpenseList}/>
                     <PrivateRoute exact path='/expense/edit/:planId/:expenseId' component={AddEditExpense}/>
                 </MuiThemeProvider>
             </Router>
