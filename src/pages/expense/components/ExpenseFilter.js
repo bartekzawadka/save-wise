@@ -9,6 +9,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails/Expan
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions/ExpansionPanelActions";
 import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
+import AutoComplete from "../../../common/AutoComplete";
 
 const styles = (theme) => ({
     ExpenseFilterHeading: {
@@ -45,8 +46,14 @@ class ExpenseFilter extends Component {
         this.setState(state);
     };
 
+    onCategoryChange = value => {
+        this.setState({
+            category: value
+        });
+    };
+
     onSearch = () => {
-      this.props.onSearch(this.state);
+        this.props.onSearch(this.state);
     };
 
     render() {
@@ -78,14 +85,11 @@ class ExpenseFilter extends Component {
                                            shrink: true
                                        }}
                             />
-                            <TextField className={classes.ExpenseFilterFilterField}
-                                       label="Kategoria"
-                                       onChange={this.onValueChange('category')}
-                                       value={this.state.category}
-                                       InputLabelProps={{
-                                           shrink: true
-                                       }}/>
-
+                            <AutoComplete suggestions={this.props.categories}
+                                          className={classes.ExpenseFilterFilterField}
+                                          onChange={this.onCategoryChange}
+                                          value={this.state.category}
+                                          label="Kategoria"/>
                         </div>
                     </div>
                 </ExpansionPanelDetails>
@@ -102,7 +106,8 @@ class ExpenseFilter extends Component {
 
 ExpenseFilter.propTypes = {
     onSearch: PropTypes.func,
-    filter: PropTypes.object
+    filter: PropTypes.object,
+    categories: PropTypes.array
 };
 
 export default withStyles(styles)(ExpenseFilter);
