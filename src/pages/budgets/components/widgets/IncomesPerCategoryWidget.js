@@ -69,7 +69,7 @@ class IncomesPerCategoryWidget extends Component {
                         <TableCell>Suma planowana</TableCell>
                         <TableCell>Suma rzeczywista</TableCell>
                         <TableCell>Różnica</TableCell>
-                        <TableCell>Stopień realizacji %</TableCell>
+                        <TableCell>% realizacji</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

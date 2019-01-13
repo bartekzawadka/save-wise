@@ -8,7 +8,9 @@ import TableBody from "@material-ui/core/TableBody/TableBody";
 import TableRow from "@material-ui/core/TableRow/TableRow";
 import Widget from "./Widget";
 import PercentageText from "../../../../common/PercentageText";
-import {withStyles} from "@material-ui/core";
+import {IconButton, Tooltip, withStyles} from "@material-ui/core";
+import ListIcon from "@material-ui/icons/List";
+import {Link} from "react-router-dom";
 
 const styles = () => ({
     ExpensesPerCategoryWidgetPercentageOk: {
@@ -74,6 +76,7 @@ class ExpensesPerCategoryWidget extends Component {
                         <TableCell>Suma planowana</TableCell>
                         <TableCell>Suma rzeczywista</TableCell>
                         <TableCell>% realizacji</TableCell>
+                        <TableCell/>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -92,6 +95,15 @@ class ExpensesPerCategoryWidget extends Component {
                                 <TableCell>
                                     <PercentageText value={item.percentage} className={this.getColor(item)}/>
                                 </TableCell>
+                                <TableCell>
+                                    <Tooltip title="Lista wydatków">
+                                        <IconButton color="primary"
+                                                    component={Link}
+                                                    to={"/expenses/"+this.props.plan.id+"/"+btoa(item.name)}>
+                                            <ListIcon/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </TableCell>
                             </TableRow>
                         )
                     })}
@@ -102,7 +114,8 @@ class ExpensesPerCategoryWidget extends Component {
 }
 
 ExpensesPerCategoryWidget.propTypes = {
-    plan: PropTypes.object.required
+    plan: PropTypes.object.required,
+    onGoToDetails: PropTypes.func
 };
 
 export default withStyles(styles)(ExpensesPerCategoryWidget);
