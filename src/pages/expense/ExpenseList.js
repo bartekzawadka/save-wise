@@ -57,7 +57,7 @@ class ExpenseList extends Component {
             filter: {
                 dateFrom: undefined,
                 dateTo: undefined,
-                category: ''
+                category: this.props.match.params.category ? atob(this.props.match.params.category) : ''
             }
         };
 

@@ -4,12 +4,7 @@ import Service from "./Service";
 
 class ExpenseService extends Service {
     getExpenseCategories = () => {
-        console.log(ApiCalls.getExpenseUrl()+'/categories');
-        return axios.get(ApiCalls.getExpenseUrl() + '/categories', super.getRequestConfig());
-    };
-
-    addExpenseCategory = (category) => {
-        return axios.post(ApiCalls.getExpenseUrl() + '/categories/add', category, super.getRequestConfig());
+        return axios.get(ApiCalls.getCategoryUrl() + '/expense', super.getRequestConfig());
     };
 
     getExpense = (planId, expenseId) => {
@@ -27,10 +22,6 @@ class ExpenseService extends Service {
 
     deleteExpense = (planId, expenseId) => {
         return axios.delete(ApiCalls.getExpenseUrl() + '/' + planId + '/' + expenseId, super.getRequestConfig());
-    };
-
-    addExpenseCategoryType = (categoryId, type) => {
-        return axios.post(ApiCalls.getExpenseUrl() + "/categories/" + categoryId + "/type", type, super.getRequestConfig());
     };
 
     getExpenses = (planId, searchData) => {

@@ -13,8 +13,6 @@ import CurrencyField from "../budgets/new/components/CurrencyField";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import ExpenseService from "../../services/ExpenseService";
-import AddCategory from "./AddCategory";
-import AddCategoryType from "./AddCategoryType";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ConfirmationDialog from "../../common/dialogs/ConfirmationDialog";
 import AutoComplete from "../../common/AutoComplete";
@@ -98,8 +96,6 @@ class AddEditExpense extends Component {
             expenseId: (this.props.match.params && this.props.match.params.expenseId)
                 ? this.props.match.params.expenseId
                 : '',
-            addCategoryOpen: false,
-            addCategoryTypeOpen: false,
             expenseDeleteDialogOpen: false
         };
 
@@ -309,50 +305,6 @@ class AddEditExpense extends Component {
         this.props.history.goBack();
     };
 
-    handleCloseAddCategory = category => {
-        this.setState({
-            addCategoryOpen: false
-        });
-
-        if (category && category !== '') {
-            this.expenseService.addExpenseCategory({
-                name: category
-            }).then(() => {
-                this.getData().then(() => {
-                    this.onValueChange('category', category);
-                });
-            }).catch(e => {
-                console.log(e);
-            });
-        }
-    };
-
-    handleCloseAddCategoryType = (category, type) => {
-        this.setState({
-            addCategoryTypeOpen: false
-        });
-
-        if (category && type) {
-            let categoryId = '';
-            for (let k in this.state.categories) {
-                if (this.state.categories.hasOwnProperty(k)) {
-                    if (this.state.categories[k].name === category) {
-                        categoryId = this.state.categories[k].id;
-                        break;
-                    }
-                }
-            }
-
-            this.expenseService.addExpenseCategoryType(categoryId, {
-                name: type
-            }).then(() => {
-                this.getData().then(() => {
-                    this.onValueChange('type', type);
-                });
-            });
-        }
-    };
-
     handleDeleteDialogOpen = () => {
         this.setState({
             expenseDeleteDialogOpen: true
@@ -470,13 +422,6 @@ class AddEditExpense extends Component {
                     </Button>
                 </CardActions>
             </Card>
-            {this.state.addCategoryOpen ?
-                <AddCategory onClose={this.handleCloseAddCategory} open={this.state.addCategoryOpen}/> : undefined}
-            {this.state.addCategoryTypeOpen ?
-                <AddCategoryType onClose={this.handleCloseAddCategoryType}
-                                 open={this.state.addCategoryTypeOpen}
-                                 category={this.state.category.value}
-                                 categories={this.state.categories}/> : undefined}
             <ConfirmationDialog message="Czy na pewno chcesz usunąć wydatek? Ta operacja jest nieodwracalna!"
                                 title="Czy chcesz kontynuować?"
                                 open={this.state.expenseDeleteDialogOpen}
