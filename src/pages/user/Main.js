@@ -1,13 +1,14 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Login from "./Login";
 import Register from "./Register";
+import ContentWrapper from "../../common/ContentWrapper";
 
-class Main extends Component{
+class Main extends ContentWrapper {
     render() {
-        return <div>
-            <Login />
-            <Register />
-        </div>
+        return <ContentWrapper>
+            <Login/>
+            <Register/>
+        </ContentWrapper>
     }
 }
 

@@ -15,6 +15,7 @@ import {Link} from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ConfirmationDialog from "../../common/dialogs/ConfirmationDialog";
+import ContentWrapper from "../../common/ContentWrapper";
 
 const styles = () => ({
     ExpenseListRoot: {
@@ -71,8 +72,8 @@ class ExpenseList extends Component {
     getCategories = () => {
         this.expenseService.getExpenseCategories()
             .then(data => {
-                if(data && data.data && data.data.length > 0){
-                    let categories = data.data.map(item=>item.name);
+                if (data && data.data && data.data.length > 0) {
+                    let categories = data.data.map(item => item.name);
                     this.setState({
                         expenseCategories: categories
                     })
@@ -175,35 +176,37 @@ class ExpenseList extends Component {
         const {classes} = this.props;
 
         return (
-            <div className={classes.ExpenseListRoot}>
-                <Typography variant="h6" className={classes.ExpenseListTitle}>
-                    Lista wydatków
-                </Typography>
-                <Button variant="contained"
-                        color="primary"
-                        className={classes.ExpenseListGoBackButton}
-                        onClick={this.onGoBack}>
-                    <KeyboardArrowLeftIcon/>
-                    Powrót
-                </Button>
-                <Button color="secondary"
-                        variant="contained"
-                        className={classes.ExpenseListButtonBarRightButton}
-                        component={Link}
-                        to={"/expense/add/" + this.props.match.params.planId}>
-                    <AddIcon/>
-                    Dodaj wydatek
-                </Button>
-                <ExpenseFilter onSearch={this.onSearch}
-                               filter={this.state.filter}
-                               categories={this.state.expenseCategories}
-                />
-                {this.getListItems()}
-                <ConfirmationDialog message="Czy na pewno chcesz usunąć wydatek? Ta operacja jest nieodwracalna!"
-                                    title="Czy chcesz kontynuować?"
-                                    open={this.state.expenseDeleteDialogOpen}
-                                    onClose={this.handleDeleteDialogClose}/>
-            </div>
+            <ContentWrapper>
+                <div className={classes.ExpenseListRoot}>
+                    <Typography variant="h6" className={classes.ExpenseListTitle}>
+                        Lista wydatków
+                    </Typography>
+                    <Button variant="contained"
+                            color="primary"
+                            className={classes.ExpenseListGoBackButton}
+                            onClick={this.onGoBack}>
+                        <KeyboardArrowLeftIcon/>
+                        Powrót
+                    </Button>
+                    <Button color="secondary"
+                            variant="contained"
+                            className={classes.ExpenseListButtonBarRightButton}
+                            component={Link}
+                            to={"/expense/add/" + this.props.match.params.planId}>
+                        <AddIcon/>
+                        Dodaj wydatek
+                    </Button>
+                    <ExpenseFilter onSearch={this.onSearch}
+                                   filter={this.state.filter}
+                                   categories={this.state.expenseCategories}
+                    />
+                    {this.getListItems()}
+                    <ConfirmationDialog message="Czy na pewno chcesz usunąć wydatek? Ta operacja jest nieodwracalna!"
+                                        title="Czy chcesz kontynuować?"
+                                        open={this.state.expenseDeleteDialogOpen}
+                                        onClose={this.handleDeleteDialogClose}/>
+                </div>
+            </ContentWrapper>
         );
     }
 }

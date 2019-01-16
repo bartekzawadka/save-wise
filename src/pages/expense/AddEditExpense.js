@@ -16,6 +16,7 @@ import ExpenseService from "../../services/ExpenseService";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ConfirmationDialog from "../../common/dialogs/ConfirmationDialog";
 import AutoComplete from "../../common/AutoComplete";
+import ContentWrapper from "../../common/ContentWrapper";
 
 const styles = theme => ({
     AddEditExpenseRoot: {
@@ -329,104 +330,106 @@ class AddEditExpense extends Component {
     render() {
         const {classes} = this.props;
 
-        return <div className={classes.AddEditExpenseRoot}>
-            <Card>
-                <CardHeader title={this.getTitle()} action={
-                    (this.state.expenseId) ?
-                        <Button variant="text"
-                                className={classes.AddEditExpenseDeleteButton}
-                                onClick={this.handleDeleteDialogOpen}>
-                            <DeleteForeverIcon/>
-                            Usuń
+        return <ContentWrapper>
+            <div className={classes.AddEditExpenseRoot}>
+                <Card>
+                    <CardHeader title={this.getTitle()} action={
+                        (this.state.expenseId) ?
+                            <Button variant="text"
+                                    className={classes.AddEditExpenseDeleteButton}
+                                    onClick={this.handleDeleteDialogOpen}>
+                                <DeleteForeverIcon/>
+                                Usuń
+                            </Button>
+                            : ''
+                    }>
+                    </CardHeader>
+                    <CardContent>
+                        <div className={classes.AddEditExpenseFormContainer} align="center">
+                            <TextField
+                                label="Data wydatku"
+                                type='date'
+                                required
+                                error={this.state.date.isInvalid}
+                                helperText={this.state.date.errorMessage}
+                                value={this.state.date.value}
+                                onChange={this.onDateChange}
+                                className={classes.AddEditExpenseDatePicker}
+                                InputLabelProps={{
+                                    shrink: true
+                                }}/>
+                        </div>
+                        <div className={classes.AddEditExpenseFormContainer} align="center">
+                            <FormControl className={classes.AddEditExpenseFormControl}>
+                                <AutoComplete value={this.state.category.value}
+                                              required
+                                              onChange={this.onCategoryChange}
+                                              error={this.state.category.isInvalid}
+                                              suggestions={this.state.categories.map(item => item.name)}
+                                              label='Kategoria'
+                                />
+                                <FormHelperText className={classes.AddEditExpenseError}>
+                                    {this.state.category.errorMessage}
+                                </FormHelperText>
+                            </FormControl>
+                        </div>
+                        <div className={classes.AddEditExpenseFormContainer} align="center">
+                            <FormControl className={classes.AddEditExpenseFormControl}>
+                                <AutoComplete value={this.state.type.value}
+                                              required
+                                              onChange={this.onTypeChange}
+                                              error={this.state.type.isInvalid}
+                                              suggestions={this.state.types}
+                                              label='Podkategoria'
+                                />
+                                <FormHelperText className={classes.AddEditExpenseError}>
+                                    {this.state.type.errorMessage}
+                                </FormHelperText>
+                            </FormControl>
+                        </div>
+                        <div className={classes.AddEditExpenseFormContainer} align="center">
+                            <FormControl className={classes.AddEditExpenseFormControl}>
+                                <TextField value={this.state.amount.value}
+                                           required
+                                           error={this.state.amount.isInvalid}
+                                           helperText={this.state.amount.errorMessage}
+                                           onChange={this.onAmountChange}
+                                           label="Kwota" InputProps={{
+                                    inputComponent: CurrencyField,
+                                    endAdornment: <InputAdornment position="end">zł</InputAdornment>
+                                }}
+                                />
+                            </FormControl>
+                        </div>
+                        <div className={classes.AddEditExpenseFormContainer} align="center">
+                            <FormControl className={classes.AddEditExpenseFormControl}>
+                                <TextField value={this.state.comment.value}
+                                           onChange={this.onCommentChange}
+                                           label="Komentarz" rows={6} multiline/>
+                            </FormControl>
+                        </div>
+                    </CardContent>
+                    <CardActions className={classes.AddEditExpenseActions} disableActionSpacing>
+                        <Button variant="outlined" color="default" onClick={this.onCancel}>
+                            <CloseIcon/>
+                            Anuluj
                         </Button>
-                        : ''
-                }>
-                </CardHeader>
-                <CardContent>
-                    <div className={classes.AddEditExpenseFormContainer} align="center">
-                        <TextField
-                            label="Data wydatku"
-                            type='date'
-                            required
-                            error={this.state.date.isInvalid}
-                            helperText={this.state.date.errorMessage}
-                            value={this.state.date.value}
-                            onChange={this.onDateChange}
-                            className={classes.AddEditExpenseDatePicker}
-                            InputLabelProps={{
-                                shrink: true
-                            }}/>
-                    </div>
-                    <div className={classes.AddEditExpenseFormContainer} align="center">
-                        <FormControl className={classes.AddEditExpenseFormControl}>
-                            <AutoComplete value={this.state.category.value}
-                                          required
-                                          onChange={this.onCategoryChange}
-                                          error={this.state.category.isInvalid}
-                                          suggestions={this.state.categories.map(item => item.name)}
-                                          label='Kategoria'
-                            />
-                            <FormHelperText className={classes.AddEditExpenseError}>
-                                {this.state.category.errorMessage}
-                            </FormHelperText>
-                        </FormControl>
-                    </div>
-                    <div className={classes.AddEditExpenseFormContainer} align="center">
-                        <FormControl className={classes.AddEditExpenseFormControl}>
-                            <AutoComplete value={this.state.type.value}
-                                          required
-                                          onChange={this.onTypeChange}
-                                          error={this.state.type.isInvalid}
-                                          suggestions={this.state.types}
-                                          label='Podkategoria'
-                            />
-                            <FormHelperText className={classes.AddEditExpenseError}>
-                                {this.state.type.errorMessage}
-                            </FormHelperText>
-                        </FormControl>
-                    </div>
-                    <div className={classes.AddEditExpenseFormContainer} align="center">
-                        <FormControl className={classes.AddEditExpenseFormControl}>
-                            <TextField value={this.state.amount.value}
-                                       required
-                                       error={this.state.amount.isInvalid}
-                                       helperText={this.state.amount.errorMessage}
-                                       onChange={this.onAmountChange}
-                                       label="Kwota" InputProps={{
-                                inputComponent: CurrencyField,
-                                endAdornment: <InputAdornment position="end">zł</InputAdornment>
-                            }}
-                            />
-                        </FormControl>
-                    </div>
-                    <div className={classes.AddEditExpenseFormContainer} align="center">
-                        <FormControl className={classes.AddEditExpenseFormControl}>
-                            <TextField value={this.state.comment.value}
-                                       onChange={this.onCommentChange}
-                                       label="Komentarz" rows={6} multiline/>
-                        </FormControl>
-                    </div>
-                </CardContent>
-                <CardActions className={classes.AddEditExpenseActions} disableActionSpacing>
-                    <Button variant="outlined" color="default" onClick={this.onCancel}>
-                        <CloseIcon/>
-                        Anuluj
-                    </Button>
-                    <Button variant="outlined"
-                            color="primary"
-                            disabled={this.state.isFormInvalid}
-                            className={classes.AddEditExpenseSaveButton}
-                            onClick={this.submit}>
-                        <SaveIcon/>
-                        Zapisz
-                    </Button>
-                </CardActions>
-            </Card>
-            <ConfirmationDialog message="Czy na pewno chcesz usunąć wydatek? Ta operacja jest nieodwracalna!"
-                                title="Czy chcesz kontynuować?"
-                                open={this.state.expenseDeleteDialogOpen}
-                                onClose={this.handleDeleteDialogClose}/>
-        </div>
+                        <Button variant="outlined"
+                                color="primary"
+                                disabled={this.state.isFormInvalid}
+                                className={classes.AddEditExpenseSaveButton}
+                                onClick={this.submit}>
+                            <SaveIcon/>
+                            Zapisz
+                        </Button>
+                    </CardActions>
+                </Card>
+                <ConfirmationDialog message="Czy na pewno chcesz usunąć wydatek? Ta operacja jest nieodwracalna!"
+                                    title="Czy chcesz kontynuować?"
+                                    open={this.state.expenseDeleteDialogOpen}
+                                    onClose={this.handleDeleteDialogClose}/>
+            </div>
+        </ContentWrapper>
     }
 }
 

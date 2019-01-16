@@ -9,6 +9,7 @@ import CardContent from "@material-ui/core/CardContent/CardContent";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import CardActions from "@material-ui/core/CardActions/CardActions";
 import {Link, Redirect} from "react-router-dom";
+import ContentWrapper from "../../common/ContentWrapper";
 
 const styles = theme => ({
     ChangePasswordRoot: {
@@ -111,57 +112,59 @@ class ChangePassword extends Component {
             return <Redirect to='/'/>
         }
 
-        return <Card className={classes.ChangePasswordRoot}>
-            <CardHeader title="Zmiana hasła"/>
-            <CardContent>
-                <div className={classes.ChangePasswordFormContainer} align="center">
-                    {this.getError()}
-                    <div>
-                        <TextField label="Nazwa użytkownika"
-                                   value={this.state.username}
-                                   onChange={this.onFieldChange('username')}
-                                   margin="normal"
-                                   className={classes.ChangePasswordField}/>
+        return <ContentWrapper>
+            <Card className={classes.ChangePasswordRoot}>
+                <CardHeader title="Zmiana hasła"/>
+                <CardContent>
+                    <div className={classes.ChangePasswordFormContainer} align="center">
+                        {this.getError()}
+                        <div>
+                            <TextField label="Nazwa użytkownika"
+                                       value={this.state.username}
+                                       onChange={this.onFieldChange('username')}
+                                       margin="normal"
+                                       className={classes.ChangePasswordField}/>
+                        </div>
+                        <div>
+                            <TextField label="Stare hasło"
+                                       value={this.state.oldPassword}
+                                       onChange={this.onFieldChange('oldPassword')}
+                                       type="password"
+                                       margin="normal"
+                                       className={classes.ChangePasswordField}/>
+                        </div>
+                        <div>
+                            <TextField label="Nowe hasło"
+                                       value={this.state.newPassword}
+                                       onChange={this.onFieldChange('newPassword')}
+                                       type="password"
+                                       margin="normal"
+                                       className={classes.ChangePasswordField}/>
+                        </div>
+                        <div>
+                            <TextField label="Potwierdź hasło"
+                                       value={this.state.passwordConfirm}
+                                       onChange={this.onFieldChange('passwordConfirm')}
+                                       type="password"
+                                       margin="normal"
+                                       className={classes.ChangePasswordField}/>
+                        </div>
                     </div>
-                    <div>
-                        <TextField label="Stare hasło"
-                                   value={this.state.oldPassword}
-                                   onChange={this.onFieldChange('oldPassword')}
-                                   type="password"
-                                   margin="normal"
-                                   className={classes.ChangePasswordField}/>
-                    </div>
-                    <div>
-                        <TextField label="Nowe hasło"
-                                   value={this.state.newPassword}
-                                   onChange={this.onFieldChange('newPassword')}
-                                   type="password"
-                                   margin="normal"
-                                   className={classes.ChangePasswordField}/>
-                    </div>
-                    <div>
-                        <TextField label="Potwierdź hasło"
-                                   value={this.state.passwordConfirm}
-                                   onChange={this.onFieldChange('passwordConfirm')}
-                                   type="password"
-                                   margin="normal"
-                                   className={classes.ChangePasswordField}/>
-                    </div>
-                </div>
-            </CardContent>
-            <CardActions className={classes.ChangePasswordActions} disableActionSpacing>
-                <Button variant="outlined" color="default" component={Link} to="/">
-                    Anuluj
-                </Button>
-                <Button variant="outlined"
-                        color="primary"
-                        className={classes.ChangePasswordButton}
-                        onClick={this.submit}
-                        disabled={this.state.buttonDisabled}>
-                    Zmień hasło
-                </Button>
-            </CardActions>
-        </Card>
+                </CardContent>
+                <CardActions className={classes.ChangePasswordActions} disableActionSpacing>
+                    <Button variant="outlined" color="default" component={Link} to="/">
+                        Anuluj
+                    </Button>
+                    <Button variant="outlined"
+                            color="primary"
+                            className={classes.ChangePasswordButton}
+                            onClick={this.submit}
+                            disabled={this.state.buttonDisabled}>
+                        Zmień hasło
+                    </Button>
+                </CardActions>
+            </Card>
+        </ContentWrapper>
     }
 }
 
