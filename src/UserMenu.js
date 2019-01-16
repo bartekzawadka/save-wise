@@ -8,9 +8,8 @@ import Divider from "@material-ui/core/Divider/Divider";
 import {userService} from "./services/UserService";
 import {withStyles} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import HistoryIcon from"@material-ui/icons/History";
-import VpnKeyIcon from"@material-ui/icons/VpnKey";
-import ExitToAppIcon from"@material-ui/icons/ExitToApp";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const ITEM_HEIGHT = 48;
 
@@ -72,7 +71,7 @@ class UserMenu extends React.Component {
         }
     }
 
-    getMenu = (anchorEl,isOpen) => {
+    getMenu = (anchorEl, isOpen) => {
         if (userService.isAuthenticated()) {
             return <Menu
                 id="long-menu"
@@ -87,11 +86,6 @@ class UserMenu extends React.Component {
                     },
                 }}
             >
-                <MenuItem disabled>
-                    <HistoryIcon className={this.props.classes.UserMenuMenuIcon}/>
-                    Historia budżetów
-                </MenuItem>
-                <Divider/>
                 <MenuItem component={Link} to="/changePassword">
                     <VpnKeyIcon className={this.props.classes.UserMenuMenuIcon}/>
                     Zmiana hasła

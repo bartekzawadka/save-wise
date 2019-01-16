@@ -19,6 +19,7 @@ import CurrencyText from "../../common/CurrencyText";
 import TextField from "@material-ui/core/TextField";
 import CurrencyField from "./new/components/CurrencyField";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
+import ContentWrapper from "../../common/ContentWrapper";
 
 const styles = () => ({
     EditIncomesRoot: {
@@ -133,41 +134,43 @@ class EditIncomes extends Component {
     render() {
         const {classes} = this.props;
 
-        return <div className={classes.EditIncomesRoot}>
-            <Card>
-                <CardHeader title="Określ rzeczywiste przychody"/>
-                <Divider/>
-                <CardContent>
-                    <Table className={classes.EditIncomesTable}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Nazwa kategorii</TableCell>
-                                <TableCell>Planowane przychody</TableCell>
-                                <TableCell>Rzeczywiste przychody</TableCell>
-                                <TableCell>Różnica</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {this.getTableBody()}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-                <Divider/>
-                <CardActions>
-                    <Button variant="outlined" color="default" component={Link} to="/">
-                        <CloseIcon/>
-                        Anuluj
-                    </Button>
-                    <Button variant="outlined"
-                            color="primary"
-                            className={classes.EditIncomesConfirmButton}
-                            onClick={this.submit}>
-                        <SaveIcon/>
-                        Zapisz
-                    </Button>
-                </CardActions>
-            </Card>
-        </div>
+        return <ContentWrapper>
+            <div className={classes.EditIncomesRoot}>
+                <Card>
+                    <CardHeader title="Określ rzeczywiste przychody"/>
+                    <Divider/>
+                    <CardContent>
+                        <Table className={classes.EditIncomesTable}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Nazwa kategorii</TableCell>
+                                    <TableCell>Planowane przychody</TableCell>
+                                    <TableCell>Rzeczywiste przychody</TableCell>
+                                    <TableCell>Różnica</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {this.getTableBody()}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                    <Divider/>
+                    <CardActions>
+                        <Button variant="outlined" color="default" component={Link} to="/">
+                            <CloseIcon/>
+                            Anuluj
+                        </Button>
+                        <Button variant="outlined"
+                                color="primary"
+                                className={classes.EditIncomesConfirmButton}
+                                onClick={this.submit}>
+                            <SaveIcon/>
+                            Zapisz
+                        </Button>
+                    </CardActions>
+                </Card>
+            </div>
+        </ContentWrapper>
     }
 }
 

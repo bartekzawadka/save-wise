@@ -9,14 +9,36 @@ import './Home.css';
 import {Link} from "react-router-dom";
 import PlanSummary from '../budgets/components/PlanSummary';
 import PlanService from "../../services/PlanService";
+import Drawer from "@material-ui/core/Drawer";
+import ContentWrapper from "../../common/ContentWrapper";
+import DrawerMenu from "../../common/DrawerMenu";
 
-const styles = () => ({
+const drawerWidth = 280;
+
+const styles = theme => ({
+    HomeRoot: {
+        display: 'flex'
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+        [theme.breakpoints.down('sm')]: {
+            display: 'none'
+        }
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    HomeContent: {
+        flexGrow: 1,
+    },
     HomeLandingPageTitle: {
         color: grey['500']
     },
     HomeNewPlanButton: {
         marginTop: '24px'
-    }
+    },
+    toolbar: theme.mixins.toolbar
 });
 
 class Home extends Component {
@@ -24,7 +46,8 @@ class Home extends Component {
         super(props);
 
         this.state = {
-            budget: undefined
+            budget: undefined,
+            drawerOpen: false
         };
 
         this.planService = new PlanService();
@@ -51,6 +74,19 @@ class Home extends Component {
                 budget: {}
             });
         });
+    };
+
+    getNormalDrawer = () => {
+        return <Drawer
+            className={this.props.classes.drawer}
+            variant="permanent"
+            classes={{
+                paper: this.props.classes.drawerPaper,
+            }}
+        >
+            <div className={this.props.classes.toolbar}/>
+            <DrawerMenu />
+        </Drawer>
     };
 
     render() {
@@ -91,8 +127,13 @@ class Home extends Component {
         }
 
         return (
-            <div>
-                {content}
+            <div className={classes.HomeRoot}>
+                {this.getNormalDrawer()}
+                <div className={classes.HomeContent}>
+                    <ContentWrapper>
+                        {content}
+                    </ContentWrapper>
+                </div>
             </div>
         );
     }

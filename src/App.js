@@ -27,6 +27,11 @@ import ExpenseList from "./pages/expense/ExpenseList";
 import AddEditExpense from "./pages/expense/AddEditExpense";
 import logo from "./logo.png";
 import Main from "./pages/user/Main";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from "@material-ui/core/Drawer";
+import DrawerMenu from "./common/DrawerMenu";
+import PlansHistoryList from "./pages/budgets/history/PlansHistoryList";
 
 function getTheme(type) {
     return createMuiTheme({
@@ -54,6 +59,9 @@ const styles = theme => ({
     AppGrow: {
         flexGrow: 1,
     },
+    AppBar: {
+        zIndex: theme.zIndex.drawer + 1,
+    },
     AppTitle: {
         display: 'none',
         [theme.breakpoints.up('sm')]: {
@@ -65,6 +73,16 @@ const styles = theme => ({
     },
     AppLogoClass: {
         marginRight: 5
+    },
+    AppMenuButton: {
+        [theme.breakpoints.up('md')]: {
+            display: 'none'
+        },
+        marginLeft: -12,
+        marginRight: 20,
+    },
+    fullList: {
+        width: 'auto'
     }
 });
 
@@ -82,7 +100,33 @@ class App extends Component {
         loadProgressBar({
             showSpinner: false
         });
+
+        this.state = {
+            drawerOpen: false
+        };
     }
+
+    toggleDrawer = state => () => {
+        this.setState({
+            drawerOpen: state
+        });
+    };
+
+    getSwipeableDrawer = () => {
+        return <Drawer open={this.state.drawerOpen} onClose={this.toggleDrawer(false)}>
+            <div
+                tabIndex={0}
+                role="button"
+                onClick={this.toggleDrawer(false)}
+                onKeyDown={this.toggleDrawer(false)}
+            >
+                <div className={this.props.classes.fullList}>
+                    <DrawerMenu />
+                </div>
+
+            </div>
+        </Drawer>
+    };
 
     render() {
         const {classes} = this.props;
@@ -93,8 +137,14 @@ class App extends Component {
                 <MuiThemeProvider theme={theme}>
                     <CssBaseline/>
                     <div className={classes.AppRootClass}>
-                        <AppBar position="static">
+                        <AppBar position="fixed" className={classes.AppBar}>
                             <Toolbar>
+                                <IconButton className={classes.AppMenuButton}
+                                            onClick={this.toggleDrawer(true)}
+                                            color="inherit"
+                                            aria-label="Menu">
+                                    <MenuIcon />
+                                </IconButton>
                                 <img src={logo} width={48} height={48} className={classes.AppLogoClass} alt=""/>
                                 <Typography className={classes.AppTitle} color="inherit" variant="h6" noWrap
                                             component={Link} to="/">
@@ -105,6 +155,7 @@ class App extends Component {
                             </Toolbar>
                         </AppBar>
                     </div>
+                    {this.getSwipeableDrawer()}
 
                     <PrivateRoute exact path="/" component={Home}/>
                     <Route exact path="/main" component={Main}/>
@@ -115,6 +166,7 @@ class App extends Component {
                     <PrivateRoute exact path='/budgets/edit/:planId' component={BudgetPlan} />
                     <PrivateRoute exact path='/expense/add/:planId' component={AddEditExpense}/>
                     <PrivateRoute exact path='/plan/incomes/:planId' component={EditIncomes}/>
+                    <PrivateRoute exact path='/plan/history' component={PlansHistoryList}/>
                     <PrivateRoute exact path='/expenses/:planId' component={ExpenseList}/>
                     <PrivateRoute exact path='/expenses/:planId/:category' component={ExpenseList}/>
                     <PrivateRoute exact path='/expense/edit/:planId/:expenseId' component={AddEditExpense}/>
