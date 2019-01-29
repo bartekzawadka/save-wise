@@ -32,6 +32,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from "@material-ui/core/Drawer";
 import DrawerMenu from "./common/DrawerMenu";
 import PlansHistoryList from "./pages/budgets/history/PlansHistoryList";
+import PlanDashboard from "./pages/budgets/history/PlanDashboard";
 
 function getTheme(type) {
     return createMuiTheme({
@@ -161,12 +162,12 @@ class App extends Component {
                     <Route exact path="/main" component={Main}/>
                     <Route exact path="/register" component={Register}/>
                     <PrivateRoute exact path="/changePassword" component={ChangePassword}/>
-                    <PrivateRoute exact path="/budgets/list" component={BudgetsList}/>
                     <PrivateRoute exact path='/budgets/new' component={BudgetPlan}/>
                     <PrivateRoute exact path='/budgets/edit/:planId' component={BudgetPlan} />
                     <PrivateRoute exact path='/expense/add/:planId' component={AddEditExpense}/>
                     <PrivateRoute exact path='/plan/incomes/:planId' component={EditIncomes}/>
                     <PrivateRoute exact path='/plan/history' component={PlansHistoryList}/>
+                    <PrivateRoute exact path='/plan/dashboard/:planId' component={PlanDashboard} />
                     <PrivateRoute exact path='/expenses/:planId' component={ExpenseList}/>
                     <PrivateRoute exact path='/expenses/:planId/:category' component={ExpenseList}/>
                     <PrivateRoute exact path='/expense/edit/:planId/:expenseId' component={AddEditExpense}/>

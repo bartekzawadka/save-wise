@@ -122,7 +122,7 @@ class Home extends Component {
                 </div>;
         } else {
             content = <div>
-                <PlanSummary plan={this.state.budget} onPlanChanged={this.getData}/>
+                <PlanSummary planId={this.state.budget.id} onPlanChanged={this.getData}/>
             </div>
         }
 
