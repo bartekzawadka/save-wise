@@ -15,6 +15,14 @@ class PlanService extends Service {
         return axios.get(ApiCalls.getPlanUrl() + '/' + planId, super.getRequestConfig());
     };
 
+    getPlanSummary = (planId) => {
+        return axios.get(ApiCalls.getPlanUrl() + '/' + planId + '/summary', super.getRequestConfig());
+    };
+
+    getPlans = (filter) => {
+      return axios.post(ApiCalls.getPlanUrl()+'/list', filter, super.getRequestConfig());
+    };
+
     addNewPlan = (plan) => {
         return axios.post(ApiCalls.getPlanUrl(), plan, super.getRequestConfig());
     };
