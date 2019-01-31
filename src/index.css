@@ -22,4 +22,5 @@ code {
 
 #nprogress .bar {
     background: #ffc400 !important;
+    z-index: 2000 !important;
 }

@@ -21,6 +21,7 @@ import PlanService from "../../../services/PlanService";
 import CloseIcon from "@material-ui/icons/Close";
 import IncomeService from "../../../services/IncomeService";
 import ExpenseService from "../../../services/ExpenseService";
+import ContentWrapper from "../../../common/ContentWrapper";
 
 const styles = theme => ({
     NewBudgetPlanRoot: {
@@ -136,7 +137,7 @@ class BudgetPlan extends Component {
         }
 
         this.incomeService.getIncomeCategories().then(result => {
-            if(!result || !result.data || result.data.length === 0){
+            if (!result || !result.data || result.data.length === 0) {
                 return;
             }
 
@@ -148,7 +149,7 @@ class BudgetPlan extends Component {
         });
 
         this.expenseService.getExpenseCategories().then(result => {
-            if(!result || !result.data || result.data.length === 0){
+            if (!result || !result.data || result.data.length === 0) {
                 return;
             }
 
@@ -166,8 +167,10 @@ class BudgetPlan extends Component {
                 if (plan.data.incomes.hasOwnProperty(k)) {
                     sum += plan.data.incomes[k].plannedAmount;
                     result.push({
+                        id: plan.data.incomes[k].id,
                         name: plan.data.incomes[k].category,
-                        value: plan.data.incomes[k].plannedAmount
+                        value: plan.data.incomes[k].plannedAmount,
+                        amount: plan.data.incomes[k].amount
                     })
                 }
             }
@@ -191,8 +194,10 @@ class BudgetPlan extends Component {
                 }
 
                 result[plan.data.expenses[k].category].push({
+                    id: plan.data.expenses[k].id,
                     type: plan.data.expenses[k].type,
-                    value: plan.data.expenses[k].plannedAmount
+                    value: plan.data.expenses[k].plannedAmount,
+                    amount: plan.data.expenses[k].amount
                 });
             }
 
@@ -214,8 +219,10 @@ class BudgetPlan extends Component {
                     sum: sum,
                     types: result[v].map(category => {
                         return {
+                            id: category.id,
                             name: category.type,
-                            value: category.value
+                            value: category.value,
+                            amount: category.amount
                         }
                     })
                 });
@@ -223,6 +230,9 @@ class BudgetPlan extends Component {
 
             result = tmp;
         }
+
+        console.log('EXPENSES LOADED');
+        console.log(result);
 
         return result;
     };
@@ -256,8 +266,10 @@ class BudgetPlan extends Component {
 
         let incomes = this.state.plan.incomeCategories.map(item => {
             return {
+                id: item.id,
                 category: item.name,
-                plannedAmount: item.value
+                plannedAmount: item.value,
+                amount: item.amount
             }
         });
 
@@ -272,9 +284,11 @@ class BudgetPlan extends Component {
                     continue;
                 }
                 expenses.push({
+                    id: this.state.plan.expenseCategories[k].types[t].id,
                     plannedAmount: this.state.plan.expenseCategories[k].types[t].value,
                     type: this.state.plan.expenseCategories[k].types[t].name,
-                    category: this.state.plan.expenseCategories[k].name
+                    category: this.state.plan.expenseCategories[k].name,
+                    amount: this.state.plan.expenseCategories[k].types[t].amount
                 });
             }
         }
@@ -285,6 +299,9 @@ class BudgetPlan extends Component {
             incomes: incomes,
             expenses: expenses
         };
+
+        console.log('SAVE DATA');
+        console.log(saveData);
 
         if (this.props.match.params.planId) {
             this.planService.updatePlan(this.props.match.params.planId, saveData).then(() => {
@@ -484,45 +501,47 @@ class BudgetPlan extends Component {
         const steps = getSteps();
 
         return (
-            <div className={classes.NewBudgetPlanRoot}>
-                <Paper elevation={1} className={classes.NewBudgetPlanPaper}>
-                    <Typography variant='h6'>
-                        {this.props.match.params.planId ? 'Edycja planu budżetowego' : 'Nowy plan budżetowy'}
-                    </Typography>
-                    <Stepper activeStep={this.state.activeStep}>
-                        {steps.map((label) => {
-                            const props = {};
-                            const labelProps = {};
-                            return (
-                                <Step key={label} {...props}>
-                                    <StepLabel {...labelProps}>{label}</StepLabel>
-                                </Step>
-                            );
-                        })}
-                    </Stepper>
-                    <div>
+            <ContentWrapper>
+                <div className={classes.NewBudgetPlanRoot}>
+                    <Paper elevation={1} className={classes.NewBudgetPlanPaper}>
+                        <Typography variant='h6'>
+                            {this.props.match.params.planId ? 'Edycja planu budżetowego' : 'Nowy plan budżetowy'}
+                        </Typography>
+                        <Stepper activeStep={this.state.activeStep}>
+                            {steps.map((label) => {
+                                const props = {};
+                                const labelProps = {};
+                                return (
+                                    <Step key={label} {...props}>
+                                        <StepLabel {...labelProps}>{label}</StepLabel>
+                                    </Step>
+                                );
+                            })}
+                        </Stepper>
                         <div>
-                            <div className={classes.NewBudgetPlanContainer}>
-                                {this.getStepContent(this.state.activeStep, classes)}
-                            </div>
                             <div>
-                                {this.getBackButton()}
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={this.handleNext}
-                                    className={classes.NewBudgetPlanButtonNext}
-                                    disabled={this.getNextDisabled()}
-                                >
-                                    {this.state.activeStep === steps.length - 1 ? <CheckIcon/> :
-                                        <KeyboardArrowRightIcon/>}
-                                    {this.state.activeStep === steps.length - 1 ? 'Zapisz' : 'Dalej'}
-                                </Button>
+                                <div className={classes.NewBudgetPlanContainer}>
+                                    {this.getStepContent(this.state.activeStep, classes)}
+                                </div>
+                                <div>
+                                    {this.getBackButton()}
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={this.handleNext}
+                                        className={classes.NewBudgetPlanButtonNext}
+                                        disabled={this.getNextDisabled()}
+                                    >
+                                        {this.state.activeStep === steps.length - 1 ? <CheckIcon/> :
+                                            <KeyboardArrowRightIcon/>}
+                                        {this.state.activeStep === steps.length - 1 ? 'Zapisz' : 'Dalej'}
+                                    </Button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </Paper>
-            </div>
+                    </Paper>
+                </div>
+            </ContentWrapper>
         );
     }
 }

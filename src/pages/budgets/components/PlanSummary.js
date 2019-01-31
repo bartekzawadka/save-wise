@@ -69,7 +69,7 @@ class PlanSummary extends Component {
         super(props);
 
         this.state = {
-            budget: this.props.plan,
+            budget: {},
             incomesMissing: false,
             deletePlanDialogOpen: false
         };
@@ -78,19 +78,34 @@ class PlanSummary extends Component {
     }
 
     componentDidMount() {
-        let incomesSum = 0.0;
-        try {
-            if (this.state.budget.incomesSum) {
-                incomesSum = parseFloat(this.state.budget.incomesSum);
-            }
-        } catch {
+        if (!this.props.planId) {
+            return;
         }
 
-        if (incomesSum === 0.0) {
-            this.setState({
-                incomesMissing: true
+        this.planService.getPlanSummary(this.props.planId)
+            .then(data => {
+                this.setState({
+                    budget: data.data
+                });
+            })
+            .then(() => {
+                let incomesSum = 0.0;
+                try {
+                    if (this.state.budget.incomesSum) {
+                        incomesSum = parseFloat(this.state.budget.incomesSum);
+                    }
+                } catch {
+                }
+
+                if (incomesSum === 0.0) {
+                    this.setState({
+                        incomesMissing: true
+                    });
+                }
+            })
+            .catch(e => {
+                console.log(e);
             });
-        }
     }
 
     getIncomesMissingAlert = () => {
@@ -159,7 +174,7 @@ class PlanSummary extends Component {
         }
 
         this.planService.deletePlan(this.state.budget.id).then(() => {
-            if(this.props.onPlanChanged){
+            if (this.props.onPlanChanged) {
                 this.props.onPlanChanged();
             }
         }).catch(e => {
@@ -170,77 +185,82 @@ class PlanSummary extends Component {
     render() {
         const {classes} = this.props;
 
-        return <div className={classes.PlanSummaryRoot}>
-            {this.getIncomesMissingAlert()}
-            {this.getUpcommingEndOfPeriodAlert()}
-            <Grid container alignItems="stretch" justify="center" spacing={8}>
-                <Grid item xs={12}>
-                    <Paper elevation={1} className={classes.PlanSummaryPaper}>
-                        <div className={classes.PlanSummaryTitleContainer}>
-                            <Typography variant="h6" color="inherit" className={classes.PlanSummaryGrow}>
-                                Bieżąca realizacja budżetu
-                                ({moment(this.props.plan.startDate).format('L') + " - " + moment(this.props.plan.endDate).format('L')})
-                            </Typography>
-                        </div>
-                        <div>
-                            <Button className={classes.PlanSummaryDeletePlanButton}
-                                    variant="text"
-                                    onClick={this.handleDeletePlanDialogOpen}>
-                                <DeleteForeverIcon/>
-                                Usuń
-                            </Button>
-                            <Button color="primary"
-                                    variant="flat"
-                                    className={classes.PlanSummaryTitleButtonBarButton}
-                                    component={Link}
-                                    to={'/budgets/edit/' + this.props.plan.id}>
-                                <EditIcon/>
-                                Edytuj
-                            </Button>
-                            <Button color="primary"
-                                    variant="flat"
-                                    component={Link}
-                                    className={classes.PlanSummaryTitleButtonBarButton}
-                                    to={"/plan/incomes/" + this.props.plan.id}>
-                                <AttachMoneyIcon/>
-                                Przychody
-                            </Button>
-                            <Button color="primary"
-                                    variant="flat"
-                                    className={classes.PlanSummaryTitleButtonBarButton}
-                                    component={Link} to={"/expenses/" + this.props.plan.id}>
-                                <ListIcon/>
-                                Wydatki
-                            </Button>
-                            <Button color="secondary"
-                                    variant="contained"
-                                    className={classes.PlanSummaryTitleButtonBarRightButton}
-                                    component={Link}
-                                    to={"/expense/add/" + this.props.plan.id}>
-                                <AddIcon/>
-                                Dodaj wydatek
-                            </Button>
-                        </div>
-                    </Paper>
+        let content = <div />;
+        if(this.state.budget && this.state.budget.id){
+            content = <div className={classes.PlanSummaryRoot}>
+                {this.getIncomesMissingAlert()}
+                {this.getUpcommingEndOfPeriodAlert()}
+                <Grid container alignItems="stretch" justify="center" spacing={8}>
+                    <Grid item xs={12}>
+                        <Paper elevation={1} className={classes.PlanSummaryPaper}>
+                            <div className={classes.PlanSummaryTitleContainer}>
+                                <Typography variant="h6" color="inherit" className={classes.PlanSummaryGrow}>
+                                    Bieżąca realizacja budżetu
+                                    ({moment(this.state.budget.startDate).format('L') + " - " + moment(this.state.budget.endDate).format('L')})
+                                </Typography>
+                            </div>
+                            <div>
+                                <Button className={classes.PlanSummaryDeletePlanButton}
+                                        variant="text"
+                                        onClick={this.handleDeletePlanDialogOpen}>
+                                    <DeleteForeverIcon/>
+                                    Usuń
+                                </Button>
+                                <Button color="primary"
+                                        variant="flat"
+                                        className={classes.PlanSummaryTitleButtonBarButton}
+                                        component={Link}
+                                        to={'/budgets/edit/' + this.props.planId}>
+                                    <EditIcon/>
+                                    Edytuj
+                                </Button>
+                                <Button color="primary"
+                                        variant="flat"
+                                        component={Link}
+                                        className={classes.PlanSummaryTitleButtonBarButton}
+                                        to={"/plan/incomes/" + this.props.planId}>
+                                    <AttachMoneyIcon/>
+                                    Przychody
+                                </Button>
+                                <Button color="primary"
+                                        variant="flat"
+                                        className={classes.PlanSummaryTitleButtonBarButton}
+                                        component={Link} to={"/expenses/" + this.props.planId}>
+                                    <ListIcon/>
+                                    Wydatki
+                                </Button>
+                                <Button color="secondary"
+                                        variant="contained"
+                                        className={classes.PlanSummaryTitleButtonBarRightButton}
+                                        component={Link}
+                                        to={"/expense/add/" + this.props.planId}>
+                                    <AddIcon/>
+                                    Dodaj wydatek
+                                </Button>
+                            </div>
+                        </Paper>
+                    </Grid>
+                    <LeftToSpendWidget plan={this.state.budget}/>
+                    <ExpensesSummaryChartWidget plan={this.state.budget}/>
+                    <ExpenseCategoryShareWidget plan={this.state.budget}/>
+                    <ExpensesPerCategoryWidget plan={this.state.budget}/>
+                    <IncomesPerCategoryWidget plan={this.state.budget}/>
                 </Grid>
-                <LeftToSpendWidget plan={this.state.budget}/>
-                <ExpensesSummaryChartWidget plan={this.state.budget}/>
-                <ExpenseCategoryShareWidget plan={this.state.budget}/>
-                <ExpensesPerCategoryWidget plan={this.state.budget}/>
-                <IncomesPerCategoryWidget plan={this.state.budget}/>
-            </Grid>
-            <ConfirmationDialog open={this.state.deletePlanDialogOpen}
-                                onClose={this.handleDeletePlanDialogClose}
-                                title={"Czy na pewno chcesz usunąć?"}
-                                message={"Czy jesteś pewien, że chcesz usunąć cały plan oraz jego realizację? " +
-                                "Ta operacja jest nieodwracalna!"}/>
-        </div>
+                <ConfirmationDialog open={this.state.deletePlanDialogOpen}
+                                    onClose={this.handleDeletePlanDialogClose}
+                                    title={"Czy na pewno chcesz usunąć?"}
+                                    message={"Czy jesteś pewien, że chcesz usunąć cały plan oraz jego realizację? " +
+                                    "Ta operacja jest nieodwracalna!"}/>
+            </div>;
+        }
+
+        return content;
     }
 }
 
 PlanSummary.propTypes = {
     classes: PropTypes.object.required,
-    plan: PropTypes.object.required,
+    planId: PropTypes.string.required,
     onPlanChanged: PropTypes.func
 };
 

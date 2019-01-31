@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
+import ContentWrapper from "../../common/ContentWrapper";
 
-class BudgetsList extends Component{
+class BudgetsList extends Component {
 
-    render(){
+    render() {
         return (
-            <div>TO BE IMPLEMENTED</div>
+            <ContentWrapper>
+                <div>TO BE IMPLEMENTED</div>
+            </ContentWrapper>
         );
     }
 }
