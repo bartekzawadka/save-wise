@@ -11,6 +11,7 @@ import PercentageText from "../../../../common/PercentageText";
 import {IconButton, Tooltip, withStyles} from "@material-ui/core";
 import ListIcon from "@material-ui/icons/List";
 import {Link} from "react-router-dom";
+import { Base64 } from 'js-base64';
 
 const styles = () => ({
     ExpensesPerCategoryWidgetPercentageOk: {
@@ -99,7 +100,7 @@ class ExpensesPerCategoryWidget extends Component {
                                     <Tooltip title="Lista wydatków">
                                         <IconButton color="primary"
                                                     component={Link}
-                                                    to={"/expenses/"+this.props.plan.id+"/"+btoa(item.name)}>
+                                                    to={"/expenses/"+this.props.plan.id+"/"+Base64.encode(item.name)}>
                                             <ListIcon/>
                                         </IconButton>
                                     </Tooltip>
