@@ -16,6 +16,7 @@ import AddIcon from "@material-ui/icons/Add";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ConfirmationDialog from "../../common/dialogs/ConfirmationDialog";
 import ContentWrapper from "../../common/ContentWrapper";
+import { Base64 } from 'js-base64';
 
 const styles = () => ({
     ExpenseListRoot: {
@@ -58,7 +59,7 @@ class ExpenseList extends Component {
             filter: {
                 dateFrom: undefined,
                 dateTo: undefined,
-                category: this.props.match.params.category ? atob(this.props.match.params.category) : ''
+                category: this.props.match.params.category ? Base64.decode(this.props.match.params.category) : ''
             }
         };
 
