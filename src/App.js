@@ -146,8 +146,12 @@ class App extends Component {
                                             aria-label="Menu">
                                     <MenuIcon />
                                 </IconButton>
-                                <img src={logo} width={48} height={48} className={classes.AppLogoClass} alt=""/>
-                                <Typography className={classes.AppTitle} color="inherit" variant="h6" noWrap
+                                <img src={logo}
+                                     width={48}
+                                     height={48}
+                                     className={classes.AppLogoClass}
+                                     alt=""/>
+                                <Typography className={classes.AppTitle} color="inherit" variant="h6"
                                             component={Link} to="/">
                                     savewise
                                 </Typography>

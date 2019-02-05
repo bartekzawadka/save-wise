@@ -27,7 +27,7 @@ const styles = theme => ({
         margin: '0 auto'
     },
     RegisterField: {
-        minWidth: 250
+        minWidth: 200
     },
     RegisterChipError: {
         color: "#ff3d00",

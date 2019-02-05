@@ -7,10 +7,17 @@ import HistoryIcon from "@material-ui/icons/History";
 import CategoryIcon from "@material-ui/icons/Category";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import {Link} from "react-router-dom";
+import HomeIcon from '@material-ui/icons/Home';
 
 class DrawerMenu extends Component{
     render() {
         return <List>
+            <ListItem button key="MainMenu-PlansHistory" component={Link} to="/">
+                <ListItemIcon>
+                    <HomeIcon/>
+                </ListItemIcon>
+                <ListItemText primary={"Start"} />
+            </ListItem>
             <ListItem button key="MainMenu-PlansHistory" component={Link} to="/plan/history">
                 <ListItemIcon>
                     <HistoryIcon/>
