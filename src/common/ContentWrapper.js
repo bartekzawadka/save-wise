@@ -3,7 +3,10 @@ import {withStyles} from '@material-ui/core';
 
 const styles = theme => ({
     content: {
-        padding: theme.spacing.unit * 8
+        paddingTop: theme.spacing.unit * 8,
+        paddingLeft: theme.spacing.unit,
+        paddingRight: theme.spacing.unit,
+        paddingBottom: theme.spacing.unit * 8
     }
 });
 

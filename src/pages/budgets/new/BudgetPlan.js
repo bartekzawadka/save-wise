@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
+import withWidth from '@material-ui/core/withWidth';
+import compose from 'recompose/compose';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -186,7 +188,7 @@ class BudgetPlan extends Component {
         let result = [];
         if (plan.data.expenses && plan.data.expenses.length > 0) {
             for (let k in plan.data.expenses) {
-                if (!plan.data.expenses.hasOwnProperty(k)) {
+                if (!plan.data.expenses.hasOwnProperty(k) || plan.data.expenses[k].plannedAmount <= 0.0) {
                     continue;
                 }
                 if (!result[plan.data.expenses[k].category]) {
@@ -505,9 +507,13 @@ class BudgetPlan extends Component {
                 <div className={classes.NewBudgetPlanRoot}>
                     <Paper elevation={1} className={classes.NewBudgetPlanPaper}>
                         <Typography variant='h6'>
+                            {this.props.width}
+                        </Typography>
+                        <Typography variant='h6'>
                             {this.props.match.params.planId ? 'Edycja planu budżetowego' : 'Nowy plan budżetowy'}
                         </Typography>
-                        <Stepper activeStep={this.state.activeStep}>
+                        <Stepper activeStep={this.state.activeStep}
+                                 orientation={this.props.width !== 'xs' ? 'horizontal' : 'vertical'}>
                             {steps.map((label) => {
                                 const props = {};
                                 const labelProps = {};
@@ -550,4 +556,4 @@ BudgetPlan.propTypes = {
     classes: PropTypes.object
 };
 
-export default withStyles(styles)(BudgetPlan);
+export default compose(withStyles(styles), withWidth())(BudgetPlan);
