@@ -42,9 +42,6 @@ const styles = theme => ({
     PlanSummaryTitleButtonBarButton: {
         marginRight: theme.spacing.unit * 2,
     },
-    PlanSummaryTitleButtonBarRightButton: {
-        float: 'right'
-    },
     PlanSummaryChip: {
         marginBottom: theme.spacing.unit * 2
     },
@@ -231,7 +228,7 @@ class PlanSummary extends Component {
                                 </Button>
                                 <Button color="secondary"
                                         variant="contained"
-                                        className={classes.PlanSummaryTitleButtonBarRightButton}
+                                        className={classes.PlanSummaryTitleButtonBarButton}
                                         component={Link}
                                         to={"/expense/add/" + this.props.planId}>
                                     <AddIcon/>

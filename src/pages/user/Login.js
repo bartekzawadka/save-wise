@@ -22,11 +22,11 @@ const styles = theme => ({
         padding: theme.spacing.unit * 2,
     },
     LoginPaperLoginContainer: {
-        width: 250,
+        width: 200,
         margin: '0 auto'
     },
     LoginField: {
-        width: 250
+        width: 200
     },
     LoginButtonContainer: {
         marginTop: '10px',

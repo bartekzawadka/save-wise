@@ -33,7 +33,9 @@ const styles = theme => ({
         flexGrow: 1,
     },
     HomeLandingPageTitle: {
-        color: grey['500']
+        color: grey['500'],
+        paddingLeft: theme.spacing.unit * 2,
+        paddingRight: theme.spacing.unit * 2
     },
     HomeNewPlanButton: {
         marginTop: '24px'
@@ -97,7 +99,7 @@ class Home extends Component {
         if (!this.state.budget) {
             return <Grid container direction="column" alignItems="center" justify="center" className="landing-pane">
                 <Grid item>
-                    <Typography variant="h3" className={classes.HomeLandingPageTitle}>
+                    <Typography variant="h4" className={classes.HomeLandingPageTitle}>
                         Ładowanie...
                     </Typography>
                 </Grid>
@@ -107,7 +109,7 @@ class Home extends Component {
                 <div>
                     <Grid container direction="column" alignItems="center" justify="center" className="landing-pane">
                         <Grid item>
-                            <Typography variant="h3" className={classes.HomeLandingPageTitle}>
+                            <Typography variant="h4" className={classes.HomeLandingPageTitle}>
                                 Nie masz jeszcze budżetu wliczającego dzisiejszy dzień!
                             </Typography>
                         </Grid>
