@@ -507,9 +507,6 @@ class BudgetPlan extends Component {
                 <div className={classes.NewBudgetPlanRoot}>
                     <Paper elevation={1} className={classes.NewBudgetPlanPaper}>
                         <Typography variant='h6'>
-                            {this.props.width}
-                        </Typography>
-                        <Typography variant='h6'>
                             {this.props.match.params.planId ? 'Edycja planu budżetowego' : 'Nowy plan budżetowy'}
                         </Typography>
                         <Stepper activeStep={this.state.activeStep}
