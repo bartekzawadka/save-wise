@@ -84,8 +84,7 @@ class Home extends Component {
             variant="permanent"
             classes={{
                 paper: this.props.classes.drawerPaper,
-            }}
-        >
+            }}>
             <div className={this.props.classes.toolbar}/>
             <DrawerMenu />
         </Drawer>

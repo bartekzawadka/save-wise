@@ -8,8 +8,8 @@ import TableBody from "@material-ui/core/TableBody/TableBody";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
-import AutoComplete from "../../budgets/new/components/AmountsList";
 import {withStyles} from "@material-ui/core";
+import AutoComplete from "../../../common/AutoComplete";
 
 const styles = () => ({
     ItemsListTable: {
@@ -48,12 +48,12 @@ class ItemsList extends Component{
         if (!state.newItemName) {
             canPush = false;
         } else {
-            for (let k in state.items) {
-                if (!state.items.hasOwnProperty(k)) {
+            for (let k in this.props.items) {
+                if (!this.props.items.hasOwnProperty(k)) {
                     break;
                 }
 
-                if (state.items[k].name.toLowerCase() === state.newItemName.toLowerCase()) {
+                if (this.props.items[k].name.toLowerCase() === state.newItemName.toLowerCase()) {
                     canPush = false;
                     break;
                 }
@@ -61,7 +61,7 @@ class ItemsList extends Component{
         }
 
         if (canPush) {
-            state.items.push({
+            this.props.push({
                 name: state.newItemName,
                 value: 0
             });
@@ -70,7 +70,7 @@ class ItemsList extends Component{
         state.newItemName = "";
         this.setState(state);
         if (this.props.onChange) {
-            this.props.onChange(state.items);
+            this.props.onChange(this.props.items);
         }
 
         this.handleOnChange();
@@ -85,16 +85,16 @@ class ItemsList extends Component{
     deleteItem = (name) => {
         let state = this.state;
         let index;
-        for (let k in state.items) {
+        for (let k in this.props.items) {
             index = k;
-            if (state.items.hasOwnProperty(k)) {
-                if (state.items[k].name === name) {
+            if (this.props.items.hasOwnProperty(k)) {
+                if (this.props.items[k].name === name) {
                     break;
                 }
             }
         }
 
-        state.items.splice(index, 1);
+        this.props.items.splice(index, 1);
 
         this.setState(state);
 
@@ -103,7 +103,7 @@ class ItemsList extends Component{
 
     handleOnChange() {
         if (this.props.onChange) {
-            this.props.onChange(this.state.items, this.state.sum);
+            this.props.onChange(this.props.items, this.state.sum);
         }
     }
 
@@ -118,7 +118,7 @@ class ItemsList extends Component{
                 </TableRow>
             </TableHead>
             <TableBody>
-                {this.state.items.map(ic => {
+                {this.props.items.map(ic => {
                     return (
                         <TableRow key={'item-category-' + ic.name}>
                             <TableCell component="th" scope="row">

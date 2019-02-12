@@ -33,6 +33,7 @@ import Drawer from "@material-ui/core/Drawer";
 import DrawerMenu from "./common/DrawerMenu";
 import PlansHistoryList from "./pages/budgets/history/PlansHistoryList";
 import PlanDashboard from "./pages/budgets/history/PlanDashboard";
+import IncomesCategoriesList from "./pages/categories/incomes/IncomesCategoriesList";
 
 function getTheme(type) {
     return createMuiTheme({
@@ -175,6 +176,7 @@ class App extends Component {
                     <PrivateRoute exact path='/expenses/:planId' component={ExpenseList}/>
                     <PrivateRoute exact path='/expenses/:planId/:category' component={ExpenseList}/>
                     <PrivateRoute exact path='/expense/edit/:planId/:expenseId' component={AddEditExpense}/>
+                    <PrivateRoute exact path='/categories/income' component={IncomesCategoriesList} />
                 </MuiThemeProvider>
             </Router>
         );

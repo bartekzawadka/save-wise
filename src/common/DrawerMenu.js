@@ -24,7 +24,7 @@ class DrawerMenu extends Component{
                 </ListItemIcon>
                 <ListItemText primary={"Historia planów"} />
             </ListItem>
-            <ListItem button key="MainMenu-PlansHistory">
+            <ListItem button key="MainMenu-PlansHistory" component={Link} to="/categories/income">
                 <ListItemIcon>
                     <CategoryIcon/>
                 </ListItemIcon>
