@@ -18,7 +18,9 @@ import {AuthService} from "./services/auth.service";
     entryComponents: [],
     imports: [
         BrowserModule,
-        IonicModule.forRoot(),
+        IonicModule.forRoot({
+            mode: 'ios'
+        }),
         AppRoutingModule,
         HttpClientModule
     ],

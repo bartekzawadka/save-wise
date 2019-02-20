@@ -17,7 +17,7 @@ export class AuthService extends ApiService {
     }
 
     public getUser(): User {
-        if (this.loggedUser.IsAuthenticated) {
+        if (this.loggedUser.isAuthenticated()) {
             return this.loggedUser;
         }
 
@@ -26,8 +26,7 @@ export class AuthService extends ApiService {
         let value = localStorage.getItem(this.USER_STORAGE_KEY);
         if (value) {
             let user = JSON.parse(value);
-            this.loggedUser.username = user.username;
-            this.loggedUser.token = user.token;
+            this.loggedUser = this.extractUserInfo(user);
         }
 
         return this.loggedUser;
@@ -40,19 +39,43 @@ export class AuthService extends ApiService {
 
     public logIn(loginData: LoginModel): Promise<User> {
         return super.CallApi(apiUrl => {
-            return this.http.post<User>(apiUrl, loginData)
+            return this.http.post<User>(apiUrl + "/user/authenticate", loginData)
                 .toPromise()
                 .then(value => {
-                    console.log('LOGIN VALUE:');
-                    console.log(value);
-
-                    if(value){
-                        this.loggedUser.token = value.token;
-                        this.loggedUser.username = value.username;
-                    }
-
-                    return value;
+                    return this.processTokenData(value);
                 });
         });
+    }
+
+    public refreshToken() {
+        return super.CallApi(apiUrl => {
+            return this.http.get(apiUrl + "/user/refreshToken")
+                .toPromise()
+                .then(value => {
+                    return this.processTokenData(value);
+                })
+        })
+    }
+
+    private processTokenData(value: any) {
+        console.log('LOGIN VALUE:');
+        console.log(value);
+
+        if (value) {
+            this.loggedUser = this.extractUserInfo(value);
+            localStorage.setItem(this.USER_STORAGE_KEY, JSON.stringify(value));
+        }
+
+        return value;
+    }
+
+    private extractUserInfo(data) {
+        let userInfo = new User();
+        userInfo.token = data.token;
+        userInfo.expires = data.expires;
+        userInfo.id = data.id;
+        userInfo.username = data.username;
+
+        return userInfo;
     }
 }

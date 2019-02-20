@@ -1,14 +1,14 @@
 import {Injectable, Injector} from '@angular/core';
 import {
-    HttpErrorResponse,
     HttpEvent,
     HttpHandler,
     HttpInterceptor,
-    HttpRequest
+    HttpRequest, HttpResponse
 } from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {AuthService} from "../services/auth.service";
-import {catchError} from "rxjs/operators";
+import {catchError, tap} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -17,20 +17,34 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private injector: Injector) {
     }
 
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
         this.authService = this.injector.get(AuthService);
 
-        req = req.clone({
-            setHeaders: {
-                Authorization: 'Bearer ' + this.authService.getUser().token
-            }
-        });
+        req = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + this.authService.getUser().token)});
+
+        const userInfo = this.authService.getUser();
 
         return next.handle(req)
             .pipe(
-                catchError((error: HttpErrorResponse) => {
+                tap((ev: HttpEvent<any>)  => {
+                    if (ev instanceof HttpResponse) {
+                        const now = new Date();
+
+                        if (userInfo.isAuthenticated() && userInfo.expires) {
+
+                            const diff = ((userInfo.expires.getTime() - now.getTime()) / 1000);
+                            if (diff <= 120) {
+                                this.authService.refreshToken();
+                            }
+                        }
+                    }
+                }),
+                catchError((error: any) => {
                     if (error.status === 401) {
                         this.authService.logOff();
+                        //redirect
+                        let router = this.injector.get(Router);
+                        router.navigate(['/login']);
                     }
 
                     return throwError(error);

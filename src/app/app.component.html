@@ -8,7 +8,7 @@
             <ion-title class="main-title">
                 savewise
             </ion-title>
-            <ion-buttons slot="end">
+            <ion-buttons slot="end" *ngIf="authService.getUser().isAuthenticated()">
                 <ion-button>
                     <ion-icon slot="icon-only" name="contact"></ion-icon>
                 </ion-button>
@@ -17,7 +17,7 @@
     </ion-header>
 
     <ion-split-pane class="main-content">
-        <ion-menu class="side-menu">
+        <ion-menu class="side-menu" *ngIf="authService.getUser().isAuthenticated()">
             <ion-content>
                 <ion-list>
                     <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">

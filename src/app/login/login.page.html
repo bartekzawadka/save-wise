@@ -1,0 +1,28 @@
+<ion-content padding>
+    <div class="login-page">
+        <ion-chip *ngIf="showError" color="danger" outline="true" class="error-chip">
+            <ion-icon name="close-circle-outline"></ion-icon>
+            <ion-label>{{errorMessage}}</ion-label>
+        </ion-chip>
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>Logowanie</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-item>
+                    <ion-label position="floating">Nazwa użytkownika</ion-label>
+                    <ion-input [(ngModel)]="loginData.username"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Hasło</ion-label>
+                    <ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
+                </ion-item>
+            </ion-card-content>
+            <ion-button fill="outline" expand="block" margin [disabled]="!loginData.username || !loginData.password"
+                        (click)="submit()">
+                <ion-icon name="person"></ion-icon>
+                Zaloguj
+            </ion-button>
+        </ion-card>
+    </div>
+</ion-content>

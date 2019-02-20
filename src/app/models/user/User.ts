@@ -3,5 +3,11 @@ export class User {
 
     public token: string;
 
-    public IsAuthenticated = (this.username && this.token);
+    public id: string;
+
+    public expires: Date;
+
+    public isAuthenticated(){
+        return !!this.token;
+    }
 }
