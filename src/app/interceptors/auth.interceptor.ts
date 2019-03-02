@@ -32,7 +32,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
                         if (userInfo.isAuthenticated() && userInfo.expires) {
 
-                            const diff = ((userInfo.expires.getTime() - now.getTime()) / 1000);
+                            const diff = ((new Date(userInfo.expires).getTime() - now.getTime()) / 1000);
                             if (diff <= 120) {
                                 this.authService.refreshToken();
                             }
@@ -46,8 +46,9 @@ export class AuthInterceptor implements HttpInterceptor {
                         let router = this.injector.get(Router);
                         router.navigate(['/login']);
                     }
-
-                    return throwError(error);
+                    else {
+                        return throwError(error);
+                    }
                 })
             );
     }

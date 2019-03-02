@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from "./api.service";
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +12,11 @@ export class PlanService extends ApiService {
 
     getPlans() {
         return this.CallApi(url => {
-            return this.http.get(url + '/plan/list').toPromise();
+            return this.http.post(url + '/plan/list', null, {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            }).toPromise();
         });
     }
 }

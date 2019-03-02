@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {User} from "../models/user/User";
 import {LoginModel} from "../models/user/LoginModel";
 import {ApiService} from "./api.service";
+import {tap} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -40,11 +41,24 @@ export class AuthService extends ApiService {
     public logIn(loginData: LoginModel): Promise<User> {
         return super.CallApi(apiUrl => {
             return this.http.post<User>(apiUrl + "/user/authenticate", loginData)
-                .toPromise()
-                .then(value => {
-                    return this.processTokenData(value);
-                });
+                .pipe(
+                    tap(value => {
+                        this.processTokenData(value);
+                    })
+                )
+                .toPromise();
         });
+    }
+
+    public register(regData: LoginModel): Promise<User> {
+        return super.CallApi(apiUrl => {
+            return this.http.post<User>(apiUrl + "/user/register", regData)
+                .toPromise()
+                .then(data => {
+                    this.processTokenData(data);
+                    return data;
+                });
+        })
     }
 
     public refreshToken() {
@@ -58,9 +72,6 @@ export class AuthService extends ApiService {
     }
 
     private processTokenData(value: any) {
-        console.log('LOGIN VALUE:');
-        console.log(value);
-
         if (value) {
             this.loggedUser = this.extractUserInfo(value);
             localStorage.setItem(this.USER_STORAGE_KEY, JSON.stringify(value));
