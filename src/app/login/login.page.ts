@@ -45,7 +45,9 @@ export class LoginPage implements OnInit {
 
             if (Array.isArray(e.error.error)) {
                 for (let k in e.error.error) {
-                    error += e.error.error[k] + ". "
+                    if(e.error.error.hasOwnProperty(k)) {
+                        error += e.error.error[k] + ". "
+                    }
                 }
             } else {
                 error = e.error.error;

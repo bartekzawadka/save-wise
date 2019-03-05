@@ -1,3 +1,26 @@
-<ion-content>
-  <ion-title>Empty content</ion-title>
+<ion-header *ngIf="budget && budget.id">
+    <app-dashboard-panel></app-dashboard-panel>
+</ion-header>
+
+<ion-content align="center" *ngIf="budget && budget.id">
+    Content
+</ion-content>
+
+<ion-content *ngIf="!budget || !budget.id" fullscreen="true">
+    <ion-grid class="no-content-container" align-items-stretch>
+        <ion-row justify-content-center align-items-center class="no-content-container">
+            <ion-grid>
+                <ion-row justify-content-center align-items-center padding-bottom="10">
+                    <ion-text class="no-content" color="medium">Nie masz jeszcze budżetu wliczającego dzisiejszy dzień!
+                    </ion-text>
+                </ion-row>
+                <ion-row justify-content-center align-items-center>
+                    <ion-button fill="outline">
+                        <ion-icon name="add"></ion-icon>
+                        Utwórz nowy
+                    </ion-button>
+                </ion-row>
+            </ion-grid>
+        </ion-row>
+    </ion-grid>
 </ion-content>

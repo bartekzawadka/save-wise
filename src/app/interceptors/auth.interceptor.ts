@@ -44,7 +44,7 @@ export class AuthInterceptor implements HttpInterceptor {
                         this.authService.logOff();
                         //redirect
                         let router = this.injector.get(Router);
-                        router.navigate(['/login']);
+                        return router.navigate(['/login']);
                     }
                     else {
                         return throwError(error);

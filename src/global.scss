@@ -14,3 +14,8 @@
   font-family: KabelFamily;
   src: url('assets/fonts/KabelBookBT.ttf');
 }
+
+ion-content.site-container{
+  max-width: 960px !important;
+  margin: 0 auto !important;
+}

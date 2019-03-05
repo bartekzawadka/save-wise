@@ -19,4 +19,10 @@ export class PlanService extends ApiService {
             }).toPromise();
         });
     }
+
+    getCurrentPlan() : Promise<Budget> {
+        return this.CallApi(url => {
+            return this.http.get<Budget>(url + '/plan/current').toPromise();
+        })
+    }
 }
