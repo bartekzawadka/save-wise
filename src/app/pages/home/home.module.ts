@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
-import {DashboardPanelComponent} from "../budget/dashboard/widgets/dashboard-panel/dashboard-panel.component";
+import {DashboardPanelComponent} from "../../budget/dashboard/widgets/dashboard-panel/dashboard-panel.component";
 
 @NgModule({
   imports: [

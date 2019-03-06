@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
-import {AuthService} from "../services/auth.service";
+import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
-import {PlanService} from "../services/plan.service";
-import {LoaderService} from "../common/dialog/loader/loader.service";
-import {MessageService} from "../common/dialog/message/message.service";
+import {PlanService} from "../../services/plan.service";
+import {LoaderService} from "../../common/dialog/loader/loader.service";
+import {MessageService} from "../../common/dialog/message/message.service";
 
 @Component({
     selector: 'app-home',

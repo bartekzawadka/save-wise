@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {LoginModel} from "../models/user/LoginModel";
-import {AuthService} from "../services/auth.service";
+import {LoginModel} from "../../models/user/LoginModel";
+import {AuthService} from "../../services/auth.service";
 import {NavController} from "@ionic/angular";
-import {User} from "../models/user/User";
-import {RegistrationModel} from "../models/user/RegistrationModel";
+import {User} from "../../models/user/User";
+import {RegistrationModel} from "../../models/user/RegistrationModel";
 
 @Component({
     selector: 'app-login',
