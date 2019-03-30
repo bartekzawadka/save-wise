@@ -1,55 +1,57 @@
 <ion-content padding>
-    <div class="login-page">
-        <ion-chip *ngIf="showError" color="danger" outline="true" class="error-chip">
-            <ion-icon name="close-circle-outline"></ion-icon>
-            <ion-label>{{errorMessage}}</ion-label>
-        </ion-chip>
-        <ion-card>
-            <ion-card-header>
-                <ion-card-title>Logowanie</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-                <ion-item>
-                    <ion-label position="floating">Nazwa użytkownika</ion-label>
-                    <ion-input [(ngModel)]="loginData.username"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">Hasło</ion-label>
-                    <ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
-                </ion-item>
-            </ion-card-content>
-            <ion-button fill="outline" expand="block" margin [disabled]="!loginData.username || !loginData.password"
-                        (click)="login()">
-                <ion-icon name="log-in"></ion-icon>
-                Zaloguj
-            </ion-button>
-        </ion-card>
-        <ion-card>
-            <ion-card-header>
-                <ion-card-title>Rejestracja</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-                <ion-item>
-                    <ion-label position="floating">Nazwa użytkownika</ion-label>
-                    <ion-input [(ngModel)]="regData.username"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">Hasło</ion-label>
-                    <ion-input type="password" [(ngModel)]="regData.password"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">Potwierdź hasło</ion-label>
-                    <ion-input type="password" [(ngModel)]="regData.passwordConfirm"></ion-input>
-                </ion-item>
-            </ion-card-content>
-            <ion-button
-                    fill="outline"
-                    expand="block"
-                    margin [disabled]="!regData.username || !regData.password || !regData.passwordConfirm"
-                        (click)="register()">
-                <ion-icon name="person-add"></ion-icon>
-                Zarejestruj
-            </ion-button>
-        </ion-card>
-    </div>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-title>Logowanie</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-item>
+                            <ion-label position="floating">Nazwa użytkownika</ion-label>
+                            <ion-input [(ngModel)]="loginData.username"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">Hasło</ion-label>
+                            <ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
+                        </ion-item>
+                    </ion-card-content>
+                    <ion-button fill="outline" expand="block" margin [disabled]="!loginData.username || !loginData.password"
+                                (click)="login()">
+                        <ion-icon name="log-in"></ion-icon>
+                        Zaloguj
+                    </ion-button>
+                </ion-card>
+            </ion-col>
+            <ion-col>
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-title>Rejestracja</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-item>
+                            <ion-label position="floating">Nazwa użytkownika</ion-label>
+                            <ion-input [(ngModel)]="regData.username"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">Hasło</ion-label>
+                            <ion-input type="password" [(ngModel)]="regData.password"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">Potwierdź hasło</ion-label>
+                            <ion-input type="password" [(ngModel)]="regData.passwordConfirm"></ion-input>
+                        </ion-item>
+                    </ion-card-content>
+                    <ion-button
+                            fill="outline"
+                            expand="block"
+                            margin [disabled]="!regData.username || !regData.password || !regData.passwordConfirm"
+                            (click)="register()">
+                        <ion-icon name="person-add"></ion-icon>
+                        Zarejestruj
+                    </ion-button>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

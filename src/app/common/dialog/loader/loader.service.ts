@@ -34,23 +34,5 @@ export class LoaderService {
         finally {
             await this.close();
         }
-
-
-        // let me = this;
-        //
-        // return new Promise<T>((resolve, reject) => {
-        //     me.present()
-        //         .then(() => {
-        //             promise().then((data) => {
-        //                 me.close().then(() => resolve(data))
-        //                     .catch(e => {
-        //                         console.log(e);
-        //                         resolve(data);
-        //                     });
-        //             })
-        //                 .catch(reject);
-        //         })
-        //         .catch(reject);
-        // })
     }
 }

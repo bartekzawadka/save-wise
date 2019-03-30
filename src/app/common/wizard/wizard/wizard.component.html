@@ -1,0 +1,19 @@
+<ion-content>
+    <ion-slides #slides [options]="options">
+        <ng-content></ng-content>
+    </ion-slides>
+    <ion-toolbar>
+        <ion-button slot="start" (click)="goBack()" [disabled]="!isPreviousEnabled()">
+            <ion-icon size="small" name="arrow-back"></ion-icon>
+            Wstecz
+        </ion-button>
+        <ion-button slot="end" *ngIf="!isLastPage()" (click)="goNext()" [disabled]="!isNextEnabled()">
+            Dalej
+            <ion-icon size="small" name="arrow-forward"></ion-icon>
+        </ion-button>
+        <ion-button slot="end" *ngIf="isLastPage()" (click)="goNext()" [disabled]="!canFinish()">
+            <ion-icon name="checkmark"></ion-icon>
+            Zakończ
+        </ion-button>
+    </ion-toolbar>
+</ion-content>

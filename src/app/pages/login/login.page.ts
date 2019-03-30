@@ -4,6 +4,8 @@ import {AuthService} from "../../services/auth.service";
 import {NavController} from "@ionic/angular";
 import {User} from "../../models/user/User";
 import {RegistrationModel} from "../../models/user/RegistrationModel";
+import {LoaderService} from "../../common/dialog/loader/loader.service";
+import {MessageService} from "../../common/dialog/message/message.service";
 
 @Component({
     selector: 'app-login',
@@ -14,38 +16,37 @@ export class LoginPage implements OnInit {
 
     loginData: LoginModel = new LoginModel();
     regData: RegistrationModel = new RegistrationModel();
-    errorMessage: string;
-    showError = false;
 
-    constructor(private authService: AuthService, private navCtrl: NavController) {
+    constructor(private authService: AuthService,
+                private navCtrl: NavController,
+                private loaderService: LoaderService,
+                private messageService: MessageService) {
     }
 
     ngOnInit() {
     }
 
-    login() {
-        this.showError = false;
-        this.handleAuthResponse(this.authService.logIn(this.loginData));
+    async login() {
+        await this.handleAuthResponse(
+            this.loaderService.runAsync(() => this.authService.logIn(this.loginData)));
     }
 
-    register() {
-        this.showError = false;
-
-        this.handleAuthResponse(this.authService.register(this.regData));
+    async register() {
+        await this.handleAuthResponse(this.authService.register(this.regData));
     }
 
-    private handleAuthResponse(promise: Promise<User>) {
+    private async handleAuthResponse(promise: Promise<User>) {
         promise.then(() => {
             this.navCtrl.navigateRoot('/')
                 .then(() => {
                     location.reload();
                 })
-        }).catch(e => {
+        }).catch(async e => {
             let error = '';
 
             if (Array.isArray(e.error.error)) {
                 for (let k in e.error.error) {
-                    if(e.error.error.hasOwnProperty(k)) {
+                    if (e.error.error.hasOwnProperty(k)) {
                         error += e.error.error[k] + ". "
                     }
                 }
@@ -53,8 +54,7 @@ export class LoginPage implements OnInit {
                 error = e.error.error;
             }
 
-            this.errorMessage = error;
-            this.showError = true;
+            await this.messageService.showMessage(error);
         });
     }
 }

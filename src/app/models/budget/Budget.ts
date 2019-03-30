@@ -1,3 +1,3 @@
-class Budget {
-    id: string;
+export class Budget {
+    public id: string;
 }

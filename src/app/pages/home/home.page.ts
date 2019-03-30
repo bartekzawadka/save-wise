@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {PlanService} from "../../services/plan.service";
 import {LoaderService} from "../../common/dialog/loader/loader.service";
 import {MessageService} from "../../common/dialog/message/message.service";
+import {Budget} from "../../models/budget/Budget";
 
 @Component({
     selector: 'app-home',
@@ -19,14 +20,12 @@ export class HomePage {
                 private loaderService: LoaderService,
                 private messageService: MessageService) {
         this.loaderService.runAsync(() => this.planService.getCurrentPlan()).then(data => {
-            console.log(data);
-            if(!data){
+            if (!data) {
                 return;
             }
 
             this.budget = data;
-        })
-            .catch(e=>{
+        }).catch(e => {
                 console.log(e);
             });
     }

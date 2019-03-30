@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from "./api.service";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Budget} from "../models/budget/Budget";
 
 @Injectable({
     providedIn: 'root'
