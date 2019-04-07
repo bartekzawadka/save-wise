@@ -1,11 +1,10 @@
-<ion-toolbar>
-    <ion-title>{{title}}</ion-title>
-</ion-toolbar>
-
 <ion-content>
-    <wizard (onFinish)="onFinish()">
-        <wizard-page>
-            <budget-setup-period></budget-setup-period>
+    <wizard (onFinish)="onFinish()" [title]="title" (onValidationFailed)="onValidationFailed($event)">
+        <wizard-page title="Wybierz okres rozliczeniowy" [canGoNext]="!!(budget.startDate && budget.endDate)" [validate]="isPeriodValid()">
+            <budget-setup-period [(startDate)]="budget.startDate" [(endDate)]="budget.endDate"></budget-setup-period>
+        </wizard-page>
+        <wizard-page title="Wybierz kategorie przychodów">
+            <budget-income-categories></budget-income-categories>
         </wizard-page>
     </wizard>
 </ion-content>

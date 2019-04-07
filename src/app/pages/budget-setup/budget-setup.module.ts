@@ -8,6 +8,8 @@ import { IonicModule } from '@ionic/angular';
 import { BudgetSetupPage } from './budget-setup.page';
 import {BudgetPeriodComponent} from "../../budget/setup/components/budget-period/budget-period.component";
 import {WizardModule} from "../../common/wizard/wizard.module";
+import {AppModule} from "../../app.module";
+import {IncomeCategoriesComponent} from "../../budget/setup/components/income-categories/income-categories.component";
 
 const routes: Routes = [
   {
@@ -22,8 +24,11 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-      WizardModule
+    WizardModule
   ],
-  declarations: [BudgetSetupPage, BudgetPeriodComponent]
+  declarations: [
+    BudgetSetupPage,
+    BudgetPeriodComponent,
+    IncomeCategoriesComponent]
 })
 export class BudgetSetupPageModule {}

@@ -1,3 +1,26 @@
-<p>
-  budget-period works!
-</p>
+<ion-grid fixed="300">
+    <ion-row justify-content-center>
+        <ion-col sizeMd="6">
+            <ion-item>
+                <ion-label>Data rozpoczęcia</ion-label>
+                <ion-datetime cancelText="Anuluj"
+                              [displayFormat]="dateDisplayFormat"
+                              placeholder="Wybierz datę"
+                              doneText="Zatwierdź"
+                              [(ngModel)]="startDate"></ion-datetime>
+            </ion-item>
+        </ion-col>
+    </ion-row>
+    <ion-row justify-content-center>
+        <ion-col sizeMd="6">
+            <ion-item>
+                <ion-label>Data zakończenia</ion-label>
+                <ion-datetime cancelText="Anuluj"
+                              [displayFormat]="dateDisplayFormat"
+                              placeholder="Wybierz datę"
+                              doneText="Zatwierdź"
+                              [(ngModel)]="endDate"></ion-datetime>
+            </ion-item>
+        </ion-col>
+    </ion-row>
+</ion-grid>
