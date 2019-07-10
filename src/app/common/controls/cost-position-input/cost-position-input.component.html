@@ -1,0 +1,12 @@
+<ion-item>
+  <ion-input [placeholder]="namePlaceHolder" autocomplete="on" [(ngModel)]="cost.name" [readonly]="isDisplayOnly"></ion-input>
+  <label>
+    <input class="native-input sc-ion-input-ios" [(ngModel)]="cost.value" [ngAutonumeric]="options" [readonly]="isDisplayOnly">
+  </label>
+  <ion-fab-button size="small" color="success" slot="end" [disabled]="!cost.name || !cost.value" (click)="positionAdd()" *ngIf="!isDisplayOnly">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-button size="small" color="danger" slot="end" (click)="positionRemove()" *ngIf="isDisplayOnly">
+    <ion-icon name="close"></ion-icon>
+  </ion-fab-button>
+</ion-item>

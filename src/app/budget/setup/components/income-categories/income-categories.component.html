@@ -1,3 +1,7 @@
-<p>
-  income-categories works!
-</p>
+<ion-list>
+    <ion-list-header>
+        Pozycje
+    </ion-list-header>
+    <cost-position-input *ngFor="let income of incomes; let i = index" [cost]="income" [isDisplayOnly]="true" (buttonClick)="removeItem(i)"></cost-position-input>
+</ion-list>
+<cost-position-input namePlaceHolder="Nazwa kategorii" (buttonClick)="onItemAdded($event)"></cost-position-input>
