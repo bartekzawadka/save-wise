@@ -13,11 +13,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {AuthService} from "./services/auth.service";
 import {NgAutonumericModule} from "@angularfy/ng-autonumeric";
-import { CostPositionInputComponent } from './common/controls/cost-position-input/cost-position-input.component';
-import {BudgetSetupPage} from "./pages/budget-setup/budget-setup.page";
 import {WizardModule} from "./common/wizard/wizard.module";
-import {BudgetPeriodComponent} from "./budget/setup/components/budget-period/budget-period.component";
-import {IncomeCategoriesComponent} from "./budget/setup/components/income-categories/income-categories.component";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 

@@ -1,7 +1,7 @@
+<costs-list newItemPlaceholder="Nazwa pozycji przychodu"
+            itemsListHeader="Pozycje przychodów"
+            (itemsChanged)="onItemsChanged($event)"></costs-list>
+
 <ion-list>
-    <ion-list-header>
-        Pozycje
-    </ion-list-header>
-    <cost-position-input *ngFor="let income of incomes; let i = index" [cost]="income" [isDisplayOnly]="true" (buttonClick)="removeItem(i)"></cost-position-input>
+    <cost-position-input class="summary" [mode]="summaryMode" [(ngModel)]="summaryModel"></cost-position-input>
 </ion-list>
-<cost-position-input namePlaceHolder="Nazwa kategorii" (buttonClick)="onItemAdded($event)"></cost-position-input>

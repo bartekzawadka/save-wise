@@ -11,6 +11,7 @@ import {WizardModule} from "../../common/wizard/wizard.module";
 import {IncomeCategoriesComponent} from "../../budget/setup/components/income-categories/income-categories.component";
 import {CostPositionInputComponent} from "../../common/controls/cost-position-input/cost-position-input.component";
 import {NgAutonumericModule} from "@angularfy/ng-autonumeric";
+import {CostsListComponent} from "../../common/controls/costs-list/costs-list.component";
 
 const routes: Routes = [
     {
@@ -32,6 +33,7 @@ const routes: Routes = [
         BudgetSetupPage,
         BudgetPeriodComponent,
         IncomeCategoriesComponent,
+        CostsListComponent,
         CostPositionInputComponent]
 })
 export class BudgetSetupPageModule {
