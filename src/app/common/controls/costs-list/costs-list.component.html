@@ -1,5 +1,5 @@
 <ion-list padding-bottom>
-  <ion-list-header *ngIf="incomes && incomes.length > 0">
+  <ion-list-header *ngIf="incomes && incomes.length > 0 && itemsListHeader?.length > 0">
     {{itemsListHeader}}
   </ion-list-header>
   <cost-position-input *ngFor="let income of incomes; let i = index"

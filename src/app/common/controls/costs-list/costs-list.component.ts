@@ -13,7 +13,7 @@ export class CostsListComponent implements OnInit {
   public editMode = CostPositionInputMode.edit;
 
   @Input()
-  public itemsListHeader: string = 'Lista pozycji';
+  public itemsListHeader: string = '';
 
   @Input()
   public newItemPlaceholder: string = 'Nazwa';

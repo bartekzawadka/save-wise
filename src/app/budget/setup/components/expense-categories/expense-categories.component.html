@@ -1,0 +1,36 @@
+<!--<mat-accordion *ngIf="groups.length > 0">-->
+<!--    <ion-ripple-effect></ion-ripple-effect>-->
+<!--    <mat-expansion-panel *ngFor="let group of groups">-->
+<!--        <mat-expansion-panel-header>-->
+<!--            <mat-panel-title>{{group.name}}</mat-panel-title>-->
+<!--            <mat-panel-description>-->
+<!--                <mat-icon>-->
+<!--                    <ion-fab-button size="small" color="success" slot="end" (click)="onGroupAdded()"-->
+<!--                                    [disabled]="!newGroupName">-->
+<!--                        <ion-icon name="add"></ion-icon>-->
+<!--                    </ion-fab-button>-->
+<!--                </mat-icon>-->
+<!--            </mat-panel-description>-->
+<!--        </mat-expansion-panel-header>-->
+<!--        <costs-list newItemPlaceholder="Dodaj koszt"></costs-list>-->
+<!--    </mat-expansion-panel>-->
+<!--</mat-accordion>-->
+<ion-card *ngFor="let group of groups">
+    <ion-card-header>
+        <ion-item>
+            <ion-label>{{group.name}}</ion-label>
+            <ion-fab-button size="small" color="success" slot="end" (click)="onGroupAdded()" [disabled]="!newGroupName">
+                <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+        </ion-item>
+    </ion-card-header>
+    <costs-list newItemPlaceholder="Dodaj koszt"></costs-list>
+
+</ion-card>
+
+<ion-item lines="full">
+    <ion-input placeholder="Dodaj nową grupę" style="flex: 1 auto;" [(ngModel)]="newGroupName"></ion-input>
+    <ion-fab-button size="small" color="success" slot="end" (click)="onGroupAdded()" [disabled]="!newGroupName">
+        <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+</ion-item>
