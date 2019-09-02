@@ -60,6 +60,11 @@ export class CostPositionInputComponent extends ValueAccessorBase<Cost> implemen
     public canEditValue = true;
 
     @Input()
+    public showBottomLine = true;
+
+    public lines = undefined;
+
+    @Input()
     public mode: CostPositionInputMode = CostPositionInputMode.insert;
 
     @Output()
@@ -72,6 +77,10 @@ export class CostPositionInputComponent extends ValueAccessorBase<Cost> implemen
     ngOnInit() {
         if(this.canEditValue === false || this.isSummaryMode()) {
             this.options.readOnly = true;
+        }
+
+        if(this.showBottomLine !== true){
+            this.lines = 'none';
         }
     }
 

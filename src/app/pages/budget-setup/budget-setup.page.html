@@ -4,7 +4,10 @@
             <budget-setup-period [(startDate)]="budget.startDate" [(endDate)]="budget.endDate"></budget-setup-period>
         </wizard-page>
         <wizard-page title="Zaplanuj przychody">
-            <budget-income-categories></budget-income-categories>
+            <budget-income-categories [incomes]="budget.incomes" (itemsChanged)="onIncomesChanged($event)"></budget-income-categories>
+        </wizard-page>
+        <wizard-page title="Zaplanuj wydatki">
+            <budget-expense-categories [incomes]="budget.incomes"></budget-expense-categories>
         </wizard-page>
     </wizard>
 </ion-content>

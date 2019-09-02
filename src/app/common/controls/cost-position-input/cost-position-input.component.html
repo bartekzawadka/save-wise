@@ -1,23 +1,22 @@
-<ion-item style="display: flex;">
+<ion-item style="display: flex;" [lines]="lines">
     <ion-input [placeholder]="namePlaceHolder" style="flex: 1 auto;"
                autocomplete="on"
                [ngClass]="isSummaryMode() ? 'bold' : ''"
-               [(ngModel)]="value.name"
+               [(ngModel)]="value.category"
                (ngModelChange)="notifyOnChange()"
                [readonly]="!canEditName || isSummaryMode()"></ion-input>
     <label>
         <input #currencyInput class="native-input sc-ion-input-ios"
-               [(ngModel)]="value.value"
+               [(ngModel)]="value.amount"
                [ngClass]="isSummaryMode() ? 'bold' : ''"
                (ngModelChange)="notifyOnChange()"
                [ngAutonumeric]="options" [size]="getCurrencyInputSize()">
     </label>
-    <ion-fab-button size="small" color="success" slot="end" [disabled]="!value.name" (click)="onClick()"
+    <ion-fab-button size="small" color="success" slot="end" [disabled]="!value.category" (click)="onClick()"
                     *ngIf="isAddButtonVisible()">
         <ion-icon name="add"></ion-icon>
     </ion-fab-button>
     <ion-fab-button size="small" color="danger" slot="end" (click)="onClick()" *ngIf="isRemoveButtonVisible()">
         <ion-icon name="close"></ion-icon>
     </ion-fab-button>
-    <ion-fab-button size="small" color="transparent" slot="end" *ngIf="isSummaryMode()" disabled></ion-fab-button>
 </ion-item>

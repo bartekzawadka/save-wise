@@ -43,4 +43,8 @@ export class BudgetSetupPage implements OnInit {
     onFinish() {
         this.router.navigate(['/home']);
     }
+
+    onIncomesChanged(ev){
+        this.budget.incomes = ev.incomes;
+    }
 }

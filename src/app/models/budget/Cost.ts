@@ -1,4 +1,7 @@
-export class Cost {
-    public name: string;
-    public value = 0.0;
+import {ICost} from "./i-cost";
+
+export class Cost implements ICost {
+    public id: string;
+    public category: string;
+    public amount = 0.0;
 }

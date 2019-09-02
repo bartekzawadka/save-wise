@@ -21,20 +21,30 @@ export class WizardComponent implements OnInit {
 
     public wizardPageTitle = "";
     public slideIndex = 0;
-    public currentSlide : WizardPageComponent;
+    public currentSlide: WizardPageComponent;
     public slidesLength = 0;
 
-    public options = {};
+    public options = {
+        autoHeight: true,
+        observer: true,
+        observeParents: true,
+        observeSlideChildren: true
+    };
 
     constructor() {
     }
 
     async ngOnInit() {
-        this.slides.lockSwipes(true);
+        await this.slides.lockSwipes(true);
         this.slides.ionSlideDidChange.subscribe(() => this.onSlideDidChange());
         this.slides.ionSlidesDidLoad.subscribe(() => this.updateTitle());
         await this.updateCurrentSlide();
         this.slidesLength = await this.slides.length();
+        this.wizardPages.forEach(item => {
+            item.onContentUpdated.subscribe(() => {
+                this.slides.update().then();
+            });
+        });
     }
 
     goBack() {

@@ -1,6 +1,5 @@
-export class Income {
-    public id: string;
-    public category: string;
-    public amount: number;
+import {Cost} from "./Cost";
+
+export class Income extends Cost {
     public plannedAmount: number;
 }

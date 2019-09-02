@@ -9,7 +9,8 @@ import {CostPositionInputMode} from "../cost-position-input/cost-position-input-
 })
 export class CostsListComponent implements OnInit {
 
-  public incomes: Cost[] = [];
+  @Input()
+  public costs: Cost[] = [];
   public editMode = CostPositionInputMode.edit;
 
   @Input()
@@ -17,6 +18,9 @@ export class CostsListComponent implements OnInit {
 
   @Input()
   public newItemPlaceholder: string = 'Nazwa';
+
+  @Input()
+  public showBottomLineForNewItemInput = true;
 
   @Output()
   public itemsChanged = new EventEmitter<Cost[]>();
@@ -27,16 +31,16 @@ export class CostsListComponent implements OnInit {
   }
 
   onItemAdded(item: Cost){
-    this.incomes.push(item);
-    this.itemsChanged.emit(this.incomes);
+    this.costs.push(item);
+    this.itemsChanged.emit(this.costs);
   }
 
   modelChange(){
-    this.itemsChanged.emit(this.incomes);
+    this.itemsChanged.emit(this.costs);
   }
 
   removeItem(index: number){
-    this.incomes.splice(index, 1);
-    this.itemsChanged.emit(this.incomes);
+    this.costs.splice(index, 1);
+    this.itemsChanged.emit(this.costs);
   }
 }
