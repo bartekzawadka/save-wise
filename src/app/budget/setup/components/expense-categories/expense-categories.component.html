@@ -1,0 +1,24 @@
+<cost-position-input [mode]="summaryMode" [(ngModel)]="incomesTotalSum"></cost-position-input>
+<cost-position-input [mode]="summaryMode" [(ngModel)]="expensesTotalSum"></cost-position-input>
+<cost-position-input [mode]="summaryMode" [(ngModel)]="leftToSpendTotalSum"></cost-position-input>
+
+<ion-card *ngFor="let group of groups; let i = index">
+    <ion-card-header class="expense-group-header">
+        <ion-card-subtitle class="expense-group-title">
+            {{group.name}} ({{group.sum}})
+        </ion-card-subtitle>
+        <ion-fab horizontal="end" vertical="top" title="Usuń grupę" (click)="onGroupRemoved(i)">
+            <ion-fab-button size="small" color="light" translucent="true" class="expense-group-delete">
+                <ion-icon name="close" color="danger"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+    </ion-card-header>
+    <costs-list newItemPlaceholder="Dodaj koszt" showBottomLineForNewItemInput="false" (itemsChanged)="onItemsChanged($event, i)"></costs-list>
+</ion-card>
+
+<ion-item lines="full">
+    <ion-input placeholder="Dodaj nową grupę" style="flex: 1 auto;" [(ngModel)]="newGroupName"></ion-input>
+    <ion-fab-button size="small" color="success" slot="end" (click)="onGroupAdded()" [disabled]="!newGroupName">
+        <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+</ion-item>

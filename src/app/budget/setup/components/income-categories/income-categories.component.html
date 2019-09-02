@@ -1,3 +1,7 @@
-<p>
-  income-categories works!
-</p>
+<costs-list newItemPlaceholder="Nazwa pozycji przychodu"
+            itemsListHeader="Pozycje przychodów"
+            (itemsChanged)="onItemsChanged($event)" [costs]="costs"></costs-list>
+
+<ion-list>
+    <cost-position-input class="summary" [mode]="summaryMode" [(ngModel)]="summaryModel"></cost-position-input>
+</ion-list>

@@ -1,0 +1,15 @@
+<ion-list>
+  <ion-list-header *ngIf="costs && costs.length > 0 && itemsListHeader?.length > 0">
+    {{itemsListHeader}}
+  </ion-list-header>
+  <cost-position-input *ngFor="let income of costs; let i = index"
+                       [(ngModel)]="income"
+                       [mode]="editMode"
+                       (ngModelChange)="modelChange()"
+                       (buttonClick)="removeItem(i)">
+  </cost-position-input>
+  <cost-position-input class="ion-margin-top"
+                       [namePlaceHolder]="newItemPlaceholder"
+                       (buttonClick)="onItemAdded($event)"
+                       [showBottomLine]="showBottomLineForNewItemInput"></cost-position-input>
+</ion-list>
